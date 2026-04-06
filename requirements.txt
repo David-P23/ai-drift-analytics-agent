@@ -3,3 +3,12 @@ numpy
 faker
 jupyter
 python-dateutil
+langchain
+langchain-openai
+langgraph
+openai
+pydantic
+fastapi
+uvicorn
+python-dotenv
+streamlit
