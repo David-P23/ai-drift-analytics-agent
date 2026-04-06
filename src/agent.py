@@ -59,8 +59,8 @@ RULES:
 - rto_score ranges from 1 (most critical) to 10 (least critical)
 - To find critical applications use rto_score <= 3, not app_status = 'Critical'
 - in_scope values are: 'Y' or 'N'
-- To calculate drift percentage: COUNT(DISTINCT drifting apps) / COUNT(DISTINCT total in-scope apps) * 100
-- CRITICAL: When joining tables, ALWAYS use table alias prefixes on every column in SELECT, WHERE, GROUP BY, and ORDER BY. Never write a bare column name without its alias. Example: write "a.resiliency_lead" never just "resiliency_lead"
+- For percentage calculations, use a LEFT JOIN from applications to drift_full, not a subquery
+- When joining tables, always prefix every column with its table alias in SELECT, WHERE, GROUP BY, and ORDER BY clauses
 
 Generate a single valid SQLite SQL query to answer this question:
 {state['question']}

@@ -14,6 +14,18 @@ def run_query(sql: str) -> str:
     except Exception as e:
         return f"Query error: {str(e)}"
 
+def get_drift_percentage() -> str:
+    """Calculate what percentage of in-scope applications are currently drifting."""
+    sql = """
+        SELECT ROUND(
+            COUNT(DISTINCT df.app_id) * 100.0 /
+            (SELECT COUNT(DISTINCT app_id) FROM applications WHERE in_scope = 'Y'),
+        2) AS drift_percentage
+        FROM drift_full df
+        WHERE df.status = 'Open'
+    """
+    return run_query(sql)
+
 def get_schema() -> str:
     """Return the database schema for all three tables."""
     return """
