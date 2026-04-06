@@ -18,13 +18,13 @@ This agent automates the work of a resiliency analyst: detecting where drift is 
 
 Ask it anything about the portfolio in plain English:
 
-What percentage of in-scope applications are currently drifting?
-Which datacenter has the highest concentration of open drift?
-Which resiliency lead should we escalate to first?
-Show me critical applications with approved exemptions that are still open
-Which product category has the most drift instances over 90 days?
-Which line of business has the most unresolved drift?
-Show me all applications drifting over 120 days with no exemption
+1. What percentage of in-scope applications are currently drifting?
+2. Which datacenter has the highest concentration of open drift?
+3. Which resiliency lead should we escalate to first?
+4. Show me critical applications with approved exemptions that are still open
+5. Which product category has the most drift instances over 90 days?
+6. Which line of business has the most unresolved drift?
+7. Show me all applications drifting over 120 days with no exemption
 
 The agent generates SQL, queries the database, and returns a concise analyst-style briefing — no hardcoded queries, no dashboards to navigate.
 
