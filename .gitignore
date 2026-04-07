@@ -3,5 +3,5 @@ __pycache__/
 .ipynb_checkpoints/
 *.pyc
 data/raw/*
-data/processed/*
+data/processed/*.csv
 .env
