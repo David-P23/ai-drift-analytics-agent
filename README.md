@@ -4,6 +4,12 @@ An agentic AI system that monitors software version drift across an enterprise a
 
 Built on **LangGraph + GPT-4o-mini + SQLite**, this project demonstrates production-style agentic AI applied to a real enterprise resiliency use case.
 
+## 🚀 Live Demo
+
+**Try it now:** [https://ai-drift-analytics-agent-hrhgjperokzzvgytvv8yxq.streamlit.app](https://ai-drift-analytics-agent-hrhgjperokzzvgytvv8yxq.streamlit.app)
+
+Click any suggested question or type your own — no setup required.
+
 ---
 
 ## What is Drift?
