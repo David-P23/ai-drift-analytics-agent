@@ -38,6 +38,7 @@ The agent generates SQL, queries the database, and returns a concise analyst-sty
 
 ## How It Works
 
+```
 User Question
 │
 ▼
@@ -57,6 +58,7 @@ Returns director-level briefing
 │
 ▼
 Answer
+```
 
 Built with **LangGraph** — each step is a discrete node in a stateful graph, making the reasoning pipeline transparent, testable, and extensible.
 
