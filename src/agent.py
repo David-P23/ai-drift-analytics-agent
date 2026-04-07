@@ -1,11 +1,11 @@
 import os
+import operator
+import streamlit as st
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated
-import operator
-
 from src.tools import run_query, get_schema
 
 load_dotenv(override=True)
@@ -25,10 +25,16 @@ class AgentState(TypedDict):
 # LLM
 # --------------------------------
 
+# Load API key from Streamlit secrets (cloud) or .env (local)
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+except:
+    api_key = os.getenv("OPENAI_API_KEY")
+
 llm = ChatOpenAI(
     model="gpt-4o-mini",
     temperature=0,
-    api_key=os.getenv("OPENAI_API_KEY")
+    api_key=api_key
 )
 
 # --------------------------------
