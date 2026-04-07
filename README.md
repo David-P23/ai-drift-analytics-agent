@@ -64,6 +64,8 @@ Built with **LangGraph** — each step is a discrete node in a stateful graph, m
 
 ## Dataset
 
+→ [Full dataset design documentation](DATASET.md)
+
 The agent runs against a fully synthetic enterprise dataset modeled after real financial institution resiliency programs:
 
 | Table | Records | Description |
