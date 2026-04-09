@@ -14,7 +14,6 @@ st.markdown(
     "*Asking natural-language questions about enterprise application drift risk — "
     "powered by LangGraph + GPT-4o-mini*"
 )
-st.divider()
 
 # ── What Is Application Drift? ───────────────────────────────────────────────
 with st.expander("📖 What is Application Drift? (Start here if you're new)", expanded=False):
@@ -45,8 +44,6 @@ wiping out the firm. Knight Capital was acquired shortly after.
 
 **Root cause: software version drift across a production server fleet, undetected until it was catastrophic.**
 """)
-
-st.divider()
 
 # ── Sample Data ──────────────────────────────────────────────────────────────
 with st.expander("🗂️ What data is the agent reasoning over?", expanded=False):
@@ -98,7 +95,6 @@ with st.expander("🗂️ What data is the agent reasoning over?", expanded=Fals
 - **Status** — Open, In Remediation, or Closed
 """)
 
-st.divider()
 
 # ── Session State ────────────────────────────────────────────────────────────
 if "active_question" not in st.session_state:
