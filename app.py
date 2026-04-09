@@ -14,7 +14,7 @@ st.markdown(
     "*Asking natural-language questions about enterprise application drift risk — "
     "powered by LangGraph + GPT-4o-mini*"
 )
-
+st.markdown("<br>", unsafe_allow_html=True)
 
 # ── What Is Application Drift? ───────────────────────────────────────────────
 with st.expander("📖 What is Application Drift? (Start here if you're new)", expanded=False):
