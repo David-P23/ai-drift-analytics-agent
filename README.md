@@ -1,176 +1,238 @@
-# AI Drift Analytics Agent
+# 🤖 AI Drift Analytics Agent
+### NorthStar Financial | Technology Resiliency Intelligence Platform
 
-An agentic AI system that monitors software version drift across an enterprise application portfolio, identifies concentration risk, prioritizes remediation, and delivers director-level insights through natural language.
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python&logoColor=white)
+![LangChain](https://img.shields.io/badge/LangChain-0.2+-1C3C3C?style=flat)
+![LangGraph](https://img.shields.io/badge/LangGraph-Latest-4B8BBE?style=flat)
+![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-412991?style=flat&logo=openai&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.111+-009688?style=flat&logo=fastapi&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=flat&logo=sqlite&logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-v2-E92063?style=flat)
 
-Built on **LangGraph + GPT-4o-mini + SQLite**, this project demonstrates production-style agentic AI applied to a real enterprise resiliency use case.
-
-## 🚀 Live Demo
-
-**Try it now:** [https://ai-drift-analytics-agent-hrhgjperokzzvgytvv8yxq.streamlit.app](https://ai-drift-analytics-agent-hrhgjperokzzvgytvv8yxq.streamlit.app)
-
-Click any suggested question or type your own — no setup required.
-
----
-
-## What is Drift?
-
-In enterprise technology, **drift** occurs when a software component running on a production system falls behind the organization's approved version standard. Unresolved drift creates compliance violations, security vulnerabilities, and resiliency risk — especially for mission-critical applications.
-
-This agent automates the work of a resiliency analyst: detecting where drift is concentrated, which applications are most at risk, and who should be contacted first.
+> A production-style agentic AI system that automates the analysis of application drift risk across an enterprise technology portfolio — enabling natural-language querying, intelligent escalation detection, and AI-generated insights for technology resiliency teams.
 
 ---
 
-## What the Agent Can Do
+## 📌 What Is Application Drift — And Why Does It Matter?
 
-Ask it anything about the portfolio in plain English:
+**Application drift** occurs when software running in a production environment falls out of alignment with approved, current standards — typically because a component (an operating system, middleware, database engine, or third-party library) reaches end-of-life or falls behind a required patch level without being remediated.
 
-1. What percentage of in-scope applications are currently drifting?
-2. Which datacenter has the highest concentration of open drift?
-3. Which resiliency lead should we escalate to first?
-4. Show me critical applications with approved exemptions that are still open
-5. Which product category has the most drift instances over 90 days?
-6. Which line of business has the most unresolved drift?
-7. Show me all applications drifting over 120 days with no exemption
+In regulated industries like financial services, drift is not just a technical inconvenience. Unresolved drift means:
 
-The agent generates SQL, queries the database, and returns a concise analyst-style briefing — no hardcoded queries, no dashboards to navigate.
+- **Security exposure** — outdated components are a primary attack surface for ransomware and data breaches
+- **Compliance violations** — regulators expect firms to operate on supported, patched software stacks
+- **Operational fragility** — unsupported components cannot receive critical patches, leaving systems vulnerable to outages
+- **Audit risk** — technology resiliency controls require documented evidence that drift is actively monitored and remediated
+
+The longer drift goes unaddressed, the more dangerous it becomes — especially for **high-criticality applications** with strict Recovery Time Objectives (RTOs) that must be restored within hours of an outage.
+
+### ⚠️ When Drift Goes Unaddressed: A Real-World Example
+
+On August 1, 2012, **Knight Capital Group** — one of the largest market makers on the U.S. stock exchange — deployed a software update that unintentionally reactivated a deprecated trading algorithm on 8 of its 32 servers. The remaining servers ran the new code. The version mismatch went undetected.
+
+Within **45 minutes**, Knight Capital's systems executed millions of erroneous trades. By the time engineers identified and halted the issue, the firm had accumulated **$440 million in losses** — effectively wiping out the company. Knight Capital was acquired shortly after.
+
+The root cause: **software version drift across a production server fleet**, left undetected until it was catastrophic.
+
+This is the problem the AI Drift Analytics Agent is built to prevent.
 
 ---
 
-## How It Works
+## 🧠 What This Agent Does
+
+The AI Drift Analytics Agent is a conversational AI system that connects directly to NorthStar Financial's application drift database. It allows technology resiliency analysts, operations leads, and executives to:
+
+- Ask natural-language questions about drift risk across the application portfolio
+- Instantly surface high-risk applications, escalation candidates, and concentration patterns
+- Receive AI-generated narratives explaining drift trends and recommended actions
+- Explore drill-downs by RTO tier, product category, data center, and days outstanding
+- Trigger visual summaries of drift distribution and risk concentration
+
+No SQL. No dashboards to navigate. Just ask.
+
+---
+
+## 🗂️ Sample Data
+
+Below is a representative row from the NorthStar Financial drift dataset, illustrating the key variables the agent reasons over:
+
+| APP_ID | App Name | Product | Detected Version | Approved Version | Days Drifting | RTO Tier | Data Center | Status |
+|--------|----------|---------|-----------------|-----------------|--------------|----------|-------------|--------|
+| NSF-0042 | Claims Processing Engine | Red Hat Linux | 7.9 | 8.6 | 94 | RTO 0-1 | Minneapolis-DC1 | Open |
+
+**Key fields the agent uses:**
+- **Days Drifting** — drives escalation logic at 60, 90, and 120-day thresholds
+- **RTO Tier** — RTO 0–1 applications must be restored within 1 hour; drift here is highest priority
+- **Detected vs. Approved Version** — the gap between these defines the drift
+- **Status** — Open, In Remediation, or Closed
+
+---
+
+## 💬 Example Interactions
+
+### Natural Language → Structured Insight
+
+**You:** `Which RTO 0-1 applications have been drifting for more than 90 days?`
+
+**Agent:** 
+> 3 critical applications have exceeded the 90-day escalation threshold with RTO 0–1 designations. The longest outstanding is the Claims Processing Engine (NSF-0042) at 94 days on Red Hat Linux 7.9, followed by Payment Gateway Core (NSF-0107) at 91 days. These applications require immediate director-level escalation per resiliency policy. Recommend initiating formal remediation plans within 48 hours.
+
+---
+
+**You:** `Show me a breakdown of drift by product category`
+
+**Agent:** *(returns chart + narrative)*
+> The highest concentration of drift is in the Linux/OS category, accounting for 41% of all open drift instances. This pattern is consistent with a fleet-wide upgrade lag following a major Red Hat version transition. Recommend a bulk remediation initiative targeting this product group.
+
+---
+
+**You:** `What would happen if the top 5 drifting apps went down simultaneously?`
+
+**Agent:**
+> Of the top 5 drifting applications, 3 carry RTO 0–1 designations, meaning they must be restored within 1 hour of an outage. Simultaneous failure would trigger a Severity 1 incident. Combined, these applications support payment processing, claims adjudication, and core authentication services. Without current patch support, emergency restoration would be severely complicated — vendor assistance for end-of-life components is not guaranteed.
+
+---
+
+## 🏗️ Architecture
 
 ```
-User Question
-│
-▼
-[Node 1] Generate SQL
-LLM reads schema + domain context
-Produces valid SQLite query
-│
-▼
-[Node 2] Execute Query
-Runs SQL against northstar_drift.db
-Returns raw result set
-│
-▼
-[Node 3] Generate Answer
-LLM interprets results
-Returns director-level briefing
-│
-▼
-Answer
+User (CLI)
+    │
+    ▼
+LangGraph Agent Orchestrator
+    │
+    ├── Tool: SQL Query Engine (SQLite → northstar_drift.db)
+    ├── Tool: Chart Generator (Matplotlib)
+    ├── Tool: Escalation Detector (60/90/120-day threshold logic)
+    └── Tool: Narrative Summarizer (OpenAI GPT-4o)
+    │
+    ▼
+Pydantic Response Models → FastAPI (API layer)
+    │
+    ▼
+Structured Output + Optional Visualization
 ```
 
-Built with **LangGraph** — each step is a discrete node in a stateful graph, making the reasoning pipeline transparent, testable, and extensible.
+**Agent flow:**
+1. User submits a natural-language question via CLI
+2. LangGraph orchestrates tool selection based on intent
+3. Relevant tools query the SQLite database, run threshold logic, or generate visuals
+4. OpenAI synthesizes a plain-English response with context-aware escalation guidance
+5. Output is returned with optional chart and structured data
 
 ---
 
-## Dataset
+## 🗃️ Project Structure
 
-→ [Full dataset design documentation](DATASET.md)
-
-The agent runs against a fully synthetic enterprise dataset modeled after real financial institution resiliency programs:
-
-| Table | Records | Description |
-|-------|---------|-------------|
-| `applications` | 1,000 | Full enterprise app portfolio with RTO scores, datacenters, owners |
-| `drift_instances` | ~475 | Software drift events with aging, exemption status, root cause |
-| `drift_notes` | ~800 | Analyst notes, escalation flags, exemption documentation |
-| `drift_full` | view | Pre-joined view for efficient agent querying |
-
-**Key design decisions:**
-- ~78% of apps marked in-scope, ~28% drift penetration — modeled after real program distributions
-- Year-aware drift IDs (`DR-2025-000001`) support historical and geographic concentration analysis
-- RTO scores 1–10 map to recovery time windows (0.5hrs → 120hrs), enabling true criticality-based prioritization
-- Instance names encode LOB + product + environment (`PAYORAPRD01`, `RSKMQPRD02`) for realistic demo fidelity
-- Exemption logic includes Approved / Pending / Denied states with realistic documentation notes
-- 12 months of drift history enables trend and aging analysis
+```
+ai-drift-analytics-agent/
+│
+├── agent/
+│   ├── graph.py              # LangGraph agent definition & tool binding
+│   ├── tools.py              # SQL, chart, escalation, and narrative tools
+│   ├── prompts.py            # Domain-specific system prompt
+│   └── models.py             # Pydantic response schemas
+│
+├── api/
+│   └── main.py               # FastAPI app & endpoints
+│
+├── data/
+│   ├── northstar_drift.db    # SQLite database
+│   └── seed.py               # Synthetic dataset generator
+│
+├── visuals/                  # Generated charts saved here
+├── cli.py                    # Interactive CLI entry point
+├── requirements.txt
+└── README.md
+```
 
 ---
 
-## Tech Stack
+## 🚀 Getting Started
+
+### Prerequisites
+- Python 3.11+
+- OpenAI API key
+
+### Installation
+
+```bash
+git clone https://github.com/David-P23/ai-drift-analytics-agent.git
+cd ai-drift-analytics-agent
+pip install -r requirements.txt
+```
+
+### Configuration
+
+```bash
+cp .env.example .env
+# Add your OpenAI API key to .env:
+# OPENAI_API_KEY=sk-...
+```
+
+### Run the CLI Agent
+
+```bash
+python cli.py
+```
+
+### Run the API
+
+```bash
+uvicorn api.main:app --reload
+```
+
+---
+
+## 💡 Suggested Questions to Try
+
+| Category | Question |
+|----------|----------|
+| Escalation | `Which apps have been drifting for more than 90 days?` |
+| Risk prioritization | `Show me all RTO 0-1 applications with open drift` |
+| Concentration analysis | `What product categories have the most drift?` |
+| Geographic | `Which data centers have the highest drift concentration?` |
+| What-if | `What's the business impact if the top 3 drifting apps go down?` |
+| Trend | `How many apps crossed the 60-day threshold this month?` |
+| Bulk remediation | `Are there clusters of apps with the same drift issue I could address together?` |
+
+---
+
+## 🔧 Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Agent Framework | LangGraph |
-| LLM | GPT-4o-mini (OpenAI) |
-| LLM Orchestration | LangChain |
-| Data Layer | SQLite |
-| Data Processing | Pandas, NumPy |
-| Synthetic Data | Faker |
-| Output Validation | Pydantic |
-| Interface | CLI (FastAPI planned) |
+| Agent Orchestration | LangGraph |
+| LLM | OpenAI GPT-4o via LangChain |
+| Tools & Logic | Python, custom LangChain tools |
+| Data Validation | Pydantic v2 |
+| Database | SQLite |
+| API Layer | FastAPI |
+| Visualization | Matplotlib |
+| CLI | Python (rich) |
 
 ---
 
-## Project Structure
+## 💼 Domain Context
 
-ai-drift-analytics-agent/
-│
-├── notebooks/
-│   └── generate_drift_dataset.ipynb   # Full dataset generation pipeline
-│
-├── data/
-│   └── processed/
-│       ├── northstar_drift.db         # SQLite database
-│       ├── applications.csv
-│       ├── drift_instances.csv
-│       └── drift_notes.csv
-│
-├── src/
-│   ├── agent.py       # LangGraph agent — SQL generation + answer synthesis
-│   ├── tools.py       # Database query tool + schema definition
-│   ├── cli.py         # Interactive CLI interface
-│   └── config.py      # Environment config, constants, lookup tables
-│
-├── sql/
-│   └── validation_queries.sql
-│
-├── requirements.txt
-└── .env.example
+This project is grounded in real enterprise experience. The drift monitoring workflows, escalation thresholds (60/90/120-day), RTO tier prioritization, and resiliency control frameworks modeled here reflect production-grade Technology Resiliency practices used at large financial institutions — adapted into a portfolio simulation context.
+
+The agent is designed to mirror the kind of AI-augmented operations tooling that resiliency, risk, and technology teams at regulated firms are actively building toward.
 
 ---
 
-## Quickstart
-```bash
-# Clone the repo
-git clone https://github.com/David-P23/ai-drift-analytics-agent.git
-cd ai-drift-analytics-agent
+## 📈 Roadmap
 
-# Create and activate virtual environment
-python -m venv venv
-venv\Scripts\activate  # Windows
-source venv/bin/activate  # Mac/Linux
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Add your OpenAI API key
-cp .env.example .env
-# Edit .env and add: OPENAI_API_KEY=your-key-here
-
-# Run the agent
-python -m src.cli
-```
+- [ ] Web UI (Streamlit or React frontend)
+- [ ] Email escalation trigger for 120-day threshold breaches
+- [ ] Multi-turn conversation memory across sessions
+- [ ] Integration with mock CMDB for real-time app inventory
+- [ ] Deployment to cloud (AWS / Azure)
 
 ---
 
-## Domain Context
-
-This project is modeled on enterprise Technology Resiliency controls used in large financial institutions. Key concepts:
-
-- **RTO (Recovery Time Objective)** — maximum tolerable downtime per application. Scores 1–2 = Mission Critical, 3–4 = High, 5–6 = Medium, 7–10 = Lower priority
-- **Escalation thresholds** — 60 / 90 / 120 days of open drift trigger progressive escalation to application owners, resiliency leads, and executive stakeholders
-- **Exemptions** — some applications cannot be upgraded immediately due to vendor compatibility issues; exemptions are formally requested, reviewed, and tracked
-- **Geographic concentration risk** — drift clustering within a single datacenter can amplify the impact of an infrastructure failure event
+*NorthStar Financial is a fictional company created for portfolio demonstration purposes. All data is synthetically generated and does not represent any real organization or individuals.*
 
 ---
 
-## Background
-
-This agent was designed to replace manual resiliency reporting workflows — the kind that required analysts to maintain escalation trackers, generate aging reports, and identify bulk remediation opportunities across hundreds of applications every month.
-
-The domain expertise behind the data model and agent logic comes from hands-on experience managing these controls in a production enterprise environment.
-
----
-
-*Built as a portfolio project demonstrating agentic AI applied to enterprise analytics. Company name and data are fictional.*
+**David Pearcill** · [LinkedIn](https://www.linkedin.com/in/david-pearcill/) · [GitHub](https://github.com/David-P23)
