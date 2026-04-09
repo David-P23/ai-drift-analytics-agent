@@ -15,6 +15,7 @@ st.markdown(
     "powered by LangGraph + GPT-4o-mini*"
 )
 
+
 # ── What Is Application Drift? ───────────────────────────────────────────────
 with st.expander("📖 What is Application Drift? (Start here if you're new)", expanded=False):
     st.markdown("""
@@ -44,6 +45,7 @@ wiping out the firm. Knight Capital was acquired shortly after.
 
 **Root cause: software version drift across a production server fleet, undetected until it was catastrophic.**
 """)
+
 
 # ── Sample Data ──────────────────────────────────────────────────────────────
 with st.expander("🗂️ What data is the agent reasoning over?", expanded=False):
@@ -105,6 +107,7 @@ if "sql" not in st.session_state:
     st.session_state.sql = ""
 if "run_query" not in st.session_state:
     st.session_state.run_query = False
+
 
 # ── Suggested Questions ──────────────────────────────────────────────────────
 SUGGESTED_QUESTIONS = [
