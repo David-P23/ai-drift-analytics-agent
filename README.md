@@ -12,6 +12,13 @@
 > A production-style agentic AI system that automates the analysis of application drift risk across an enterprise technology portfolio — enabling natural-language querying, intelligent escalation detection, and AI-generated insights for technology resiliency teams.
 
 ---
+## 🚀 Live Demo
+
+**Try it now:** [AI Drift Analytics Agent](https://ai-drift-analytics-agent-hrhgjperokzzvgytvv8yxq.streamlit.app)
+
+Click any suggested question or type your own — no setup required.
+
+---
 
 ## 📌 What Is Application Drift — And Why Does It Matter?
 
