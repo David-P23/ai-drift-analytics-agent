@@ -230,8 +230,7 @@ The agent is designed to mirror the kind of AI-augmented operations tooling that
 
 ## 📈 Roadmap
 
-- [ ] Web UI (Streamlit or React frontend)
-- [ ] Email escalation trigger for 120-day threshold breaches
+- [x] Web UI (Streamlit) — [Live here](https://ai-drift-analytics-agent-hrhgjperokzzvgytvv8yxq.streamlit.app)- [ ] Email escalation trigger for 120-day threshold breaches
 - [ ] Multi-turn conversation memory across sessions
 - [ ] Integration with mock CMDB for real-time app inventory
 - [ ] Deployment to cloud (AWS / Azure)
