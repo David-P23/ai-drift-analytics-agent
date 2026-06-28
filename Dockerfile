@@ -13,6 +13,7 @@ RUN python -m pip install --upgrade pip && \
 
 COPY . .
 RUN mkdir -p data
+RUN python -c "import sqlite3; db='data/northstar_demo.sqlite'; conn=sqlite3.connect(db); count=conn.execute('select count(*) from applications').fetchone()[0]; conn.close(); assert count > 0, f'{db} is missing or empty'"
 
 EXPOSE 8501
 

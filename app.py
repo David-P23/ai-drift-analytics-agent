@@ -13,7 +13,13 @@ import pandas as pd
 from src import analytics
 from src.agent import answer_question, build_executive_summary, run_query_plan
 from src.cluster_detection import GROUPING_OPTIONS, detect_drift_clusters, summarize_cluster_periods
-from src.database import DriftDatabase, clear_applications_rows, initialize_empty_database, replace_applications_rows
+from src.database import (
+    DriftDatabase,
+    clear_applications_rows,
+    initialize_demo_database,
+    initialize_empty_database,
+    replace_applications_rows,
+)
 from src.models import ExecutiveSummary, Metric, QueryResponse, SpreadsheetImportIssue
 from src.prompting import SUGGESTED_QUESTIONS
 from src.spreadsheet_import import (
@@ -36,6 +42,7 @@ DEFAULT_ROW_LIMIT = int(os.getenv("SQL_ROW_LIMIT", "1000"))
 TABLEAU_DASHBOARD_URL = os.getenv("TABLEAU_DASHBOARD_URL", "").strip()
 APP_STATE_VERSION = "executive-dashboard-v1"
 DEMO_DATA_SOURCE_LABEL = "NorthStar demo portfolio: 475 drift rows from Applications, Drift Instances, and Drift Notes"
+FALLBACK_DEMO_DATA_SOURCE_LABEL = "NorthStar fallback demo portfolio: bundled deterministic demo rows"
 
 CHART_COLORS = ["#1446A0", "#00A6A6", "#F2A541", "#D1495B", "#5C677D", "#3A7D44"]
 ACTION_COLORS = {
@@ -1003,6 +1010,21 @@ def database_row_count(db: DriftDatabase) -> int:
     return int(value or 0)
 
 
+def is_default_demo_database(db_path: Path) -> bool:
+    return db_path.name == DEFAULT_DB_PATH.name
+
+
+def ensure_recruiter_demo_data(db_path: Path, row_count: int) -> tuple[int, str | None]:
+    """Keep the public demo from landing on the upload screen if the bundled DB is empty."""
+
+    if row_count > 0 or not is_default_demo_database(db_path):
+        return row_count, None
+
+    initialize_demo_database(db_path, reset=True)
+    fallback_db = DriftDatabase(db_path, max_rows=DEFAULT_ROW_LIMIT)
+    return database_row_count(fallback_db), FALLBACK_DEMO_DATA_SOURCE_LABEL
+
+
 def render_tableau_embed(st: Any) -> None:
     st.markdown('<div class="section-kicker">Tableau Executive View</div>', unsafe_allow_html=True)
     if not TABLEAU_DASHBOARD_URL:
@@ -1271,8 +1293,12 @@ def main() -> None:
 
     db = DriftDatabase(db_path, max_rows=row_limit)
     row_count = database_row_count(db)
+    row_count, fallback_label = ensure_recruiter_demo_data(db_path, row_count)
+    if fallback_label:
+        db = DriftDatabase(db_path, max_rows=row_limit)
+        st.session_state.data_source_label = fallback_label
     if row_count > 0 and "data_source_label" not in st.session_state:
-        if db_path.name == DEFAULT_DB_PATH.name:
+        if is_default_demo_database(db_path):
             st.session_state.data_source_label = DEMO_DATA_SOURCE_LABEL
         else:
             st.session_state.data_source_label = f"{db_path.name}: {row_count} rows loaded"
