@@ -14,6 +14,7 @@ RUN python -m pip install --upgrade pip && \
 COPY . .
 RUN mkdir -p data
 RUN python -c "import sqlite3; db='data/northstar_demo.sqlite'; conn=sqlite3.connect(db); count=conn.execute('select count(*) from applications').fetchone()[0]; conn.close(); assert count > 0, f'{db} is missing or empty'"
+RUN python -c "import json; rows=json.load(open('data/northstar_demo_rows.json', encoding='utf-8')); assert len(rows) == 475, 'demo JSON seed is missing rows'"
 
 EXPOSE 8501
 

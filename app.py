@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import json
 from html import escape
 from pathlib import Path
 from typing import Any
@@ -38,6 +39,7 @@ except ImportError:
 
 
 DEFAULT_DB_PATH = Path(os.getenv("DRIFT_DB_PATH", "data/northstar_demo.sqlite"))
+DEMO_ROWS_PATH = Path("data/northstar_demo_rows.json")
 DEFAULT_ROW_LIMIT = int(os.getenv("SQL_ROW_LIMIT", "1000"))
 TABLEAU_DASHBOARD_URL = os.getenv("TABLEAU_DASHBOARD_URL", "").strip()
 APP_STATE_VERSION = "executive-dashboard-v1"
@@ -1019,6 +1021,12 @@ def ensure_recruiter_demo_data(db_path: Path, row_count: int) -> tuple[int, str 
 
     if row_count > 0 or not is_default_demo_database(db_path):
         return row_count, None
+
+    if DEMO_ROWS_PATH.exists():
+        rows = json.loads(DEMO_ROWS_PATH.read_text(encoding="utf-8"))
+        replace_applications_rows(db_path, rows)
+        seeded_db = DriftDatabase(db_path, max_rows=DEFAULT_ROW_LIMIT)
+        return database_row_count(seeded_db), DEMO_DATA_SOURCE_LABEL
 
     initialize_demo_database(db_path, reset=True)
     fallback_db = DriftDatabase(db_path, max_rows=DEFAULT_ROW_LIMIT)
