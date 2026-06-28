@@ -10,6 +10,7 @@ __pycache__/
 data/*.sqlite
 data/*.sqlite3
 data/*.db
+!data/northstar_demo.sqlite
 work/
 outputs/
 .streamlit/secrets.toml
