@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: ai-drift-analytics-agent
+    env: docker
+    plan: starter
+    healthCheckPath: /_stcore/health
+    autoDeploy: true
