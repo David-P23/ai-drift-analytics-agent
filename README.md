@@ -4,11 +4,34 @@ Executive dashboard and analytics-agent demo for enterprise application drift ri
 
 This v2 version opens directly on a bundled NorthStar Financial demo portfolio, so recruiters and reviewers can see the story immediately without uploading a workbook or waking a sleeping free-tier app. The app keeps the original natural-language analytics agent, but reframes the project around an executive dashboard, Tableau embed slot, and a clearer cluster detection workflow.
 
-The original v1 Streamlit agent is preserved in the `v1-streamlit-agent` branch/tag.
+The original v1 Streamlit agent is preserved in the `v1-streamlit-agent` branch/tag. The prior Streamlit Cloud deployment has been retired; v1 is now shown as an archived milestone through source history and screenshots.
 
-## Live Demo Direction
+## Live Demo
 
-The recruiter-facing deployment target is Render Starter using the included Docker/Render files. After the Tableau dashboard is published, set `TABLEAU_DASHBOARD_URL` in Render environment variables to embed the live Tableau view inside the Executive Dashboard tab.
+Recruiter-facing app: https://ai-drift-analytics-agent.onrender.com
+
+The live demo runs on Render Starter using the included Docker/Render files. After the Tableau dashboard is published, set `TABLEAU_DASHBOARD_URL` in Render environment variables to embed the live Tableau view inside the Executive Dashboard tab.
+
+![v2 Executive Dashboard](docs/assets/v2-executive-dashboard.png)
+
+## Project Evolution
+
+### v1: Agent Concept
+
+V1 proved the core idea: an analytics agent could answer natural-language governance questions over a synthetic enterprise application-drift portfolio. It introduced the company story, sample data, suggested prompts, and the risk framing around unremediated software drift.
+
+V1 archive:
+
+- Branch/tag: `v1-streamlit-agent`
+- GitHub view: https://github.com/David-P23/ai-drift-analytics-agent/tree/v1-streamlit-agent
+
+![v1 drift story](docs/assets/v1-drift-story.png)
+
+![v1 agent questions](docs/assets/v1-agent-questions.png)
+
+### v2: Executive Command Center
+
+V2 reframes the same concept for a recruiter and executive audience. It opens directly on seeded demo data, moves the first impression to executive KPIs and board-level narrative, preserves the agent workspace for drill-down, and prepares a Tableau embed slot for a more polished visual analytics layer.
 
 ## What It Does
 
