@@ -42,6 +42,12 @@ DEFAULT_DB_PATH = Path(os.getenv("DRIFT_DB_PATH", "data/northstar_demo.sqlite"))
 DEMO_ROWS_PATH = Path("data/northstar_demo_rows.json")
 DEFAULT_ROW_LIMIT = int(os.getenv("SQL_ROW_LIMIT", "1000"))
 TABLEAU_DASHBOARD_URL = os.getenv("TABLEAU_DASHBOARD_URL", "").strip()
+SHOW_PORTFOLIO_CONTROLS = os.getenv("SHOW_PORTFOLIO_CONTROLS", "false").strip().lower() in {
+    "1",
+    "true",
+    "yes",
+    "y",
+}
 APP_STATE_VERSION = "executive-dashboard-v1"
 DEMO_DATA_SOURCE_LABEL = "NorthStar demo portfolio: 475 drift rows from Applications, Drift Instances, and Drift Notes"
 FALLBACK_DEMO_DATA_SOURCE_LABEL = "NorthStar fallback demo portfolio: bundled deterministic demo rows"
@@ -1057,16 +1063,19 @@ def render_tableau_embed(st: Any) -> None:
     components.html(
         f"""
         <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
-        <tableau-viz
-            id="northstar-tableau"
-            src="{safe_url}"
-            toolbar="bottom"
-            hide-tabs
-            style="width:100%;height:760px;">
-        </tableau-viz>
+        <div style="width:100%; max-width:1240px; margin:0 auto;">
+            <tableau-viz
+                id="northstar-tableau"
+                src="{safe_url}"
+                toolbar="hidden"
+                hide-tabs
+                style="width:100%; height:860px;">
+            </tableau-viz>
+        </div>
         """,
-        height=790,
-        scrolling=True,
+        width=1240,
+        height=890,
+        scrolling=False,
     )
 
 
@@ -1279,25 +1288,47 @@ applications(
 def main() -> None:
     import streamlit as st
 
-    st.set_page_config(page_title="AI Drift Analytics Agent", layout="wide")
+    st.set_page_config(
+        page_title="AI Drift Analytics Agent",
+        layout="wide",
+        initial_sidebar_state="expanded" if SHOW_PORTFOLIO_CONTROLS else "collapsed",
+    )
     if st.session_state.get("app_state_version") != APP_STATE_VERSION:
         reset_runtime_source_state(st)
         st.session_state.app_state_version = APP_STATE_VERSION
 
-    with st.sidebar:
-        st.header("Portfolio Controls")
-        db_path = Path(st.text_input("SQLite database", value=str(DEFAULT_DB_PATH)))
-        row_limit = st.slider("Max rows", min_value=25, max_value=1000, value=DEFAULT_ROW_LIMIT, step=25)
-        initialize_empty_database(db_path)
-        if st.button("Clear workbook data", use_container_width=True):
-            clear_applications_rows(db_path)
-            reset_runtime_source_state(st)
-            st.success("Workbook data cleared.")
-        st.divider()
-        render_workbook_refresh(st, db_path)
-        st.divider()
-        st.caption("Operating guardrails")
-        render_status_chips(st)
+    db_path = DEFAULT_DB_PATH
+    row_limit = DEFAULT_ROW_LIMIT
+    initialize_empty_database(db_path)
+
+    if not SHOW_PORTFOLIO_CONTROLS:
+        st.markdown(
+            """
+            <style>
+                [data-testid="stSidebar"],
+                [data-testid="collapsedControl"] {
+                    display: none;
+                }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    if SHOW_PORTFOLIO_CONTROLS:
+        with st.sidebar:
+            st.header("Portfolio Controls")
+            db_path = Path(st.text_input("SQLite database", value=str(DEFAULT_DB_PATH)))
+            row_limit = st.slider("Max rows", min_value=25, max_value=1000, value=DEFAULT_ROW_LIMIT, step=25)
+            initialize_empty_database(db_path)
+            if st.button("Clear workbook data", use_container_width=True):
+                clear_applications_rows(db_path)
+                reset_runtime_source_state(st)
+                st.success("Workbook data cleared.")
+            st.divider()
+            render_workbook_refresh(st, db_path)
+            st.divider()
+            st.caption("Operating guardrails")
+            render_status_chips(st)
 
     db = DriftDatabase(db_path, max_rows=row_limit)
     row_count = database_row_count(db)
