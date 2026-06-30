@@ -1146,8 +1146,7 @@ def render_board_brief(st: Any, db: DriftDatabase, summary: ExecutiveSummary) ->
             render_chart(st, response, compact=True)
 
 
-def render_executive_dashboard(st: Any, db: DriftDatabase, summary: ExecutiveSummary) -> None:
-    risk_response = risk_intelligence_response(db)
+def render_command_center(st: Any, db: DriftDatabase, summary: ExecutiveSummary) -> None:
     open_drift = metric_by_label(summary, "Open Drift")
     mission_critical = metric_by_label(summary, "Mission Critical")
     executive = metric_by_label(summary, "Executive Escalations")
@@ -1182,9 +1181,32 @@ def render_executive_dashboard(st: Any, db: DriftDatabase, summary: ExecutiveSum
             st.write(f"- {area}")
 
     st.write("")
+    render_analyst_workbench(st, db)
+    st.write("")
+    with st.expander("Why drift matters and what the agent is reasoning over"):
+        render_story_primer(st)
+        st.write("")
+        render_sample_data(st, db)
+
+
+def render_tableau_board_view(st: Any, db: DriftDatabase) -> None:
+    risk_response = risk_intelligence_response(db)
+    st.markdown(
+        """
+        <div class="brief-card">
+            <div class="brief-title">Board-ready visual layer</div>
+            <div class="brief-copy">
+            Tableau is embedded here as the executive reporting view. The Streamlit command center remains
+            the product shell for agent questions, SQL evidence, cluster detection, and workflow guardrails.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.write("")
     render_tableau_embed(st)
     st.write("")
-    with st.expander("Fallback risk map while Tableau is being published", expanded=not bool(TABLEAU_DASHBOARD_URL)):
+    with st.expander("Streamlit fallback risk map", expanded=not bool(TABLEAU_DASHBOARD_URL)):
         render_ai_risk_map(st, risk_response, compact=True)
 
 
@@ -1220,17 +1242,19 @@ def render_sample_data(st: Any, db: DriftDatabase) -> None:
     render_data_table(st, response, height=205)
 
 
-def render_agent_workspace(st: Any, db: DriftDatabase) -> None:
+def render_cluster_lab(st: Any, db: DriftDatabase) -> None:
     render_story_primer(st)
     st.write("")
     render_sample_data(st, db)
     st.write("")
     render_cluster_detector(st, db)
     st.write("")
-    render_analyst_workbench(st, db)
-    st.write("")
     with st.expander("Control evidence and SQL guardrails"):
         render_evidence_center(st, db)
+
+
+def render_agent_workspace(st: Any, db: DriftDatabase) -> None:
+    render_cluster_lab(st, db)
 
 
 def render_decision_center(st: Any, db: DriftDatabase) -> None:
@@ -1378,11 +1402,15 @@ def main() -> None:
     summary = build_executive_summary(db)
     render_shell_header(st, summary)
 
-    executive_tab, workspace_tab = st.tabs(["Executive Dashboard", "Agent & Cluster Workspace"])
-    with executive_tab:
-        render_executive_dashboard(st, db, summary)
-    with workspace_tab:
-        render_agent_workspace(st, db)
+    command_tab, tableau_tab, cluster_tab = st.tabs(
+        ["Executive Command Center", "Tableau Board View", "Cluster Detection Lab"]
+    )
+    with command_tab:
+        render_command_center(st, db, summary)
+    with tableau_tab:
+        render_tableau_board_view(st, db)
+    with cluster_tab:
+        render_cluster_lab(st, db)
 
 
 if __name__ == "__main__":

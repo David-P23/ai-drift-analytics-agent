@@ -21,7 +21,11 @@ def test_app_starts_with_bundled_demo_dashboard() -> None:
     app_test.run(timeout=20)
 
     assert not app_test.exception
-    assert [tab.label for tab in app_test.tabs] == ["Executive Dashboard", "Agent & Cluster Workspace"]
+    assert [tab.label for tab in app_test.tabs] == [
+        "Executive Command Center",
+        "Tableau Board View",
+        "Cluster Detection Lab",
+    ]
     assert any("NorthStar demo portfolio" in item.value for item in app_test.caption)
 
 

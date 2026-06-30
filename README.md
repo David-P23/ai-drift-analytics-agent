@@ -2,7 +2,7 @@
 
 Executive dashboard and analytics-agent demo for enterprise application drift risk.
 
-This v2 version opens directly on a bundled NorthStar Financial demo portfolio, so recruiters and reviewers can see the story immediately without uploading a workbook or waking a sleeping free-tier app. The app keeps the original natural-language analytics agent, but reframes the project around an executive dashboard, Tableau embed slot, and a clearer cluster detection workflow.
+This v2 version opens directly on a bundled NorthStar Financial demo portfolio, so recruiters and reviewers can see the story immediately without uploading a workbook or waking a sleeping free-tier app. The app keeps the original natural-language analytics agent, but reframes the project as an Executive Command Center with Tableau as a board-ready visual layer and cluster detection as a separate analyst lab.
 
 The original v1 Streamlit agent is preserved in the `v1-streamlit-agent` branch/tag. The prior Streamlit Cloud deployment has been retired; v1 is now shown as an archived milestone through source history and screenshots.
 
@@ -10,7 +10,7 @@ The original v1 Streamlit agent is preserved in the `v1-streamlit-agent` branch/
 
 Recruiter-facing app: https://ai-drift-analytics-agent.onrender.com
 
-The live demo runs on Render Starter using the included Docker/Render files. After the Tableau dashboard is published, set `TABLEAU_DASHBOARD_URL` in Render environment variables to embed the live Tableau view inside the Executive Dashboard tab.
+The live demo runs on Render Starter using the included Docker/Render files. After the Tableau dashboard is published, set `TABLEAU_DASHBOARD_URL` in Render environment variables to embed the live Tableau view inside the Tableau Board View page.
 
 ![v2 Executive Dashboard](docs/assets/v2-executive-dashboard.png)
 
@@ -31,14 +31,15 @@ V1 archive:
 
 ### v2: Executive Command Center
 
-V2 reframes the same concept for a recruiter and executive audience. It opens directly on seeded demo data, moves the first impression to executive KPIs and board-level narrative, preserves the agent workspace for drill-down, and prepares a Tableau embed slot for a more polished visual analytics layer.
+V2 reframes the same concept for a recruiter and executive audience. It opens directly on seeded demo data, moves the first impression to executive KPIs, board-level narrative, and an agent input, then provides Tableau and cluster detection as supporting pages.
 
 ## What It Does
 
 - Opens with bundled NorthStar demo data from `data/northstar_demo.sqlite`.
-- Presents two primary views:
-  - `Executive Dashboard`: KPI cards, board narrative, recommended moves, Tableau embed slot, and fallback risk map.
-  - `Agent & Cluster Workspace`: drift story primer, sample rows, cluster detector, suggested questions, agent answer, SQL evidence, and guardrails.
+- Presents three primary pages:
+  - `Executive Command Center`: KPI cards, board narrative, recommended moves, suggested questions, agent answer, SQL evidence, and a compact data/story primer.
+  - `Tableau Board View`: embedded Tableau executive dashboard plus a Streamlit fallback risk map.
+  - `Cluster Detection Lab`: drift story primer, sample rows, cluster detector, cluster evidence table, and guardrails.
 - Detects drift waves when a configurable number of findings emerge within a configurable rolling window for the same product update.
 - Supports alternate cluster definitions with plain-English explanations.
 - Runs analytics through validated read-only SQLite `SELECT` queries.
