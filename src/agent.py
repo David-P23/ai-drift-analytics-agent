@@ -57,9 +57,17 @@ def summarize_result(plan: QueryPlan, rows: list[dict[str, Any]]) -> str:
             f"The oldest is {oldest['app_name']} at {oldest['days_open']} days open."
         )
     if plan.intent == "critical_apps_with_open_drift":
+        mission_critical = sum(1 for row in rows if row.get("rto_score", 99) <= 2)
+        high = sum(1 for row in rows if 3 <= row.get("rto_score", 99) <= 4)
+        oldest = max(rows, key=lambda row: row.get("days_open", 0))
+        owners = sorted({str(row.get("technology_owner", "")).strip() for row in rows if row.get("technology_owner")})
         return (
-            f"{len(rows)} critical/high priority open drift items matched the RTO rule. "
-            f"Highest risk: {rows[0]['app_name']} with RTO score {rows[0]['rto_score']}."
+            f"{len(rows)} critical/high open drift findings matched the question: "
+            f"{mission_critical} Mission Critical and {high} High. "
+            f"Oldest exposure is {oldest['app_name']} at {oldest['days_open']} days open. "
+            f"Executive recommendation: assign accountable remediation owners"
+            f"{' (' + ', '.join(owners[:3]) + ')' if owners else ''}, prioritize RTO 1-2 systems first, "
+            "and review any exemption decision before the next governance checkpoint."
         )
     if plan.intent == "drift_by_product":
         leader = rows[0]
@@ -87,8 +95,31 @@ def summarize_result(plan: QueryPlan, rows: list[dict[str, Any]]) -> str:
         return f"{len(rows)} applications are at or beyond the 120-day executive escalation threshold."
     if plan.intent == "rto_risk_distribution":
         critical = next((row["drift_count"] for row in rows if row["rto_tier"] == "Mission Critical"), 0)
-        return f"{critical} open drift items are Mission Critical based on rto_score 1-2."
+        high = next((row["drift_count"] for row in rows if row["rto_tier"] == "High"), 0)
+        total = sum(row["drift_count"] for row in rows)
+        oldest = max((row["oldest_days_open"] for row in rows), default=0)
+        if critical or high:
+            recommendation = (
+                "Executive recommendation: treat Mission Critical and High drift as the first remediation wave, "
+                "then use Medium/Low drift as the controlled backlog."
+            )
+        else:
+            recommendation = (
+                "Executive recommendation: keep this segment on watch, but prioritize higher-criticality "
+                "concentrations elsewhere."
+            )
+        return (
+            f"{total} open drift findings are in this RTO distribution. "
+            f"{_count_phrase(critical, 'is', 'are')} Mission Critical and "
+            f"{_count_phrase(high, 'is', 'are')} High, with the oldest item at {oldest} days open. "
+            f"{recommendation}"
+        )
     return f"{len(rows)} rows returned."
+
+
+def _count_phrase(count: int, singular_verb: str, plural_verb: str) -> str:
+    verb = singular_verb if count == 1 else plural_verb
+    return f"{count} {verb}"
 
 
 def build_executive_summary(db: DriftDatabase) -> ExecutiveSummary:

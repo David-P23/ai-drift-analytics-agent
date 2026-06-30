@@ -34,3 +34,17 @@ def test_product_question_routes_to_product_chart() -> None:
     assert plan.chart is not None
     assert plan.chart.x == "product"
     assert plan.chart.y == "drift_count"
+
+
+def test_critical_high_question_can_scope_to_data_center() -> None:
+    plan = generate_query_plan("Show critical and high priority open drift relating to the Minneapolis Datacenter")
+    assert plan.intent == "critical_apps_with_open_drift"
+    assert "a.rto_score BETWEEN 1 AND 4" in plan.sql
+    assert "LOWER(a.data_center) = LOWER('Minneapolis')" in plan.sql
+
+
+def test_rto_distribution_can_scope_to_data_center() -> None:
+    plan = generate_query_plan("Show RTO risk distribution for drift in the Minneapolis Datacenter")
+    assert plan.intent == "rto_risk_distribution"
+    assert "LOWER(a.data_center) = LOWER('Minneapolis')" in plan.sql
+    assert "GROUP BY rto_tier" in plan.sql

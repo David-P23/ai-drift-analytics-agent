@@ -89,9 +89,37 @@ LIMIT {limit}
     )
 
 
-def critical_apps_with_open_drift(*, include_high: bool = False, limit: int = 25) -> QueryPlan:
+def _scope_filter_clause(*, data_center: str | None = None, product: str | None = None) -> str:
+    clauses: list[str] = []
+    if data_center:
+        safe_data_center = data_center.replace("'", "''")
+        clauses.append(f"LOWER(a.data_center) = LOWER('{safe_data_center}')")
+    if product:
+        safe_product = product.replace("'", "''")
+        clauses.append(f"LOWER(a.product) = LOWER('{safe_product}')")
+    return "\n  AND " + "\n  AND ".join(clauses) if clauses else ""
+
+
+def _scope_label(*, data_center: str | None = None, product: str | None = None) -> str:
+    scope_parts = []
+    if data_center:
+        scope_parts.append(f"in {data_center}")
+    if product:
+        scope_parts.append(f"for {product}")
+    return " ".join(scope_parts)
+
+
+def critical_apps_with_open_drift(
+    *,
+    include_high: bool = False,
+    limit: int = 25,
+    data_center: str | None = None,
+    product: str | None = None,
+) -> QueryPlan:
     rto_filter = "a.rto_score BETWEEN 1 AND 4" if include_high else "a.rto_score BETWEEN 1 AND 2"
     label = "critical and high" if include_high else "mission critical"
+    scope_clause = _scope_filter_clause(data_center=data_center, product=product)
+    scoped_label = _scope_label(data_center=data_center, product=product)
     sql = f"""
 SELECT
     a.finding_id AS finding_id,
@@ -110,11 +138,12 @@ SELECT
 FROM applications AS a
 WHERE {OPEN_SCOPE_DRIFT}
   AND {rto_filter}
+  {scope_clause}
 ORDER BY a.rto_score ASC, days_open DESC, a.app_name ASC
 LIMIT {limit}
 """.strip()
     return QueryPlan(
-        question=f"Open drift for {label} applications",
+        question=f"Open drift for {label} applications {scoped_label}".strip(),
         sql=sql,
         intent="critical_apps_with_open_drift",
         rationale="Uses explicit rto_score logic for critical/high priority drift.",
@@ -242,7 +271,14 @@ LIMIT {limit}
     )
 
 
-def rto_risk_distribution(limit: int = 10) -> QueryPlan:
+def rto_risk_distribution(
+    limit: int = 10,
+    *,
+    data_center: str | None = None,
+    product: str | None = None,
+) -> QueryPlan:
+    scope_clause = _scope_filter_clause(data_center=data_center, product=product)
+    scoped_label = _scope_label(data_center=data_center, product=product)
     sql = f"""
 SELECT
     {RTO_TIER_CASE} AS rto_tier,
@@ -250,6 +286,7 @@ SELECT
     MAX({AGE_DAYS}) AS oldest_days_open
 FROM applications AS a
 WHERE {OPEN_SCOPE_DRIFT}
+  {scope_clause}
 GROUP BY rto_tier
 ORDER BY
     CASE rto_tier
@@ -261,7 +298,7 @@ ORDER BY
 LIMIT {limit}
 """.strip()
     return QueryPlan(
-        question="RTO risk distribution",
+        question=f"RTO risk distribution {scoped_label}".strip(),
         sql=sql,
         intent="rto_risk_distribution",
         rationale="Maps rto_score into Mission Critical, High, Medium, and Low buckets.",
