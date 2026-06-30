@@ -178,6 +178,26 @@ PAGE_CSS = """
         font-size: 0.95rem;
         line-height: 1.5;
     }
+    .incident-card {
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        border-left: 5px solid #c2410c;
+        border-radius: 8px;
+        padding: 0.95rem 1.05rem;
+        margin-top: 0.75rem;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    .incident-title {
+        color: #9a3412;
+        font-size: 0.93rem;
+        font-weight: 760;
+        margin-bottom: 0.4rem;
+    }
+    .incident-copy {
+        color: #431407;
+        font-size: 0.93rem;
+        line-height: 1.45;
+    }
     .answer-card {
         background: #f8fafc;
         border: 1px solid #dbe3ed;
@@ -1180,15 +1200,24 @@ def render_story_primer(st: Any) -> None:
             the chance that a small production mismatch becomes an expensive incident.
             </div>
         </div>
+        <div class="incident-card">
+            <div class="incident-title">Real-world failure pattern: Knight Capital, August 1, 2012</div>
+            <div class="incident-copy">
+            Knight Capital deployed a software update that accidentally reactivated deprecated trading logic on
+            part of its server fleet. Within 45 minutes, erroneous trades created roughly $440 million in losses.
+            The lesson for NorthStar is not that application drift always causes trading losses; it is that
+            undetected version mismatch can turn a routine technology gap into an executive-level event.
+            </div>
+        </div>
         """,
         unsafe_allow_html=True,
     )
 
 
 def render_sample_data(st: Any, db: DriftDatabase) -> None:
-    response = run_query_plan(db, analytics.top_drifting_apps(limit=8))
+    response = run_query_plan(db, analytics.top_drifting_apps(limit=6))
     st.markdown('<div class="section-kicker">Sample Rows The Agent Reasons Over</div>', unsafe_allow_html=True)
-    render_data_table(st, response, height=260)
+    render_data_table(st, response, height=205)
 
 
 def render_agent_workspace(st: Any, db: DriftDatabase) -> None:
