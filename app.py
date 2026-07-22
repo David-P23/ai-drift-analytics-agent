@@ -42,6 +42,14 @@ DEFAULT_DB_PATH = Path(os.getenv("DRIFT_DB_PATH", "data/northstar_demo.sqlite"))
 DEMO_ROWS_PATH = Path("data/northstar_demo_rows.json")
 DEFAULT_ROW_LIMIT = int(os.getenv("SQL_ROW_LIMIT", "1000"))
 TABLEAU_DASHBOARD_URL = os.getenv("TABLEAU_DASHBOARD_URL", "").strip()
+TABLEAU_GEO_VIEW_URL = os.getenv(
+    "TABLEAU_GEO_VIEW_URL",
+    "https://public.tableau.com/views/ExecutiveDRIFTCommandCenter/GeographicRiskCommandCenter",
+).strip()
+TABLEAU_KPI_VIEW_URL = os.getenv(
+    "TABLEAU_KPI_VIEW_URL",
+    "https://public.tableau.com/views/ExecutiveDRIFTCommandCenter/ExecutiveCommandCenter",
+).strip()
 SHOW_PORTFOLIO_CONTROLS = os.getenv("SHOW_PORTFOLIO_CONTROLS", "false").strip().lower() in {
     "1",
     "true",
@@ -1060,7 +1068,7 @@ def ensure_recruiter_demo_data(db_path: Path, row_count: int) -> tuple[int, str 
 
 
 def render_tableau_embed(st: Any) -> None:
-    st.markdown('<div class="section-kicker">Tableau Executive View</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-kicker">Tableau Executive Views</div>', unsafe_allow_html=True)
     if not TABLEAU_DASHBOARD_URL:
         st.markdown(
             """
@@ -1078,6 +1086,22 @@ def render_tableau_embed(st: Any) -> None:
         return
 
     import streamlit.components.v1 as components
+
+    geo_url = escape(TABLEAU_GEO_VIEW_URL or TABLEAU_DASHBOARD_URL, quote=True)
+    kpi_url = escape(TABLEAU_KPI_VIEW_URL, quote=True)
+    st.markdown(
+        f"""
+        <div class="brief-card">
+            <div class="brief-title">Open Tableau views</div>
+            <div class="brief-copy">
+                <a href="{geo_url}" target="_blank" rel="noopener noreferrer">Geographic Risk Command Center</a>
+                &nbsp;|&nbsp;
+                <a href="{kpi_url}" target="_blank" rel="noopener noreferrer">Executive KPI Detail</a>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     safe_url = escape(TABLEAU_DASHBOARD_URL, quote=True)
     components.html(
