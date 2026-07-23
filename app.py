@@ -74,8 +74,8 @@ RTO_ORDER = ["Mission Critical", "High", "Medium", "Low"]
 ACTION_ORDER = ["Executive intervention", "Remediation command", "Governance watch", "Managed backlog"]
 
 
-def tableau_public_embed_url(raw_url: str) -> str:
-    """Convert a Tableau Public view URL into the stable iframe embed form."""
+def tableau_public_view_url(raw_url: str) -> str:
+    """Convert a Tableau Public browser URL into the view URL expected by tableau-viz."""
     raw_url = raw_url.strip()
     if not raw_url:
         return ""
@@ -86,7 +86,7 @@ def tableau_public_embed_url(raw_url: str) -> str:
         path = "/views/" + path.split("/viz/", 1)[1]
 
     base_url = urlunsplit((parts.scheme, parts.netloc, path, "", ""))
-    return f"{base_url}?:showVizHome=no&:embed=y&:toolbar=no&:tabs=no&:showAppBanner=false"
+    return base_url
 
 
 CLUSTER_GROUPING_EXPLANATIONS = {
@@ -1123,19 +1123,20 @@ def render_tableau_embed(st: Any) -> None:
         unsafe_allow_html=True,
     )
 
-    embed_url = escape(tableau_public_embed_url(TABLEAU_DASHBOARD_URL), quote=True)
+    embed_url = escape(tableau_public_view_url(TABLEAU_DASHBOARD_URL), quote=True)
     components.html(
         f"""
+        <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
         <div style="width:100%; overflow-x:auto; background:#fff;">
             <div style="width:{TABLEAU_EMBED_WIDTH}px; max-width:100%; margin:0 auto;">
-            <iframe
-                title="NorthStar Tableau Executive View"
+            <tableau-viz
+                id="northstar-tableau"
                 src="{embed_url}"
-                width="100%"
-                height="{TABLEAU_EMBED_HEIGHT}"
-                frameborder="0"
-                allowfullscreen>
-            </iframe>
+                toolbar="hidden"
+                device="desktop"
+                hide-tabs
+                style="width:100%; height:{TABLEAU_EMBED_HEIGHT}px;">
+            </tableau-viz>
             </div>
         </div>
         """,
