@@ -51,6 +51,8 @@ TABLEAU_KPI_VIEW_URL = os.getenv(
     "TABLEAU_KPI_VIEW_URL",
     "https://public.tableau.com/views/ExecutiveDRIFTCommandCenter/ExecutiveCommandCenter",
 ).strip()
+TABLEAU_EMBED_WIDTH = int(os.getenv("TABLEAU_EMBED_WIDTH", "1420"))
+TABLEAU_EMBED_HEIGHT = int(os.getenv("TABLEAU_EMBED_HEIGHT", "1120"))
 SHOW_PORTFOLIO_CONTROLS = os.getenv("SHOW_PORTFOLIO_CONTROLS", "false").strip().lower() in {
     "1",
     "true",
@@ -84,7 +86,9 @@ def tableau_public_embed_url(raw_url: str) -> str:
         path = "/views/" + path.split("/viz/", 1)[1]
 
     base_url = urlunsplit((parts.scheme, parts.netloc, path, "", ""))
-    return f"{base_url}?:showVizHome=no&:embed=true&:toolbar=no"
+    return f"{base_url}?:showVizHome=no&:embed=y&:toolbar=no&:tabs=no&:showAppBanner=false"
+
+
 CLUSTER_GROUPING_EXPLANATIONS = {
     "Product update": (
         "Original detector mode. Flags a wave when several applications drift from the same approved product version "
@@ -1122,20 +1126,22 @@ def render_tableau_embed(st: Any) -> None:
     embed_url = escape(tableau_public_embed_url(TABLEAU_DASHBOARD_URL), quote=True)
     components.html(
         f"""
-        <div style="width:100%; max-width:1240px; margin:0 auto; background:#fff;">
+        <div style="width:100%; overflow-x:auto; background:#fff;">
+            <div style="width:{TABLEAU_EMBED_WIDTH}px; max-width:100%; margin:0 auto;">
             <iframe
                 title="NorthStar Tableau Executive View"
                 src="{embed_url}"
                 width="100%"
-                height="860"
+                height="{TABLEAU_EMBED_HEIGHT}"
                 frameborder="0"
                 allowfullscreen>
             </iframe>
+            </div>
         </div>
         """,
-        width=1240,
-        height=890,
-        scrolling=False,
+        width=TABLEAU_EMBED_WIDTH,
+        height=TABLEAU_EMBED_HEIGHT + 20,
+        scrolling=True,
     )
 
 
