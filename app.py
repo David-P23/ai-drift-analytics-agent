@@ -49,7 +49,7 @@ TABLEAU_GEO_VIEW_URL = os.getenv(
 ).strip()
 TABLEAU_KPI_VIEW_URL = os.getenv(
     "TABLEAU_KPI_VIEW_URL",
-    "https://public.tableau.com/views/ExecutiveDRIFTCommandCenter/ExecutiveCommandCenter",
+    "",
 ).strip()
 TABLEAU_EMBED_WIDTH = int(os.getenv("TABLEAU_EMBED_WIDTH", "1420"))
 TABLEAU_EMBED_HEIGHT = int(os.getenv("TABLEAU_EMBED_HEIGHT", "1120"))
@@ -1108,15 +1108,21 @@ def render_tableau_embed(st: Any) -> None:
     import streamlit.components.v1 as components
 
     geo_url = escape(TABLEAU_GEO_VIEW_URL or TABLEAU_DASHBOARD_URL, quote=True)
-    kpi_url = escape(TABLEAU_KPI_VIEW_URL, quote=True)
+    view_links = [
+        f'<a href="{geo_url}" target="_blank" rel="noopener noreferrer">Geographic Risk Command Center</a>'
+    ]
+    if TABLEAU_KPI_VIEW_URL:
+        kpi_url = escape(TABLEAU_KPI_VIEW_URL, quote=True)
+        view_links.append(
+            f'<a href="{kpi_url}" target="_blank" rel="noopener noreferrer">Executive KPI Detail</a>'
+        )
+    view_links_html = " &nbsp;|&nbsp; ".join(view_links)
     st.markdown(
         f"""
         <div class="brief-card">
             <div class="brief-title">Open Tableau views</div>
             <div class="brief-copy">
-                <a href="{geo_url}" target="_blank" rel="noopener noreferrer">Geographic Risk Command Center</a>
-                &nbsp;|&nbsp;
-                <a href="{kpi_url}" target="_blank" rel="noopener noreferrer">Executive KPI Detail</a>
+                {view_links_html}
             </div>
         </div>
         """,
