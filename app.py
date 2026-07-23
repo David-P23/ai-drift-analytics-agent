@@ -7,6 +7,7 @@ import json
 from html import escape
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
 import altair as alt
 import pandas as pd
@@ -69,6 +70,21 @@ ACTION_COLORS = {
 }
 RTO_ORDER = ["Mission Critical", "High", "Medium", "Low"]
 ACTION_ORDER = ["Executive intervention", "Remediation command", "Governance watch", "Managed backlog"]
+
+
+def tableau_public_embed_url(raw_url: str) -> str:
+    """Convert a Tableau Public view URL into the stable iframe embed form."""
+    raw_url = raw_url.strip()
+    if not raw_url:
+        return ""
+
+    parts = urlsplit(raw_url)
+    path = parts.path
+    if "/viz/" in path:
+        path = "/views/" + path.split("/viz/", 1)[1]
+
+    base_url = urlunsplit((parts.scheme, parts.netloc, path, "", ""))
+    return f"{base_url}?:showVizHome=no&:embed=true&:toolbar=no"
 CLUSTER_GROUPING_EXPLANATIONS = {
     "Product update": (
         "Original detector mode. Flags a wave when several applications drift from the same approved product version "
@@ -1103,18 +1119,18 @@ def render_tableau_embed(st: Any) -> None:
         unsafe_allow_html=True,
     )
 
-    safe_url = escape(TABLEAU_DASHBOARD_URL, quote=True)
+    embed_url = escape(tableau_public_embed_url(TABLEAU_DASHBOARD_URL), quote=True)
     components.html(
         f"""
-        <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
-        <div style="width:100%; max-width:1240px; margin:0 auto;">
-            <tableau-viz
-                id="northstar-tableau"
-                src="{safe_url}"
-                toolbar="hidden"
-                hide-tabs
-                style="width:100%; height:860px;">
-            </tableau-viz>
+        <div style="width:100%; max-width:1240px; margin:0 auto; background:#fff;">
+            <iframe
+                title="NorthStar Tableau Executive View"
+                src="{embed_url}"
+                width="100%"
+                height="860"
+                frameborder="0"
+                allowfullscreen>
+            </iframe>
         </div>
         """,
         width=1240,
