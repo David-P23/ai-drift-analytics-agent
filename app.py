@@ -230,6 +230,39 @@ PAGE_CSS = """
         font-size: 0.95rem;
         line-height: 1.5;
     }
+    .agent-panel {
+        background: #ffffff;
+        border: 1px solid #d8e3f0;
+        border-left: 5px solid #1446a0;
+        border-radius: 8px;
+        padding: 1.15rem 1.25rem;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+    }
+    .agent-title {
+        color: #101828;
+        font-size: 1.45rem;
+        line-height: 1.2;
+        font-weight: 780;
+        margin-bottom: 0.4rem;
+    }
+    .agent-copy {
+        color: #344054;
+        font-size: 0.98rem;
+        line-height: 1.52;
+        max-width: 980px;
+        margin-bottom: 0.8rem;
+    }
+    .proof-chip {
+        display: inline-block;
+        background: #f0f9ff;
+        color: #184e77;
+        border: 1px solid #b9e6fe;
+        border-radius: 999px;
+        padding: 0.32rem 0.7rem;
+        margin: 0 0.35rem 0.35rem 0;
+        font-size: 0.82rem;
+        font-weight: 720;
+    }
     .incident-card {
         background: #fff7ed;
         border: 1px solid #fed7aa;
@@ -362,9 +395,11 @@ def render_shell_header(st: Any, summary: ExecutiveSummary) -> None:
         <div class="hero-panel">
             <div class="hero-eyebrow">Enterprise Application Drift Analytics</div>
             <div class="hero-title">Executive Drift Command Center</div>
-            <div class="hero-copy">{escape(summary.narrative)}
-            The agent converts governance questions into validated read-only SQL, then returns the answer,
-            evidence table, and board-ready chart in one flow.</div>
+            <div class="hero-copy">
+            A deployed AI analytics agent for enterprise application drift. The agent converts executive
+            governance questions into validated read-only SQL, then returns grounded answers, evidence
+            tables, and board-ready analysis in one flow.
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -1316,7 +1351,24 @@ def render_decision_center(st: Any, db: DriftDatabase) -> None:
 
 
 def render_question_buttons(st: Any) -> None:
-    st.markdown('<div class="section-kicker">Board Questions</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="agent-panel">
+            <div class="agent-title">Ask The Drift Analytics Agent Anything</div>
+            <div class="agent-copy">
+            Use natural language to interrogate the drift portfolio. The agent translates governance,
+            risk, and remediation questions into read-only SQL, validates the query path, and returns an
+            answer with supporting evidence.
+            </div>
+            <span class="proof-chip">Natural Language &rarr; Validated SQL</span>
+            <span class="proof-chip">Read-only Guardrails &rarr; Evidence Tables</span>
+            <span class="proof-chip">Executive Question &rarr; Board-ready Answer</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.write("")
+    st.markdown('<div class="section-kicker">Common Executive Prompts</div>', unsafe_allow_html=True)
     columns = st.columns(3)
     for index, question in enumerate(SUGGESTED_QUESTIONS):
         if columns[index % 3].button(question, use_container_width=True):
@@ -1332,12 +1384,12 @@ def render_analyst_workbench(st: Any, db: DriftDatabase) -> None:
 
     with st.form("analysis_form"):
         question = st.text_area(
-            "Ask a drift analytics question",
+            "Ask the agent a governance, risk, or remediation question",
             value=st.session_state.question,
             height=96,
             help="The generated SQL is still validated by the read-only safety layer before execution.",
         )
-        submitted = st.form_submit_button("Run Analysis", type="primary", use_container_width=True)
+        submitted = st.form_submit_button("Run Governed Agent Analysis", type="primary", use_container_width=True)
 
     if submitted:
         st.session_state.question = question
@@ -1346,7 +1398,7 @@ def render_analyst_workbench(st: Any, db: DriftDatabase) -> None:
     if "last_response" in st.session_state:
         render_response(st, st.session_state.last_response)
     else:
-        st.info("Choose a suggested question or type your own, then run the agent when you want SQL-backed evidence.")
+        st.info("Choose a common executive prompt or type your own question, then run the agent for SQL-backed evidence.")
 
 
 def render_evidence_center(st: Any, db: DriftDatabase) -> None:
