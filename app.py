@@ -49,7 +49,7 @@ TABLEAU_GEO_VIEW_URL = os.getenv(
 ).strip()
 TABLEAU_KPI_VIEW_URL = os.getenv(
     "TABLEAU_KPI_VIEW_URL",
-    "",
+    "https://public.tableau.com/views/ExecutiveDRIFTCommandCenter/ExecutiveTriageCommandCenter",
 ).strip()
 TABLEAU_EMBED_WIDTH = int(os.getenv("TABLEAU_EMBED_WIDTH", "1420"))
 TABLEAU_EMBED_HEIGHT = int(os.getenv("TABLEAU_EMBED_HEIGHT", "1120"))
@@ -87,6 +87,30 @@ def tableau_public_view_url(raw_url: str) -> str:
 
     base_url = urlunsplit((parts.scheme, parts.netloc, path, "", ""))
     return base_url
+
+
+def render_tableau_viz_component(components: Any, raw_url: str, viz_id: str) -> None:
+    embed_url = escape(tableau_public_view_url(raw_url), quote=True)
+    components.html(
+        f"""
+        <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
+        <div style="width:100%; overflow-x:auto; background:#fff;">
+            <div style="width:{TABLEAU_EMBED_WIDTH}px; max-width:100%; margin:0 auto;">
+            <tableau-viz
+                id="{escape(viz_id, quote=True)}"
+                src="{embed_url}"
+                toolbar="hidden"
+                device="desktop"
+                hide-tabs
+                style="width:100%; height:{TABLEAU_EMBED_HEIGHT}px;">
+            </tableau-viz>
+            </div>
+        </div>
+        """,
+        width=TABLEAU_EMBED_WIDTH,
+        height=TABLEAU_EMBED_HEIGHT + 20,
+        scrolling=True,
+    )
 
 
 CLUSTER_GROUPING_EXPLANATIONS = {
@@ -1089,7 +1113,8 @@ def ensure_recruiter_demo_data(db_path: Path, row_count: int) -> tuple[int, str 
 
 def render_tableau_embed(st: Any) -> None:
     st.markdown('<div class="section-kicker">Tableau Executive Views</div>', unsafe_allow_html=True)
-    if not TABLEAU_DASHBOARD_URL:
+    primary_geo_url = TABLEAU_GEO_VIEW_URL or TABLEAU_DASHBOARD_URL
+    if not primary_geo_url:
         st.markdown(
             """
             <div class="brief-card">
@@ -1107,49 +1132,15 @@ def render_tableau_embed(st: Any) -> None:
 
     import streamlit.components.v1 as components
 
-    geo_url = escape(TABLEAU_GEO_VIEW_URL or TABLEAU_DASHBOARD_URL, quote=True)
-    view_links = [
-        f'<a href="{geo_url}" target="_blank" rel="noopener noreferrer">Geographic Risk Command Center</a>'
-    ]
     if TABLEAU_KPI_VIEW_URL:
-        kpi_url = escape(TABLEAU_KPI_VIEW_URL, quote=True)
-        view_links.append(
-            f'<a href="{kpi_url}" target="_blank" rel="noopener noreferrer">Executive KPI Detail</a>'
-        )
-    view_links_html = " &nbsp;|&nbsp; ".join(view_links)
-    st.markdown(
-        f"""
-        <div class="brief-card">
-            <div class="brief-title">Open Tableau views</div>
-            <div class="brief-copy">
-                {view_links_html}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+        geo_tab, triage_tab = st.tabs(["Geographic Risk", "Executive Triage"])
+        with geo_tab:
+            render_tableau_viz_component(components, primary_geo_url, "northstar-tableau-geo")
+        with triage_tab:
+            render_tableau_viz_component(components, TABLEAU_KPI_VIEW_URL, "northstar-tableau-triage")
+        return
 
-    embed_url = escape(tableau_public_view_url(TABLEAU_DASHBOARD_URL), quote=True)
-    components.html(
-        f"""
-        <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
-        <div style="width:100%; overflow-x:auto; background:#fff;">
-            <div style="width:{TABLEAU_EMBED_WIDTH}px; max-width:100%; margin:0 auto;">
-            <tableau-viz
-                id="northstar-tableau"
-                src="{embed_url}"
-                toolbar="hidden"
-                device="desktop"
-                hide-tabs
-                style="width:100%; height:{TABLEAU_EMBED_HEIGHT}px;">
-            </tableau-viz>
-            </div>
-        </div>
-        """,
-        width=TABLEAU_EMBED_WIDTH,
-        height=TABLEAU_EMBED_HEIGHT + 20,
-        scrolling=True,
-    )
+    render_tableau_viz_component(components, primary_geo_url, "northstar-tableau-geo")
 
 
 def render_board_brief(st: Any, db: DriftDatabase, summary: ExecutiveSummary) -> None:
