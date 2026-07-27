@@ -41,6 +41,7 @@ except ImportError:
 
 DEFAULT_DB_PATH = Path(os.getenv("DRIFT_DB_PATH", "data/northstar_demo.sqlite"))
 DEMO_ROWS_PATH = Path("data/northstar_demo_rows.json")
+VOICE_COMPONENT_PATH = Path(__file__).parent / "components" / "voice_mode"
 DEFAULT_ROW_LIMIT = int(os.getenv("SQL_ROW_LIMIT", "1000"))
 TABLEAU_DASHBOARD_URL = os.getenv("TABLEAU_DASHBOARD_URL", "").strip()
 TABLEAU_GEO_VIEW_URL = os.getenv(
@@ -1101,7 +1102,7 @@ def render_response(st: Any, response: QueryResponse) -> None:
         f"""
         <div class="answer-card">
             <div class="section-kicker">Agent Answer</div>
-            <div class="brief-copy">{escape(response.answer)}</div>
+            <div class="brief-copy" id="voice-agent-answer" data-voice-answer="{escape(response.answer, quote=True)}">{escape(response.answer)}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -1373,11 +1374,24 @@ def render_question_buttons(st: Any) -> None:
     for index, question in enumerate(SUGGESTED_QUESTIONS):
         if columns[index % 3].button(question, use_container_width=True):
             st.session_state.question = question
+            st.session_state.agent_question = question
+
+
+def render_browser_voice_mode(st: Any, *, question: str, answer: str) -> dict[str, str] | None:
+    """Render the supported Streamlit component that handles browser speech I/O."""
+
+    import streamlit.components.v1 as components
+
+    voice_mode = components.declare_component("voice_mode", path=str(VOICE_COMPONENT_PATH))
+    event = voice_mode(question=question, answer=answer, key="voice_mode", default=None)
+    return event if isinstance(event, dict) else None
 
 
 def render_analyst_workbench(st: Any, db: DriftDatabase) -> None:
     if "question" not in st.session_state:
         st.session_state.question = SUGGESTED_QUESTIONS[0]
+    if "agent_question" not in st.session_state:
+        st.session_state.agent_question = st.session_state.question
 
     render_question_buttons(st)
     st.write("")
@@ -1385,7 +1399,7 @@ def render_analyst_workbench(st: Any, db: DriftDatabase) -> None:
     with st.form("analysis_form"):
         question = st.text_area(
             "Ask the agent a governance, risk, or remediation question",
-            value=st.session_state.question,
+            key="agent_question",
             height=96,
             help="The generated SQL is still validated by the read-only safety layer before execution.",
         )
@@ -1394,6 +1408,28 @@ def render_analyst_workbench(st: Any, db: DriftDatabase) -> None:
     if submitted:
         st.session_state.question = question
         st.session_state.last_response = answer_question(db, question)
+        st.rerun()
+
+    latest_answer = ""
+    if "last_response" in st.session_state and not st.session_state.last_response.error:
+        latest_answer = st.session_state.last_response.answer
+
+    voice_event = render_browser_voice_mode(
+        st,
+        question=st.session_state.agent_question,
+        answer=latest_answer,
+    )
+    voice_event_id = voice_event.get("event_id") if voice_event else None
+    if voice_event_id and voice_event_id != st.session_state.get("last_voice_event_id"):
+        st.session_state.last_voice_event_id = voice_event_id
+        voice_question = str(voice_event.get("question", "")).strip()
+        voice_action = voice_event.get("action")
+        if voice_question and voice_action in {"dictation", "submit"}:
+            st.session_state.question = voice_question
+            st.session_state.agent_question = voice_question
+            if voice_action == "submit":
+                st.session_state.last_response = answer_question(db, voice_question)
+            st.rerun()
 
     if "last_response" in st.session_state:
         render_response(st, st.session_state.last_response)
