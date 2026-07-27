@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from src.models import ConversationContext, LLMPlannerDecision
 from src.prompting import build_text_to_sql_prompt, generate_query_plan
+from src import analytics
 
 
 def test_prompt_contains_domain_rules_and_schema() -> None:
@@ -143,3 +144,8 @@ def test_llm_planner_rejects_unapproved_scope_values(monkeypatch) -> None:
 
     assert plan.planner == "llm"
     assert plan.filters.data_center == "Minneapolis"
+
+
+def test_dashboard_only_plans_remain_valid_query_plans() -> None:
+    assert analytics.ai_risk_intelligence().intent == "ai_risk_intelligence"
+    assert analytics.drift_cluster_source().intent == "drift_cluster_source"

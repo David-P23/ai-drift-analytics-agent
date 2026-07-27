@@ -18,6 +18,8 @@ AnalyticsIntent = Literal[
     "aging_bucket_analysis",
     "executive_escalation_candidates",
     "rto_risk_distribution",
+    "ai_risk_intelligence",
+    "drift_cluster_source",
 ]
 
 
