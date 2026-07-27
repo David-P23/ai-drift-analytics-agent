@@ -41,7 +41,6 @@ except ImportError:
 
 DEFAULT_DB_PATH = Path(os.getenv("DRIFT_DB_PATH", "data/northstar_demo.sqlite"))
 DEMO_ROWS_PATH = Path("data/northstar_demo_rows.json")
-VOICE_COMPONENT_PATH = Path(__file__).parent / "components" / "voice_mode"
 DEFAULT_ROW_LIMIT = int(os.getenv("SQL_ROW_LIMIT", "1000"))
 TABLEAU_DASHBOARD_URL = os.getenv("TABLEAU_DASHBOARD_URL", "").strip()
 TABLEAU_GEO_VIEW_URL = os.getenv(
@@ -1377,14 +1376,204 @@ def render_question_buttons(st: Any) -> None:
             st.session_state.agent_question = question
 
 
-def render_browser_voice_mode(st: Any, *, question: str, answer: str) -> dict[str, str] | None:
-    """Render the supported Streamlit component that handles browser speech I/O."""
+def render_browser_voice_mode() -> None:
+    """Render a dependency-free browser speech layer beside the Streamlit agent form."""
 
     import streamlit.components.v1 as components
 
-    voice_mode = components.declare_component("voice_mode", path=str(VOICE_COMPONENT_PATH))
-    event = voice_mode(question=question, answer=answer, key="voice_mode", default=None)
-    return event if isinstance(event, dict) else None
+    components.html(
+        """
+        <div id="drift-voice-mode">
+          <div class="voice-heading">
+            <span class="voice-live-dot" aria-hidden="true"></span>
+            <div>
+              <div class="voice-title">Voice Mode</div>
+              <div class="voice-copy">Dictate a question, submit it to the governed agent, and hear the answer aloud.</div>
+            </div>
+          </div>
+          <div class="voice-controls" role="group" aria-label="Voice mode controls">
+            <button id="voice-start" type="button">Start dictation</button>
+            <button id="voice-stop" type="button" class="secondary">Stop</button>
+            <button id="voice-submit" type="button" class="secondary">Submit voice question</button>
+            <button id="voice-mute" type="button" class="secondary">Mute</button>
+            <button id="voice-replay" type="button" class="secondary">Replay answer</button>
+          </div>
+          <div id="voice-status" class="voice-status" role="status">Ready. Voice mode works best in Chrome or Edge.</div>
+        </div>
+        <style>
+          :root { color-scheme: light; }
+          body { margin: 0; font-family: "Source Sans Pro", Arial, sans-serif; background: transparent; }
+          #drift-voice-mode { border: 1px solid #b9e6fe; border-left: 4px solid #0e7490; border-radius: 8px; background: #f0f9ff; padding: 13px 15px; }
+          .voice-heading { display: flex; align-items: flex-start; gap: 9px; }
+          .voice-live-dot { width: 10px; height: 10px; margin-top: 5px; border-radius: 50%; background: #0e7490; flex: 0 0 auto; }
+          .is-listening .voice-live-dot { background: #dc2626; box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.14); }
+          .voice-title { color: #0f3d56; font-size: 15px; font-weight: 750; }
+          .voice-copy, .voice-status { color: #36536b; font-size: 13px; line-height: 1.35; }
+          .voice-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+          button { cursor: pointer; border: 1px solid #0e7490; border-radius: 6px; background: #0e7490; color: #fff; font-size: 13px; font-weight: 650; padding: 7px 10px; }
+          button.secondary { background: #fff; color: #0f5670; }
+          button:disabled { cursor: not-allowed; opacity: 0.55; }
+          .voice-status { margin-top: 9px; }
+          @media (max-width: 540px) { .voice-controls button { flex: 1 1 140px; } }
+        </style>
+        <script>
+        (() => {
+          const root = document.getElementById('drift-voice-mode');
+          const status = document.getElementById('voice-status');
+          const startButton = document.getElementById('voice-start');
+          const stopButton = document.getElementById('voice-stop');
+          const submitButton = document.getElementById('voice-submit');
+          const muteButton = document.getElementById('voice-mute');
+          const replayButton = document.getElementById('voice-replay');
+          const host = window.parent;
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          let recognition = null;
+          let listening = false;
+          let muted = false;
+
+          const setStatus = (message, isLive = false) => {
+            status.textContent = message;
+            root.classList.toggle('is-listening', isLive);
+          };
+          const getQuestionBox = () => host.document.querySelector('[data-testid="stTextArea"] textarea') || host.document.querySelector('textarea');
+          const getRunButton = () => [...host.document.querySelectorAll('button')].find(
+            (button) => button.textContent.includes('Run Governed Agent Analysis')
+          );
+          const getAnswer = () => {
+            const answer = host.document.getElementById('voice-agent-answer');
+            return answer ? (answer.dataset.voiceAnswer || answer.textContent || '').trim() : '';
+          };
+          const updateMuteLabel = () => {
+            muteButton.textContent = muted ? 'Unmute' : 'Mute';
+          };
+          const chooseVoice = () => {
+            const voices = window.speechSynthesis.getVoices();
+            return voices.find((voice) => /Microsoft Jenny|Microsoft Aria|Google US English/i.test(voice.name))
+              || voices.find((voice) => /^en-US/i.test(voice.lang))
+              || voices.find((voice) => /^en/i.test(voice.lang));
+          };
+          const speak = (answer) => {
+            if (!answer) {
+              setStatus('Run an agent analysis first, then replay the answer here.');
+              return;
+            }
+            if (muted) {
+              setStatus('Voice is muted. Select Unmute, then replay the answer.');
+              return;
+            }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(answer);
+            const voice = chooseVoice();
+            if (voice) utterance.voice = voice;
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.onstart = () => setStatus('Reading the agent answer aloud.');
+            utterance.onend = () => setStatus('Ready. Ask another question or replay the answer.');
+            utterance.onerror = (event) => {
+              if (event.error !== 'interrupted' && event.error !== 'canceled') {
+                setStatus('The browser could not play this answer. Try Replay answer.');
+              }
+            };
+            window.speechSynthesis.speak(utterance);
+          };
+          const setQuestion = (value) => {
+            const box = getQuestionBox();
+            if (!box) {
+              setStatus('Question box is not ready yet. Please try again.');
+              return false;
+            }
+            const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set;
+            setter.call(box, value);
+            box.dispatchEvent(new Event('input', { bubbles: true }));
+            box.dispatchEvent(new Event('change', { bubbles: true }));
+            box.focus();
+            return true;
+          };
+
+          if (!SpeechRecognition) {
+            startButton.disabled = true;
+            submitButton.disabled = true;
+            setStatus('Dictation is unavailable in this browser. Open the demo in Chrome or Edge to use Voice Mode.');
+          } else {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.onstart = () => {
+              listening = true;
+              setStatus('Listening. Speak your governance question now.', true);
+            };
+            recognition.onresult = (event) => {
+              let transcript = '';
+              for (let index = event.resultIndex; index < event.results.length; index += 1) {
+                transcript += event.results[index][0].transcript;
+              }
+              if (transcript.trim()) setQuestion(transcript.trim());
+            };
+            recognition.onend = () => {
+              listening = false;
+              root.classList.remove('is-listening');
+              if (status.textContent.startsWith('Listening')) setStatus('Dictation captured. Submit when you are ready.');
+            };
+            recognition.onerror = (event) => {
+              listening = false;
+              root.classList.remove('is-listening');
+              const detail = event.error === 'not-allowed'
+                ? 'Microphone access was blocked. Allow microphone access in the browser, then try again.'
+                : `Dictation stopped: ${event.error}. Please try again.`;
+              setStatus(detail);
+            };
+            startButton.addEventListener('click', () => {
+              window.speechSynthesis.cancel();
+              if (listening) return;
+              if (setQuestion('')) recognition.start();
+            });
+          }
+
+          stopButton.addEventListener('click', () => {
+            if (recognition && listening) recognition.stop();
+            window.speechSynthesis.cancel();
+            setStatus('Voice activity stopped.');
+          });
+          submitButton.addEventListener('click', () => {
+            const question = getQuestionBox();
+            const runButton = getRunButton();
+            if (!question || !question.value.trim()) {
+              setStatus('Dictate or type a question before submitting.');
+              return;
+            }
+            if (!runButton) {
+              setStatus('The agent submit button is not ready yet. Please use the blue analysis button.');
+              return;
+            }
+            setStatus('Submitting your voice question to the governed agent.');
+            window.setTimeout(() => runButton.click(), 120);
+          });
+          muteButton.addEventListener('click', () => {
+            muted = !muted;
+            if (muted) window.speechSynthesis.cancel();
+            updateMuteLabel();
+            setStatus(muted ? 'Voice is muted.' : 'Voice is unmuted. New agent answers will be read aloud.');
+          });
+          replayButton.addEventListener('click', () => speak(getAnswer()));
+          window.speechSynthesis.onvoiceschanged = chooseVoice;
+          updateMuteLabel();
+
+          const observeAnswer = () => {
+            const answer = getAnswer();
+            if (answer && host.__driftVoiceLastAnswer !== answer) {
+              host.__driftVoiceLastAnswer = answer;
+              window.setTimeout(() => speak(answer), 250);
+            }
+          };
+          observeAnswer();
+          window.setInterval(observeAnswer, 500);
+        })();
+        </script>
+        """,
+        height=184,
+        scrolling=False,
+    )
 
 
 def render_analyst_workbench(st: Any, db: DriftDatabase) -> None:
@@ -1410,26 +1599,7 @@ def render_analyst_workbench(st: Any, db: DriftDatabase) -> None:
         st.session_state.last_response = answer_question(db, question)
         st.rerun()
 
-    latest_answer = ""
-    if "last_response" in st.session_state and not st.session_state.last_response.error:
-        latest_answer = st.session_state.last_response.answer
-
-    voice_event = render_browser_voice_mode(
-        st,
-        question=st.session_state.agent_question,
-        answer=latest_answer,
-    )
-    voice_event_id = voice_event.get("event_id") if voice_event else None
-    if voice_event_id and voice_event_id != st.session_state.get("last_voice_event_id"):
-        st.session_state.last_voice_event_id = voice_event_id
-        voice_question = str(voice_event.get("question", "")).strip()
-        voice_action = voice_event.get("action")
-        if voice_question and voice_action in {"dictation", "submit"}:
-            st.session_state.question = voice_question
-            st.session_state.agent_question = voice_question
-            if voice_action == "submit":
-                st.session_state.last_response = answer_question(db, voice_question)
-            st.rerun()
+    render_browser_voice_mode()
 
     if "last_response" in st.session_state:
         render_response(st, st.session_state.last_response)
