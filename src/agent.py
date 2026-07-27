@@ -6,7 +6,7 @@ from typing import Any
 
 from src import analytics
 from src.database import DriftDatabase
-from src.models import ExecutiveSummary, Metric, QueryPlan, QueryResponse
+from src.models import ConversationContext, ExecutiveSummary, Metric, QueryPlan, QueryResponse
 from src.prompting import generate_query_plan
 from src.sql_safety import SQLSafetyError
 
@@ -33,15 +33,28 @@ def run_query_plan(db: DriftDatabase, plan: QueryPlan) -> QueryResponse:
         rows=rows,
         chart=plan.chart,
         warnings=safe_query.warnings,
+        intent=plan.intent,
+        resolved_question=plan.resolved_question,
     )
 
 
-def answer_question(db: DriftDatabase, question: str) -> QueryResponse:
+def answer_question(
+    db: DriftDatabase,
+    question: str,
+    context: ConversationContext | None = None,
+) -> QueryResponse:
     """Generate and execute a drift analytics answer for natural language."""
 
-    plan = generate_query_plan(question)
+    plan = generate_query_plan(question, context=context)
     plan.question = question
-    return run_query_plan(db, plan)
+    response = run_query_plan(db, plan)
+    if not response.error:
+        response.conversation_context = ConversationContext(
+            intent=plan.intent,
+            resolved_question=plan.resolved_question or question,
+            filters=plan.filters,
+        )
+    return response
 
 
 def summarize_result(plan: QueryPlan, rows: list[dict[str, Any]]) -> str:
@@ -53,21 +66,22 @@ def summarize_result(plan: QueryPlan, rows: list[dict[str, Any]]) -> str:
     if plan.intent == "top_drifting_apps":
         oldest = rows[0]
         return (
-            f"{len(rows)} open in-scope drifting applications are shown. "
+            f"{len(rows)} open in-scope drifting applications match the request. "
             f"The oldest is {oldest['app_name']} at {oldest['days_open']} days open."
         )
     if plan.intent == "critical_apps_with_open_drift":
         mission_critical = sum(1 for row in rows if row.get("rto_score", 99) <= 2)
         high = sum(1 for row in rows if 3 <= row.get("rto_score", 99) <= 4)
         oldest = max(rows, key=lambda row: row.get("days_open", 0))
-        owners = sorted({str(row.get("technology_owner", "")).strip() for row in rows if row.get("technology_owner")})
+        if plan.filters.include_high:
+            return (
+                f"{len(rows)} critical/high open drift findings match the request: "
+                f"{mission_critical} Mission Critical and {high} High. "
+                f"The oldest is {oldest['app_name']} at {oldest['days_open']} days open."
+            )
         return (
-            f"{len(rows)} critical/high open drift findings matched the question: "
-            f"{mission_critical} Mission Critical and {high} High. "
-            f"Oldest exposure is {oldest['app_name']} at {oldest['days_open']} days open. "
-            f"Executive recommendation: assign accountable remediation owners"
-            f"{' (' + ', '.join(owners[:3]) + ')' if owners else ''}, prioritize RTO 1-2 systems first, "
-            "and review any exemption decision before the next governance checkpoint."
+            f"{mission_critical} Mission Critical applications with open drift match the request. "
+            f"The oldest is {oldest['app_name']} at {oldest['days_open']} days open."
         )
     if plan.intent == "drift_by_product":
         leader = rows[0]
@@ -98,21 +112,10 @@ def summarize_result(plan: QueryPlan, rows: list[dict[str, Any]]) -> str:
         high = next((row["drift_count"] for row in rows if row["rto_tier"] == "High"), 0)
         total = sum(row["drift_count"] for row in rows)
         oldest = max((row["oldest_days_open"] for row in rows), default=0)
-        if critical or high:
-            recommendation = (
-                "Executive recommendation: treat Mission Critical and High drift as the first remediation wave, "
-                "then use Medium/Low drift as the controlled backlog."
-            )
-        else:
-            recommendation = (
-                "Executive recommendation: keep this segment on watch, but prioritize higher-criticality "
-                "concentrations elsewhere."
-            )
         return (
             f"{total} open drift findings are in this RTO distribution. "
             f"{_count_phrase(critical, 'is', 'are')} Mission Critical and "
-            f"{_count_phrase(high, 'is', 'are')} High, with the oldest item at {oldest} days open. "
-            f"{recommendation}"
+            f"{_count_phrase(high, 'is', 'are')} High, with the oldest item at {oldest} days open."
         )
     return f"{len(rows)} rows returned."
 

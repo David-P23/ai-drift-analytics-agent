@@ -22,7 +22,7 @@ from src.database import (
     initialize_empty_database,
     replace_applications_rows,
 )
-from src.models import ExecutiveSummary, Metric, QueryResponse, SpreadsheetImportIssue
+from src.models import ConversationContext, ExecutiveSummary, Metric, QueryResponse, SpreadsheetImportIssue
 from src.prompting import SUGGESTED_QUESTIONS
 from src.spreadsheet_import import (
     SpreadsheetImportError,
@@ -468,6 +468,7 @@ def reset_runtime_source_state(st: Any) -> None:
         "data_source_label",
         "import_notice",
         "import_warning_count",
+        "conversation_context",
     ):
         st.session_state.pop(key, None)
 
@@ -1107,6 +1108,9 @@ def render_response(st: Any, response: QueryResponse) -> None:
         unsafe_allow_html=True,
     )
 
+    if response.resolved_question and response.resolved_question.casefold() != response.question.casefold():
+        st.caption(f"Resolved request: {response.resolved_question}")
+
     if response.warnings:
         for warning in response.warnings:
             st.info(warning)
@@ -1585,6 +1589,14 @@ def render_analyst_workbench(st: Any, db: DriftDatabase) -> None:
     render_question_buttons(st)
     st.write("")
 
+    context = st.session_state.get("conversation_context")
+    if context:
+        context_left, context_right = st.columns([0.86, 0.14])
+        context_left.caption(f"Conversation context: {context.resolved_question}")
+        if context_right.button("Clear context", use_container_width=True, help="Start the next question without prior filters."):
+            st.session_state.pop("conversation_context", None)
+            st.rerun()
+
     with st.form("analysis_form"):
         question = st.text_area(
             "Ask the agent a governance, risk, or remediation question",
@@ -1596,7 +1608,9 @@ def render_analyst_workbench(st: Any, db: DriftDatabase) -> None:
 
     if submitted:
         st.session_state.question = question
-        st.session_state.last_response = answer_question(db, question)
+        st.session_state.last_response = answer_question(db, question, context=context)
+        if st.session_state.last_response.conversation_context:
+            st.session_state.conversation_context = st.session_state.last_response.conversation_context
         st.rerun()
 
     render_browser_voice_mode()

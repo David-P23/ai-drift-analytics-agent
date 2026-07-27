@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from src.models import ConversationContext
 from src.prompting import build_text_to_sql_prompt, generate_query_plan
 
 
@@ -48,3 +49,27 @@ def test_rto_distribution_can_scope_to_data_center() -> None:
     assert plan.intent == "rto_risk_distribution"
     assert "LOWER(a.data_center) = LOWER('Minneapolis')" in plan.sql
     assert "GROUP BY rto_tier" in plan.sql
+
+
+def test_follow_up_inherits_mission_critical_intent_and_applies_new_data_center() -> None:
+    first_plan = generate_query_plan("Show mission critical apps with open drift")
+    context = ConversationContext(
+        intent=first_plan.intent,
+        resolved_question=first_plan.resolved_question or "",
+        filters=first_plan.filters,
+    )
+
+    follow_up = generate_query_plan("Let's narrow that down to Minneapolis-based drift", context=context)
+
+    assert follow_up.intent == "critical_apps_with_open_drift"
+    assert follow_up.filters.data_center == "Minneapolis"
+    assert follow_up.filters.include_high is False
+    assert "a.rto_score BETWEEN 1 AND 2" in follow_up.sql
+    assert "LOWER(a.data_center) = LOWER('Minneapolis')" in follow_up.sql
+
+
+def test_data_center_only_question_scopes_oldest_drift_query() -> None:
+    plan = generate_query_plan("Show Minneapolis based drift")
+
+    assert plan.intent == "top_drifting_apps"
+    assert "LOWER(a.data_center) = LOWER('Minneapolis')" in plan.sql

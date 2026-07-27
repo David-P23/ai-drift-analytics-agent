@@ -20,6 +20,22 @@ class ChartSpec(BaseModel):
     color: str | None = None
 
 
+class QueryFilters(BaseModel):
+    """Canonical filters carried between conversational turns."""
+
+    data_center: str | None = None
+    product: str | None = None
+    include_high: bool | None = None
+
+
+class ConversationContext(BaseModel):
+    """The last resolved analytics request, kept per Streamlit session."""
+
+    intent: str
+    resolved_question: str
+    filters: QueryFilters = Field(default_factory=QueryFilters)
+
+
 class QueryPlan(BaseModel):
     """Generated SQL and intent metadata before execution."""
 
@@ -28,6 +44,8 @@ class QueryPlan(BaseModel):
     intent: str
     rationale: str
     chart: ChartSpec | None = None
+    filters: QueryFilters = Field(default_factory=QueryFilters)
+    resolved_question: str | None = None
 
 
 class SafeQuery(BaseModel):
@@ -51,6 +69,9 @@ class QueryResponse(BaseModel):
     chart: ChartSpec | None = None
     warnings: list[str] = Field(default_factory=list)
     error: str | None = None
+    intent: str | None = None
+    resolved_question: str | None = None
+    conversation_context: ConversationContext | None = None
 
 
 class Metric(BaseModel):
