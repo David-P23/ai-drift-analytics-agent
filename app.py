@@ -1102,7 +1102,7 @@ def render_response(st: Any, response: QueryResponse) -> None:
         f"""
         <div class="answer-card">
             <div class="section-kicker">Agent Answer</div>
-            <div class="brief-copy" id="voice-agent-answer" data-voice-answer="{escape(response.answer, quote=True)}">{escape(response.answer)}</div>
+            <div class="brief-copy" id="voice-agent-answer">{escape(response.answer)}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -1455,7 +1455,7 @@ def render_browser_voice_mode() -> None:
           );
           const getAnswer = () => {
             const answer = host.document.getElementById('voice-agent-answer');
-            return answer ? (answer.dataset.voiceAnswer || answer.textContent || '').trim() : '';
+            return answer ? answer.textContent.trim() : '';
           };
           const updateMuteLabel = () => {
             muteButton.textContent = muted ? 'Unmute' : 'Mute';
