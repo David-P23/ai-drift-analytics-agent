@@ -7,6 +7,7 @@ from typing import Any
 from src import analytics
 from src.database import DriftDatabase
 from src.models import ConversationContext, ExecutiveSummary, Metric, QueryPlan, QueryResponse
+from src.policy_rag import compose_policy_guidance, is_policy_only_question, retrieve_policy_context, should_retrieve_policy
 from src.prompting import generate_query_plan
 from src.sql_safety import SQLSafetyError
 
@@ -46,6 +47,15 @@ def answer_question(
 ) -> QueryResponse:
     """Generate and execute a drift analytics answer for natural language."""
 
+    policy_retrieval = retrieve_policy_context(question) if should_retrieve_policy(question) else None
+    if policy_retrieval and is_policy_only_question(question):
+        return QueryResponse(
+            question=question,
+            answer=compose_policy_guidance(question, policy_retrieval),
+            policy_sources=list(policy_retrieval.sources),
+            retrieval_mode=policy_retrieval.mode,
+        )
+
     plan = generate_query_plan(question, context=context)
     plan.question = question
     response = run_query_plan(db, plan)
@@ -55,6 +65,14 @@ def answer_question(
             resolved_question=plan.resolved_question or question,
             filters=plan.filters,
         )
+        if policy_retrieval:
+            response.answer = compose_policy_guidance(
+                question,
+                policy_retrieval,
+                data_answer=response.answer,
+            )
+            response.policy_sources = list(policy_retrieval.sources)
+            response.retrieval_mode = policy_retrieval.mode
     return response
 
 

@@ -44,6 +44,7 @@ V2 reframes the same concept for a recruiter and executive audience. It opens di
 - Supports alternate cluster definitions with plain-English explanations.
 - Uses an optional structured LLM planner to interpret natural-language follow-ups into approved analytics intents and filters.
 - Runs analytics through validated read-only SQLite `SELECT` queries; the LLM never generates executable SQL.
+- Retrieves relevant passages from a labeled synthetic NorthStar policy corpus with embeddings, then grounds policy guidance in the retrieved sources.
 - Supports optional workbook/CSV refresh from normalized or flat drift exports.
 
 ## Domain Rules
@@ -90,9 +91,14 @@ DRIFT_DB_PATH=data/northstar_demo.sqlite
 SQL_ROW_LIMIT=1000
 TABLEAU_DASHBOARD_URL=
 OPENAI_MODEL=gpt-5-mini
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
 ```
 
 To enable the optional LLM planner, configure `OPENAI_API_KEY` as a local environment variable or Render secret. If the key is absent or the provider is unavailable, the deterministic question router continues to run the demo.
+
+## Policy RAG
+
+The `docs/policies/` corpus is a fictional NorthStar demo corpus, not legal or regulatory advice. Policy-oriented questions retrieve the most relevant document sections using OpenAI embeddings when available, fall back to lexical matching when they are not, and show the source sections used in the answer.
 
 ## Tableau Embed
 

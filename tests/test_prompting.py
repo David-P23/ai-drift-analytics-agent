@@ -3,6 +3,7 @@ from __future__ import annotations
 from src.models import ConversationContext, LLMPlannerDecision
 from src.prompting import build_text_to_sql_prompt, generate_query_plan
 from src import analytics
+from src.policy_rag import is_policy_only_question, retrieve_policy_context, should_retrieve_policy
 
 
 def test_prompt_contains_domain_rules_and_schema() -> None:
@@ -149,3 +150,20 @@ def test_llm_planner_rejects_unapproved_scope_values(monkeypatch) -> None:
 def test_dashboard_only_plans_remain_valid_query_plans() -> None:
     assert analytics.ai_risk_intelligence().intent == "ai_risk_intelligence"
     assert analytics.drift_cluster_source().intent == "drift_cluster_source"
+
+
+def test_policy_retrieval_has_lexical_fallback_without_an_api_key(monkeypatch) -> None:
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    retrieval = retrieve_policy_context("What is the exception approval policy for Mission Critical systems?")
+
+    assert retrieval is not None
+    assert retrieval.mode == "lexical"
+    assert retrieval.sources
+    assert "Exception" in retrieval.sources[0].document
+
+
+def test_policy_detection_distinguishes_policy_only_and_hybrid_questions() -> None:
+    assert should_retrieve_policy("What does the risk acceptance policy require?")
+    assert is_policy_only_question("What does the risk acceptance policy require?")
+    assert not is_policy_only_question("Which drift findings have a pending exception under policy?")

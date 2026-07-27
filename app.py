@@ -1113,6 +1113,13 @@ def render_response(st: Any, response: QueryResponse) -> None:
     if response.planner:
         planner_label = "Structured LLM planner" if response.planner == "llm" else "Deterministic fallback planner"
         st.caption(f"Planning path: {planner_label}; query execution remains validated and read-only.")
+    if response.policy_sources:
+        mode_label = "Semantic embedding retrieval" if response.retrieval_mode == "semantic" else "Lexical retrieval fallback"
+        st.caption(f"Policy grounding: {mode_label} from the synthetic NorthStar policy corpus.")
+        with st.expander("Policy sources used"):
+            for source in response.policy_sources:
+                st.markdown(f"**{source.document} - {source.section}**")
+                st.write(source.excerpt)
 
     if response.warnings:
         for warning in response.warnings:

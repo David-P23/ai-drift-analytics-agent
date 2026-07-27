@@ -60,6 +60,14 @@ class ConversationContext(BaseModel):
     filters: QueryFilters = Field(default_factory=QueryFilters)
 
 
+class PolicySource(BaseModel):
+    """A policy-document chunk used as evidence in a RAG answer."""
+
+    document: str
+    section: str
+    excerpt: str
+
+
 class QueryPlan(BaseModel):
     """Generated SQL and intent metadata before execution."""
 
@@ -97,6 +105,8 @@ class QueryResponse(BaseModel):
     intent: str | None = None
     resolved_question: str | None = None
     planner: PlannerKind | None = None
+    policy_sources: list[PolicySource] = Field(default_factory=list)
+    retrieval_mode: Literal["semantic", "lexical"] | None = None
     conversation_context: ConversationContext | None = None
 
 
