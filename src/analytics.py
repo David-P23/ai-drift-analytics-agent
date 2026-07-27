@@ -159,7 +159,14 @@ LIMIT {limit}
     )
 
 
-def drift_by_product(limit: int = 20) -> QueryPlan:
+def drift_by_product(
+    limit: int = 20,
+    *,
+    data_center: str | None = None,
+    product: str | None = None,
+) -> QueryPlan:
+    scope_clause = _scope_filter_clause(data_center=data_center, product=product)
+    scoped_label = _scope_label(data_center=data_center, product=product)
     sql = f"""
 SELECT
     a.product AS product,
@@ -168,12 +175,13 @@ SELECT
     ROUND(AVG({AGE_DAYS}), 1) AS average_days_open
 FROM applications AS a
 WHERE {OPEN_SCOPE_DRIFT}
+  {scope_clause}
 GROUP BY a.product
 ORDER BY drift_count DESC, mission_critical_count DESC, a.product ASC
 LIMIT {limit}
 """.strip()
     return QueryPlan(
-        question="Drift distribution by product",
+        question=f"Drift distribution by product {scoped_label}".strip(),
         sql=sql,
         intent="drift_by_product",
         rationale="Aggregates open in-scope drift by product family.",
@@ -181,7 +189,14 @@ LIMIT {limit}
     )
 
 
-def drift_by_data_center(limit: int = 20) -> QueryPlan:
+def drift_by_data_center(
+    limit: int = 20,
+    *,
+    data_center: str | None = None,
+    product: str | None = None,
+) -> QueryPlan:
+    scope_clause = _scope_filter_clause(data_center=data_center, product=product)
+    scoped_label = _scope_label(data_center=data_center, product=product)
     sql = f"""
 SELECT
     a.data_center AS data_center,
@@ -190,12 +205,13 @@ SELECT
     ROUND(AVG({AGE_DAYS}), 1) AS average_days_open
 FROM applications AS a
 WHERE {OPEN_SCOPE_DRIFT}
+  {scope_clause}
 GROUP BY a.data_center
 ORDER BY drift_count DESC, critical_high_count DESC, a.data_center ASC
 LIMIT {limit}
 """.strip()
     return QueryPlan(
-        question="Drift concentration by data center",
+        question=f"Drift concentration by data center {scoped_label}".strip(),
         sql=sql,
         intent="drift_by_data_center",
         rationale="Finds hosting concentration for open in-scope drift.",
@@ -203,7 +219,14 @@ LIMIT {limit}
     )
 
 
-def exemption_analysis(limit: int = 20) -> QueryPlan:
+def exemption_analysis(
+    limit: int = 20,
+    *,
+    data_center: str | None = None,
+    product: str | None = None,
+) -> QueryPlan:
+    scope_clause = _scope_filter_clause(data_center=data_center, product=product)
+    scoped_label = _scope_label(data_center=data_center, product=product)
     sql = f"""
 SELECT
     a.exemption_requested AS exemption_requested,
@@ -213,12 +236,13 @@ SELECT
     MAX({AGE_DAYS}) AS oldest_days_open
 FROM applications AS a
 WHERE {OPEN_SCOPE_DRIFT}
+  {scope_clause}
 GROUP BY a.exemption_requested, COALESCE(a.exemption_result, 'None')
 ORDER BY drift_count DESC, critical_high_count DESC, oldest_days_open DESC
 LIMIT {limit}
 """.strip()
     return QueryPlan(
-        question="Exemption analysis",
+        question=f"Exemption analysis {scoped_label}".strip(),
         sql=sql,
         intent="exemption_analysis",
         rationale="Compares requested exemptions, decisions, risk, and age.",
@@ -226,7 +250,14 @@ LIMIT {limit}
     )
 
 
-def aging_bucket_analysis(limit: int = 10) -> QueryPlan:
+def aging_bucket_analysis(
+    limit: int = 10,
+    *,
+    data_center: str | None = None,
+    product: str | None = None,
+) -> QueryPlan:
+    scope_clause = _scope_filter_clause(data_center=data_center, product=product)
+    scoped_label = _scope_label(data_center=data_center, product=product)
     sql = f"""
 SELECT
     {AGING_BUCKET_CASE} AS aging_bucket,
@@ -235,12 +266,13 @@ SELECT
     MAX({AGE_DAYS}) AS oldest_days_open
 FROM applications AS a
 WHERE {OPEN_SCOPE_DRIFT}
+  {scope_clause}
 GROUP BY aging_bucket
 ORDER BY oldest_days_open DESC
 LIMIT {limit}
 """.strip()
     return QueryPlan(
-        question="Aging bucket analysis",
+        question=f"Aging bucket analysis {scoped_label}".strip(),
         sql=sql,
         intent="aging_bucket_analysis",
         rationale="Buckets open drift into warning, senior escalation, and executive escalation thresholds.",
@@ -248,7 +280,14 @@ LIMIT {limit}
     )
 
 
-def executive_escalation_candidates(limit: int = 25) -> QueryPlan:
+def executive_escalation_candidates(
+    limit: int = 25,
+    *,
+    data_center: str | None = None,
+    product: str | None = None,
+) -> QueryPlan:
+    scope_clause = _scope_filter_clause(data_center=data_center, product=product)
+    scoped_label = _scope_label(data_center=data_center, product=product)
     sql = f"""
 SELECT
     a.finding_id AS finding_id,
@@ -267,11 +306,12 @@ SELECT
 FROM applications AS a
 WHERE {OPEN_SCOPE_DRIFT}
   AND {AGE_DAYS} >= 120
+  {scope_clause}
 ORDER BY a.rto_score ASC, days_open DESC, a.app_name ASC
 LIMIT {limit}
 """.strip()
     return QueryPlan(
-        question="Executive escalation candidates",
+        question=f"Executive escalation candidates {scoped_label}".strip(),
         sql=sql,
         intent="executive_escalation_candidates",
         rationale="Finds open in-scope drift at or beyond the 120-day executive escalation threshold.",

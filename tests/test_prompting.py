@@ -88,3 +88,26 @@ def test_data_center_only_question_scopes_oldest_drift_query() -> None:
 
     assert plan.intent == "top_drifting_apps"
     assert "LOWER(a.data_center) = LOWER('Minneapolis')" in plan.sql
+
+
+def test_exemption_follow_up_scopes_the_same_analysis_to_a_data_center() -> None:
+    first_plan = generate_query_plan("Analyze exemption status for open drift")
+    context = ConversationContext(
+        intent=first_plan.intent,
+        resolved_question=first_plan.resolved_question or "",
+        filters=first_plan.filters,
+    )
+
+    follow_up = generate_query_plan("Now do that for drift out of the Ashburn datacenter", context=context)
+
+    assert follow_up.intent == "exemption_analysis"
+    assert follow_up.filters.data_center == "Ashburn"
+    assert "LOWER(a.data_center) = LOWER('Ashburn')" in follow_up.sql
+
+
+def test_aging_and_escalation_queries_accept_data_center_scope() -> None:
+    aging = generate_query_plan("Show aging buckets for Minneapolis")
+    escalation = generate_query_plan("Show executive escalation in Minneapolis")
+
+    assert "LOWER(a.data_center) = LOWER('Minneapolis')" in aging.sql
+    assert "LOWER(a.data_center) = LOWER('Minneapolis')" in escalation.sql

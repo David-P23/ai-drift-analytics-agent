@@ -115,11 +115,11 @@ def generate_query_plan(question: str, *, context: ConversationContext | None = 
         intent = explicit_intent or (context.intent if follow_up and context else "top_drifting_apps")
 
     if intent == "executive_escalation_candidates":
-        plan = analytics.executive_escalation_candidates()
+        plan = analytics.executive_escalation_candidates(data_center=filters.data_center, product=filters.product)
     elif intent == "aging_bucket_analysis":
-        plan = analytics.aging_bucket_analysis()
+        plan = analytics.aging_bucket_analysis(data_center=filters.data_center, product=filters.product)
     elif intent == "exemption_analysis":
-        plan = analytics.exemption_analysis()
+        plan = analytics.exemption_analysis(data_center=filters.data_center, product=filters.product)
     elif intent == "rto_risk_distribution":
         plan = analytics.rto_risk_distribution(data_center=filters.data_center, product=filters.product)
     elif intent == "critical_apps_with_open_drift":
@@ -129,9 +129,9 @@ def generate_query_plan(question: str, *, context: ConversationContext | None = 
             product=filters.product,
         )
     elif intent == "drift_by_data_center":
-        plan = analytics.drift_by_data_center()
+        plan = analytics.drift_by_data_center(data_center=filters.data_center, product=filters.product)
     elif intent == "drift_by_product":
-        plan = analytics.drift_by_product()
+        plan = analytics.drift_by_product(data_center=filters.data_center, product=filters.product)
     else:
         plan = analytics.top_drifting_apps(data_center=filters.data_center, product=filters.product)
 
