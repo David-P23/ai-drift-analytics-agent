@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from src.models import ConversationContext, LLMPlannerDecision
+from src.models import ConversationContext, LLMPlannerDecision, PolicyGuidance
 from src.prompting import build_text_to_sql_prompt, generate_query_plan
 from src import analytics
-from src.policy_rag import is_policy_only_question, retrieve_policy_context, should_retrieve_policy
+from src.policy_rag import _format_policy_guidance, is_policy_only_question, retrieve_policy_context, should_retrieve_policy
 
 
 def test_prompt_contains_domain_rules_and_schema() -> None:
@@ -167,3 +167,17 @@ def test_policy_detection_distinguishes_policy_only_and_hybrid_questions() -> No
     assert should_retrieve_policy("What does the risk acceptance policy require?")
     assert is_policy_only_question("What does the risk acceptance policy require?")
     assert not is_policy_only_question("Which drift findings have a pending exception under policy?")
+
+
+def test_policy_guidance_format_is_brief_and_does_not_repeat_analytics() -> None:
+    rendered = _format_policy_guidance(
+        PolicyGuidance(
+            summary="Pending exemptions require monthly review.",
+            recommended_actions=["Schedule the governance review.", "Confirm the accountable owner."],
+        ),
+        data_answer="One Ashburn exemption is pending review.",
+    )
+
+    assert rendered.count("One Ashburn exemption is pending review.") == 1
+    assert rendered.count("Recommended next actions:") == 1
+    assert rendered.count("- ") == 2

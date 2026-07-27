@@ -68,6 +68,15 @@ class PolicySource(BaseModel):
     excerpt: str
 
 
+class PolicyGuidance(BaseModel):
+    """Brief, retrieval-grounded policy guidance for the executive surface."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    summary: str
+    recommended_actions: list[str] = Field(default_factory=list, max_length=3)
+
+
 class QueryPlan(BaseModel):
     """Generated SQL and intent metadata before execution."""
 

@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 import re
 
-from src.models import PolicySource
+from src.models import PolicyGuidance, PolicySource
 
 
 POLICY_DIRECTORY = Path(__file__).resolve().parents[1] / "docs" / "policies"
@@ -112,7 +112,7 @@ def compose_policy_guidance(
             evidence = retrieval.context
             if data_answer:
                 evidence = f"Analytics result:\n{data_answer}\n\nPolicy evidence:\n{evidence}"
-            completion = OpenAI(api_key=api_key, timeout=15.0, max_retries=1).chat.completions.create(
+            completion = OpenAI(api_key=api_key, timeout=15.0, max_retries=1).chat.completions.parse(
                 model=os.getenv("OPENAI_MODEL", "gpt-5-mini"),
                 messages=[
                     {
@@ -120,15 +120,17 @@ def compose_policy_guidance(
                         "content": (
                             "Answer using only the supplied synthetic NorthStar policy evidence and any supplied "
                             "analytics result. Do not claim legal advice or live regulatory status. Be concise, "
-                            "actionable, and cite the document title and section in square brackets."
+                            "do not repeat points, and provide no more than three recommended actions. The UI "
+                            "displays sources separately, so do not add citations or headings to your answer."
                         ),
                     },
                     {"role": "user", "content": f"Question: {question}\n\n{evidence}"},
                 ],
+                response_format=PolicyGuidance,
             )
-            answer = completion.choices[0].message.content
-            if answer:
-                return answer.strip()
+            guidance = completion.choices[0].message.parsed
+            if guidance:
+                return _format_policy_guidance(guidance, data_answer=data_answer)
         except Exception:
             pass
 
@@ -137,6 +139,17 @@ def compose_policy_guidance(
     if data_answer:
         return f"{data_answer} Policy context: {guidance} [{lead.document} > {lead.section}]"
     return f"Based on the demo policy corpus: {guidance} [{lead.document} > {lead.section}]"
+
+
+def _format_policy_guidance(guidance: PolicyGuidance, *, data_answer: str | None) -> str:
+    sections = [guidance.summary.strip()]
+    if data_answer and data_answer not in guidance.summary:
+        sections.insert(0, data_answer)
+    if guidance.recommended_actions:
+        actions = "\n".join(f"- {action.strip()}" for action in guidance.recommended_actions if action.strip())
+        if actions:
+            sections.append(f"Recommended next actions:\n{actions}")
+    return "\n\n".join(section for section in sections if section)
 
 
 @lru_cache(maxsize=1)
