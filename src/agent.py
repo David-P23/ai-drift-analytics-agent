@@ -35,6 +35,7 @@ def run_query_plan(db: DriftDatabase, plan: QueryPlan) -> QueryResponse:
         warnings=safe_query.warnings,
         intent=plan.intent,
         resolved_question=plan.resolved_question,
+        planner=plan.planner,
     )
 
 

@@ -8,6 +8,17 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 ChartKind = Literal["bar", "table_only"]
+PlannerKind = Literal["deterministic", "llm"]
+AnalyticsIntent = Literal[
+    "top_drifting_apps",
+    "critical_apps_with_open_drift",
+    "drift_by_product",
+    "drift_by_data_center",
+    "exemption_analysis",
+    "aging_bucket_analysis",
+    "executive_escalation_candidates",
+    "rto_risk_distribution",
+]
 
 
 class ChartSpec(BaseModel):
@@ -28,6 +39,17 @@ class QueryFilters(BaseModel):
     include_high: bool | None = None
 
 
+class LLMPlannerDecision(BaseModel):
+    """Strict, non-executable routing decision returned by the LLM planner."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    intent: AnalyticsIntent
+    data_center: str | None = None
+    product: str | None = None
+    include_high: bool | None = None
+
+
 class ConversationContext(BaseModel):
     """The last resolved analytics request, kept per Streamlit session."""
 
@@ -41,11 +63,12 @@ class QueryPlan(BaseModel):
 
     question: str
     sql: str
-    intent: str
+    intent: AnalyticsIntent
     rationale: str
     chart: ChartSpec | None = None
     filters: QueryFilters = Field(default_factory=QueryFilters)
     resolved_question: str | None = None
+    planner: PlannerKind = "deterministic"
 
 
 class SafeQuery(BaseModel):
@@ -71,6 +94,7 @@ class QueryResponse(BaseModel):
     error: str | None = None
     intent: str | None = None
     resolved_question: str | None = None
+    planner: PlannerKind | None = None
     conversation_context: ConversationContext | None = None
 
 

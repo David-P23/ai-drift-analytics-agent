@@ -1110,6 +1110,9 @@ def render_response(st: Any, response: QueryResponse) -> None:
 
     if response.resolved_question and response.resolved_question.casefold() != response.question.casefold():
         st.caption(f"Resolved request: {response.resolved_question}")
+    if response.planner:
+        planner_label = "Structured LLM planner" if response.planner == "llm" else "Deterministic fallback planner"
+        st.caption(f"Planning path: {planner_label}; query execution remains validated and read-only.")
 
     if response.warnings:
         for warning in response.warnings:

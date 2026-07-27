@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.models import ConversationContext
+from src.models import ConversationContext, LLMPlannerDecision
 from src.prompting import build_text_to_sql_prompt, generate_query_plan
 
 
@@ -111,3 +111,35 @@ def test_aging_and_escalation_queries_accept_data_center_scope() -> None:
 
     assert "LOWER(a.data_center) = LOWER('Minneapolis')" in aging.sql
     assert "LOWER(a.data_center) = LOWER('Minneapolis')" in escalation.sql
+
+
+def test_llm_planner_can_select_a_scoped_exemption_analysis(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "src.prompting.resolve_query_decision",
+        lambda *args, **kwargs: LLMPlannerDecision(
+            intent="exemption_analysis",
+            data_center="Ashburn",
+        ),
+    )
+
+    plan = generate_query_plan("Can you look at exemptions in our Ashburn facility?")
+
+    assert plan.planner == "llm"
+    assert plan.intent == "exemption_analysis"
+    assert plan.filters.data_center == "Ashburn"
+    assert "LOWER(a.data_center) = LOWER('Ashburn')" in plan.sql
+
+
+def test_llm_planner_rejects_unapproved_scope_values(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "src.prompting.resolve_query_decision",
+        lambda *args, **kwargs: LLMPlannerDecision(
+            intent="critical_apps_with_open_drift",
+            data_center="Imaginary Site",
+        ),
+    )
+
+    plan = generate_query_plan("Show Mission Critical drift in Minneapolis")
+
+    assert plan.planner == "llm"
+    assert plan.filters.data_center == "Minneapolis"

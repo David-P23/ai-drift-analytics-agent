@@ -1,10 +1,11 @@
-"""Text-to-SQL prompt construction and deterministic intent routing."""
+"""Text-to-SQL prompt construction and governed question routing."""
 
 from __future__ import annotations
 
 from src import analytics
 from src.domain import DOMAIN_RULES, format_schema_for_prompt
-from src.models import ConversationContext, PromptBundle, QueryFilters, QueryPlan
+from src.llm_planner import resolve_query_decision
+from src.models import AnalyticsIntent, ConversationContext, PromptBundle, QueryFilters, QueryPlan
 
 
 SUGGESTED_QUESTIONS = [
@@ -92,7 +93,46 @@ FOLLOW_UP_MARKERS = ("that", "those", "them", "narrow", "only", "same", "drill d
 
 
 def generate_query_plan(question: str, *, context: ConversationContext | None = None) -> QueryPlan:
-    """Map natural language to a safe analytics query plan."""
+    """Map natural language to a safe analytics query plan.
+
+    A configured LLM can select a typed intent and approved scope. The existing
+    deterministic router remains the fallback and always constructs the SQL plan.
+    """
+
+    fallback_intent, fallback_filters = _deterministic_route(question, context)
+    decision = resolve_query_decision(
+        question,
+        context=context,
+        data_centers=KNOWN_DATA_CENTERS,
+        products=KNOWN_PRODUCTS,
+    )
+    if decision:
+        intent = decision.intent
+        filters = QueryFilters(
+            data_center=_canonical_known_value(decision.data_center, KNOWN_DATA_CENTERS)
+            or fallback_filters.data_center,
+            product=_canonical_known_value(decision.product, KNOWN_PRODUCTS) or fallback_filters.product,
+            include_high=decision.include_high
+            if decision.include_high is not None
+            else fallback_filters.include_high,
+        )
+        planner = "llm"
+    else:
+        intent = fallback_intent
+        filters = fallback_filters
+        planner = "deterministic"
+
+    plan = _build_analytics_plan(intent, filters)
+    plan.filters = filters
+    plan.resolved_question = _resolved_question(intent, filters)
+    plan.planner = planner
+    return plan
+
+
+def _deterministic_route(
+    question: str, context: ConversationContext | None
+) -> tuple[AnalyticsIntent, QueryFilters]:
+    """Return the existing keyword-and-context route as the safe planner fallback."""
 
     normalized = " ".join(question.lower().split())
     explicit_data_center = _find_known_value(normalized, KNOWN_DATA_CENTERS)
@@ -114,6 +154,10 @@ def generate_query_plan(question: str, *, context: ConversationContext | None = 
     else:
         intent = explicit_intent or (context.intent if follow_up and context else "top_drifting_apps")
 
+    return intent, filters
+
+
+def _build_analytics_plan(intent: AnalyticsIntent, filters: QueryFilters) -> QueryPlan:
     if intent == "executive_escalation_candidates":
         plan = analytics.executive_escalation_candidates(data_center=filters.data_center, product=filters.product)
     elif intent == "aging_bucket_analysis":
@@ -135,12 +179,10 @@ def generate_query_plan(question: str, *, context: ConversationContext | None = 
     else:
         plan = analytics.top_drifting_apps(data_center=filters.data_center, product=filters.product)
 
-    plan.filters = filters
-    plan.resolved_question = _resolved_question(intent, filters)
     return plan
 
 
-def _detect_intent(normalized: str) -> str | None:
+def _detect_intent(normalized: str) -> AnalyticsIntent | None:
     if any(term in normalized for term in ["executive", "120"]):
         return "executive_escalation_candidates"
     if any(term in normalized for term in ["aging", "age bucket", "bucket", "90 day", "60 day"]):
@@ -192,5 +234,15 @@ def _find_known_value(normalized_question: str, known_values: list[str]) -> str 
 
     for value in known_values:
         if value.lower() in normalized_question:
+            return value
+    return None
+
+
+def _canonical_known_value(candidate: str | None, known_values: list[str]) -> str | None:
+    if not candidate:
+        return None
+    normalized_candidate = " ".join(candidate.casefold().split())
+    for value in known_values:
+        if " ".join(value.casefold().split()) == normalized_candidate:
             return value
     return None

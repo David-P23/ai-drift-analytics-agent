@@ -42,7 +42,8 @@ V2 reframes the same concept for a recruiter and executive audience. It opens di
   - `Cluster Detection Lab`: drift story primer, sample rows, cluster detector, cluster evidence table, and guardrails.
 - Detects drift waves when a configurable number of findings emerge within a configurable rolling window for the same product update.
 - Supports alternate cluster definitions with plain-English explanations.
-- Runs analytics through validated read-only SQLite `SELECT` queries.
+- Uses an optional structured LLM planner to interpret natural-language follow-ups into approved analytics intents and filters.
+- Runs analytics through validated read-only SQLite `SELECT` queries; the LLM never generates executable SQL.
 - Supports optional workbook/CSV refresh from normalized or flat drift exports.
 
 ## Domain Rules
@@ -88,7 +89,10 @@ The app defaults to:
 DRIFT_DB_PATH=data/northstar_demo.sqlite
 SQL_ROW_LIMIT=1000
 TABLEAU_DASHBOARD_URL=
+OPENAI_MODEL=gpt-5-mini
 ```
+
+To enable the optional LLM planner, configure `OPENAI_API_KEY` as a local environment variable or Render secret. If the key is absent or the provider is unavailable, the deterministic question router continues to run the demo.
 
 ## Tableau Embed
 
