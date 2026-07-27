@@ -98,14 +98,21 @@ def generate_query_plan(question: str, *, context: ConversationContext | None = 
     explicit_data_center = _find_known_value(normalized, KNOWN_DATA_CENTERS)
     explicit_product = _find_known_value(normalized, KNOWN_PRODUCTS)
     explicit_intent = _detect_intent(normalized)
-    follow_up = bool(context) and (explicit_intent is None or any(marker in normalized for marker in FOLLOW_UP_MARKERS))
+    follow_up_marker = bool(context) and any(marker in normalized for marker in FOLLOW_UP_MARKERS)
+    follow_up = bool(context) and (explicit_intent is None or follow_up_marker)
 
     filters = QueryFilters(
         data_center=explicit_data_center or (context.filters.data_center if follow_up and context else None),
         product=explicit_product or (context.filters.product if follow_up and context else None),
         include_high=_explicit_include_high(normalized, context if follow_up else None),
     )
-    intent = explicit_intent or (context.intent if follow_up and context else "top_drifting_apps")
+    # "Datacenter" and "product" can describe the scope of a follow-up, not a new analysis type.
+    # Preserve the previous analysis in phrases such as "do that for Minneapolis Datacenter."
+    soft_intent = explicit_intent in {"drift_by_data_center", "drift_by_product"}
+    if follow_up_marker and soft_intent and context:
+        intent = context.intent
+    else:
+        intent = explicit_intent or (context.intent if follow_up and context else "top_drifting_apps")
 
     if intent == "executive_escalation_candidates":
         plan = analytics.executive_escalation_candidates()

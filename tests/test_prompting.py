@@ -68,6 +68,21 @@ def test_follow_up_inherits_mission_critical_intent_and_applies_new_data_center(
     assert "LOWER(a.data_center) = LOWER('Minneapolis')" in follow_up.sql
 
 
+def test_follow_up_treats_datacenter_as_scope_not_a_new_concentration_report() -> None:
+    first_plan = generate_query_plan("Show mission critical apps with open drift")
+    context = ConversationContext(
+        intent=first_plan.intent,
+        resolved_question=first_plan.resolved_question or "",
+        filters=first_plan.filters,
+    )
+
+    follow_up = generate_query_plan("Let's do that for the Minneapolis Datacenter now", context=context)
+
+    assert follow_up.intent == "critical_apps_with_open_drift"
+    assert follow_up.filters.data_center == "Minneapolis"
+    assert "a.rto_score BETWEEN 1 AND 2" in follow_up.sql
+
+
 def test_data_center_only_question_scopes_oldest_drift_query() -> None:
     plan = generate_query_plan("Show Minneapolis based drift")
 
