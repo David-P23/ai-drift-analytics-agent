@@ -33,6 +33,21 @@ V1 archive:
 
 V2 reframes the same concept for a recruiter and executive audience. It opens directly on seeded demo data, moves the first impression to executive KPIs, board-level narrative, and an agent input, then provides Tableau and cluster detection as supporting pages.
 
+### v3: Databricks Lakehouse (in progress)
+
+V3 moves the agent's data onto Databricks as a bronze → silver → gold pipeline, and makes the
+data problem harder on purpose: the portfolio arrives from three simulated acquired companies
+with different IDs, column names, codes and date formats, plus a few dirty records. Silver puts
+them on shared definitions through crosswalk and code-map tables; gold rebuilds the agent's
+table as a Delta table behind a view; an LLM tags note themes from a fixed label list. The agent
+runs on either backend (`DRIFT_BACKEND=sqlite` or `databricks`) with the same validated query
+templates, translated to Databricks SQL.
+
+Built and tested: source generation, bronze and gold, the Databricks agent backend, and local
+Spark tests showing gold reproduces the SQLite demo row for row and every agent query returns
+identical results on both engines. In progress: the silver conformance notebook and note-theme
+tagging. See [`lakehouse/README.md`](lakehouse/README.md).
+
 ## What It Does
 
 - Opens with bundled NorthStar demo data from `data/northstar_demo.sqlite`.
@@ -71,7 +86,10 @@ src/models.py             Pydantic structured response objects
 src/prompting.py          Prompt builder and deterministic question routing
 src/spreadsheet_import.py Excel workbook normalization and validation
 src/sql_safety.py         SQL validation and LIMIT enforcement
-tests/                    Safety, import, database, cluster, and smoke tests
+src/sql_dialect.py        SQLite -> Databricks SQL translation for the query templates
+src/warehouse.py          Databricks SQL warehouse backend (DRIFT_BACKEND=databricks)
+lakehouse/                Databricks pipeline: source generator, notebooks, gold SQL, contracts
+tests/                    Safety, import, database, cluster, smoke, lakehouse, and Spark parity tests
 ```
 
 ## Local Setup
@@ -146,6 +164,7 @@ pytest
 ```
 
 The suite covers cluster detection, spreadsheet import, SQL safety, prompt routing, database analytics, and Streamlit import smoke behavior.
+With `pyspark` installed it also runs the lakehouse tests on local Spark (gold reconciliation and SQLite/Spark SQL parity); CI runs both on every push.
 
 ## Notes
 

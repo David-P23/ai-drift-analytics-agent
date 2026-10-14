@@ -30,6 +30,8 @@ from src.spreadsheet_import import (
     list_excel_sheets,
     preview_excel_workbook,
 )
+from src.sql_safety import SQLSafetyError
+from src.warehouse import DatabricksDriftDatabase, DatabricksSettings
 
 try:
     from dotenv import load_dotenv
@@ -39,6 +41,7 @@ except ImportError:
     pass
 
 
+DRIFT_BACKEND = os.getenv("DRIFT_BACKEND", "sqlite").strip().lower()  # "sqlite" or "databricks"
 DEFAULT_DB_PATH = Path(os.getenv("DRIFT_DB_PATH", "data/northstar_demo.sqlite"))
 DEMO_ROWS_PATH = Path("data/northstar_demo_rows.json")
 DEFAULT_ROW_LIMIT = int(os.getenv("SQL_ROW_LIMIT", "1000"))
@@ -1639,7 +1642,7 @@ def render_evidence_center(st: Any, db: DriftDatabase) -> None:
     with guardrail_left:
         st.markdown("#### SQL Guardrails")
         st.write("- Only one `SELECT` statement may execute.")
-        st.write("- Write and DDL keywords are blocked before SQLite execution.")
+        st.write("- Write and DDL keywords are blocked before the query reaches the database.")
         st.write("- Table and column names are validated against the drift schema.")
         st.write("- Missing limits are added and oversized limits are reduced.")
     with guardrail_right:
@@ -1676,10 +1679,6 @@ def main() -> None:
         reset_runtime_source_state(st)
         st.session_state.app_state_version = APP_STATE_VERSION
 
-    db_path = DEFAULT_DB_PATH
-    row_limit = DEFAULT_ROW_LIMIT
-    initialize_empty_database(db_path)
-
     if not SHOW_PORTFOLIO_CONTROLS:
         st.markdown(
             """
@@ -1692,6 +1691,16 @@ def main() -> None:
             """,
             unsafe_allow_html=True,
         )
+
+    if DRIFT_BACKEND == "databricks":
+        databricks_db = open_databricks_backend(st, DEFAULT_ROW_LIMIT)
+        if databricks_db is not None:
+            render_dashboard(st, databricks_db)
+        return
+
+    db_path = DEFAULT_DB_PATH
+    row_limit = DEFAULT_ROW_LIMIT
+    initialize_empty_database(db_path)
 
     if SHOW_PORTFOLIO_CONTROLS:
         with st.sidebar:
@@ -1725,6 +1734,38 @@ def main() -> None:
         render_upload_landing(st)
         return
 
+    render_dashboard(st, db)
+
+
+def _connect_databricks(row_limit: int) -> DatabricksDriftDatabase:
+    return DatabricksDriftDatabase(DatabricksSettings.from_env(), max_rows=row_limit)
+
+
+def open_databricks_backend(st: Any, row_limit: int) -> DatabricksDriftDatabase | None:
+    """Connect to the gold layer on a Databricks SQL warehouse (DRIFT_BACKEND=databricks).
+
+    Data refresh happens in the Databricks pipeline, so the workbook upload flow is
+    not offered in this mode.
+    """
+
+    try:
+        db = st.cache_resource(show_spinner="Connecting to the Databricks SQL warehouse...")(_connect_databricks)(
+            row_limit
+        )
+        row_count = database_row_count(db)
+    except (ValueError, RuntimeError, SQLSafetyError) as exc:
+        st.error(f"Could not reach the Databricks gold layer. {exc}")
+        st.caption("See lakehouse/README.md for the environment variables and warehouse setup.")
+        return None
+
+    if row_count == 0:
+        st.warning(f"{db.settings.location}.applications is empty. Run the lakehouse pipeline job first.")
+        return None
+    st.session_state.data_source_label = f"Databricks {db.settings.location}: {row_count} findings"
+    return db
+
+
+def render_dashboard(st: Any, db: DriftDatabase | DatabricksDriftDatabase) -> None:
     summary = build_executive_summary(db)
     render_shell_header(st, summary)
 

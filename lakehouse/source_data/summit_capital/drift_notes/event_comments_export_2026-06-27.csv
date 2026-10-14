@@ -1,0 +1,221 @@
+comment_id,event_id,created_at,kind,author_role,comment,escalated,exported_at
+5000164,EVT-317915,2026-01-13T17:13:17Z,validation_result,Resiliency Lead,Patch applied successfully in QA environment. Production deployment scheduled for next maintenance window.,0,2026-06-27T00:50:27Z
+5000157,EVT-245565,2026-01-23T13:11:34Z,escalation,Platform Engineer,Critical application approaching 120-day threshold with no remediation plan on file.,1,2026-06-27T00:50:27Z
+5000018,EVT-261563,2025-12-18T19:42:15Z,owner_update,Resiliency Lead,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000212,EVT-924819,2026-02-26T18:53:37Z,remediation_update,Infrastructure Engineer,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,0,2026-06-27T00:50:27Z
+5000128,EVT-782356,2026-01-24T15:59:36Z,escalation,Infrastructure Engineer,Critical application approaching 120-day threshold with no remediation plan on file.,1,2026-06-27T00:50:27Z
+5000211,EVT-978258,2026-02-14T20:43:16Z,owner_update,Application Owner,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000089,EVT-416321,2025-12-17T15:58:36Z,exemption_review,Compliance Analyst,Review complete. Exemption extended 60 days pending vendor patch availability.,0,2026-06-27T00:50:27Z
+5000072,EVT-429524,2025-10-18T19:47:08Z,remediation_update,Infrastructure Engineer,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,0,2026-06-27T00:50:27Z
+5000054,EVT-832624,2025-07-28T17:47:47Z,escalation,Infrastructure Engineer,No owner response received after two outreach attempts. Escalating to owner team manager.,1,2026-06-27T00:50:27Z
+5000095,EVT-501754,2025-11-01T20:20:56Z,validation_result,Platform Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000153,EVT-891234,2026-01-10T16:02:27Z,validation_result,Application Owner,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000077,EVT-346957,2025-11-15T17:18:01Z,remediation_update,Platform Engineer,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000179,EVT-160850,2026-01-23T18:27:31Z,exemption_request,Platform Engineer,Application is targeted for retirement in Q4; team requested exemption through decommission milestone.,0,2026-06-27T00:50:27Z
+5000076,EVT-975633,2025-11-13T13:05:24Z,exemption_request,Compliance Analyst,Upgrade to approved version deferred pending validation of downstream payment gateway compatibility.,0,2026-06-27T00:50:27Z
+5000190,EVT-435392,2026-01-24T17:42:44Z,owner_update,Resiliency Lead,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000085,EVT-900510,2025-07-20T13:24:57Z,validation_result,Compliance Analyst,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000165,EVT-920316,2026-01-30T15:36:45Z,closure_note,Platform Engineer,Record closed after false positive determination from updated discovery scan.,0,2026-06-27T00:50:27Z
+5000162,EVT-613281,2026-02-12T18:07:17Z,owner_update,Platform Engineer,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000001,EVT-210456,2025-09-26T13:21:20Z,closure_note,Application Owner,Record closed after false positive determination from updated discovery scan.,0,2026-06-27T00:50:27Z
+5000121,EVT-261563,2026-01-18T15:36:57Z,escalation,Resiliency Lead,Multiple open drift instances identified for same application owner; bulk remediation discussion recommended.,1,2026-06-27T00:50:27Z
+5000183,EVT-749290,2026-01-01T17:53:18Z,remediation_update,Compliance Analyst,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,0,2026-06-27T00:50:27Z
+5000102,EVT-966604,2025-11-27T18:11:16Z,closure_note,Resiliency Lead,Record closed after false positive determination from updated discovery scan.,0,2026-06-27T00:50:27Z
+5000182,EVT-355989,2026-01-16T19:57:04Z,owner_update,Compliance Analyst,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000116,EVT-823385,2026-01-31T20:17:08Z,remediation_update,Resiliency Lead,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000109,EVT-797609,2026-04-01T20:03:36Z,validation_result,Platform Engineer,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000037,EVT-687498,2025-05-27T14:12:32Z,escalation,Compliance Analyst,No owner response received after two outreach attempts. Escalating to owner team manager.,1,2026-06-27T00:50:27Z
+5000091,EVT-205269,2025-05-16T18:23:19Z,owner_update,Resiliency Lead,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000074,EVT-975633,2025-09-18T16:33:32Z,remediation_update,Infrastructure Engineer,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,0,2026-06-27T00:50:27Z
+5000201,EVT-665790,2026-03-03T20:02:26Z,escalation,Application Owner,Critical application approaching 120-day threshold with no remediation plan on file.,1,2026-06-27T00:50:27Z
+5000006,EVT-342351,2025-11-18T19:19:38Z,owner_update,Resiliency Lead,Team lead confirmed remediation is blocked pending security review of new version.,0,2026-06-27T00:50:27Z
+5000049,EVT-143010,2025-12-04T18:04:56Z,remediation_update,Compliance Analyst,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000204,EVT-512114,2026-01-16T15:46:40Z,owner_update,Compliance Analyst,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000096,EVT-501754,2025-09-05T14:43:24Z,remediation_update,Platform Engineer,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,0,2026-06-27T00:50:27Z
+5000050,EVT-515304,2025-07-28T20:55:09Z,owner_update,Resiliency Lead,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000144,EVT-116892,2026-03-02T19:21:24Z,closure_note,Compliance Analyst,Record closed after false positive determination from updated discovery scan.,0,2026-06-27T00:50:27Z
+5000148,EVT-207440,2026-02-03T20:58:47Z,owner_update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000059,EVT-959346,2025-09-25T18:16:30Z,remediation_update,Resiliency Lead,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000026,EVT-312332,2025-08-04T15:36:53Z,validation_result,Resiliency Lead,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000180,EVT-160850,2026-02-01T16:36:11Z,exemption_request,Infrastructure Engineer,Approved version introduces authentication failures in lower environment; requesting extension until vendor review is complete.,0,2026-06-27T00:50:27Z
+5000024,EVT-943995,2025-12-08T16:17:25Z,closure_note,Application Owner,Detected version aligned to approved standard during scheduled maintenance activity.,0,2026-06-27T00:50:27Z
+5000202,EVT-512114,2026-01-06T20:41:00Z,exemption_review,Platform Engineer,Exemption denied; risk accepted without compensating controls is outside policy threshold.,0,2026-06-27T00:50:27Z
+5000014,EVT-117435,2025-11-04T15:11:18Z,remediation_update,Resiliency Lead,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000142,EVT-486611,2026-03-01T17:44:05Z,closure_note,Application Owner,Upgrade completed during quarterly maintenance window. No issues reported post-deployment.,0,2026-06-27T00:50:27Z
+5000210,EVT-978258,2026-02-18T20:53:35Z,exemption_request,Application Owner,Upgrade to approved version deferred pending validation of downstream payment gateway compatibility.,0,2026-06-27T00:50:27Z
+5000052,EVT-207440,2025-06-07T15:28:33Z,owner_update,Compliance Analyst,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000005,EVT-525656,2025-09-04T16:29:42Z,owner_update,Platform Engineer,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000150,EVT-862988,2026-02-12T17:55:29Z,exemption_request,Compliance Analyst,Approved version introduces authentication failures in lower environment; requesting extension until vendor review is complete.,0,2026-06-27T00:50:27Z
+5000029,EVT-333480,2025-09-23T20:12:55Z,escalation,Resiliency Lead,Multiple open drift instances identified for same application owner; bulk remediation discussion recommended.,1,2026-06-27T00:50:27Z
+5000048,EVT-945249,2025-12-21T21:38:01Z,closure_note,Application Owner,Detected version aligned to approved standard during scheduled maintenance activity.,0,2026-06-27T00:50:27Z
+5000154,EVT-891234,2026-02-09T15:58:24Z,escalation,Compliance Analyst,Multiple open drift instances identified for same application owner; bulk remediation discussion recommended.,1,2026-06-27T00:50:27Z
+5000124,EVT-413196,2026-03-06T14:20:10Z,exemption_request,Application Owner,Application team requested temporary exception due to regression risk during quarter-end processing window.,0,2026-06-27T00:50:27Z
+5000119,EVT-117435,2026-01-28T21:49:13Z,exemption_request,Platform Engineer,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,0,2026-06-27T00:50:27Z
+5000114,EVT-100137,2026-03-24T20:45:13Z,exemption_request,Resiliency Lead,Upgrade to approved version deferred pending validation of downstream payment gateway compatibility.,0,2026-06-27T00:50:27Z
+5000078,EVT-965595,2025-06-03T19:07:53Z,escalation,Application Owner,No owner response received after two outreach attempts. Escalating to owner team manager.,1,2026-06-27T00:50:27Z
+5000033,EVT-446868,2025-08-30T18:41:19Z,closure_note,Compliance Analyst,Record closed after false positive determination from updated discovery scan.,0,2026-06-27T00:50:27Z
+5000167,EVT-979867,2026-02-07T18:58:04Z,owner_update,Infrastructure Engineer,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000061,EVT-384421,2025-06-20T21:12:08Z,validation_result,Platform Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000155,EVT-891234,2026-01-23T19:56:50Z,escalation,Infrastructure Engineer,No owner response received after two outreach attempts. Escalating to owner team manager.,1,2026-06-27T00:50:27Z
+5000023,EVT-943995,2025-12-23T15:55:42Z,remediation_update,Resiliency Lead,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000064,EVT-762401,2025-11-18T16:50:13Z,exemption_request,Compliance Analyst,Upgrade to approved version deferred pending validation of downstream payment gateway compatibility.,0,2026-06-27T00:50:27Z
+5000163,EVT-317915,2026-01-16T19:18:10Z,closure_note,Resiliency Lead,Detected version aligned to approved standard during scheduled maintenance activity.,0,2026-06-27T00:50:27Z
+5000140,EVT-333589,2026-03-30T15:24:00Z,owner_update,Infrastructure Engineer,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000044,EVT-967768,2025-11-07T15:06:49Z,owner_update,Platform Engineer,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000206,EVT-718876,2026-01-19T15:58:02Z,owner_update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000168,EVT-979867,2026-01-02T21:50:14Z,owner_update,Compliance Analyst,Team lead confirmed remediation is blocked pending security review of new version.,0,2026-06-27T00:50:27Z
+5000158,EVT-245565,2026-02-11T13:55:02Z,validation_result,Infrastructure Engineer,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,0,2026-06-27T00:50:27Z
+5000067,EVT-979867,2025-12-24T20:59:08Z,remediation_update,Resiliency Lead,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000070,EVT-535632,2025-11-28T15:15:36Z,owner_update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000118,EVT-343760,2026-03-08T14:16:53Z,escalation,Infrastructure Engineer,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,1,2026-06-27T00:50:27Z
+5000039,EVT-687498,2025-07-29T15:29:35Z,remediation_update,Resiliency Lead,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,0,2026-06-27T00:50:27Z
+5000028,EVT-886200,2025-08-13T15:16:23Z,owner_update,Compliance Analyst,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000036,EVT-446868,2025-06-29T20:18:28Z,remediation_update,Infrastructure Engineer,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000082,EVT-252310,2025-09-30T13:15:16Z,exemption_review,Platform Engineer,Compliance team reviewed exemption request. Additional documentation required before approval.,0,2026-06-27T00:50:27Z
+5000021,EVT-943995,2025-12-26T14:24:09Z,remediation_update,Application Owner,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,0,2026-06-27T00:50:27Z
+5000047,EVT-462566,2025-08-22T13:17:51Z,closure_note,Infrastructure Engineer,Drift closed after remediation validation confirmed in production.,0,2026-06-27T00:50:27Z
+5000073,EVT-429524,2025-09-28T15:38:30Z,closure_note,Application Owner,Upgrade completed during quarterly maintenance window. No issues reported post-deployment.,0,2026-06-27T00:50:27Z
+5000160,EVT-898690,2026-02-24T19:26:35Z,remediation_update,Infrastructure Engineer,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,0,2026-06-27T00:50:27Z
+5000063,EVT-245565,2025-11-26T14:45:28Z,owner_update,Resiliency Lead,Team lead confirmed remediation is blocked pending security review of new version.,0,2026-06-27T00:50:27Z
+5000145,EVT-958091,2026-01-27T19:28:36Z,exemption_request,Application Owner,Upgrade postponed due to dependency on shared middleware patch scheduled for next maintenance cycle.,0,2026-06-27T00:50:27Z
+5000087,EVT-906255,2025-12-30T21:26:37Z,closure_note,Resiliency Lead,Upgrade completed during quarterly maintenance window. No issues reported post-deployment.,0,2026-06-27T00:50:27Z
+5000189,EVT-435392,2026-01-31T17:23:38Z,remediation_update,Resiliency Lead,App owner confirmed patch testing will begin during next approved maintenance window.,0,2026-06-27T00:50:27Z
+5000111,EVT-797609,2026-03-09T18:36:51Z,owner_update,Platform Engineer,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000025,EVT-382272,2025-11-23T16:25:49Z,validation_result,Compliance Analyst,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000198,EVT-923516,2026-03-11T19:48:50Z,validation_result,Resiliency Lead,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000099,EVT-534115,2025-07-04T17:26:00Z,validation_result,Platform Engineer,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000105,EVT-537624,2025-10-28T18:47:03Z,exemption_review,Platform Engineer,Review complete. Exemption extended 60 days pending vendor patch availability.,0,2026-06-27T00:50:27Z
+5000060,EVT-384421,2025-05-02T15:39:27Z,remediation_update,Compliance Analyst,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,0,2026-06-27T00:50:27Z
+5000192,EVT-584210,2026-02-12T21:56:10Z,validation_result,Platform Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000035,EVT-446868,2025-06-17T13:12:24Z,escalation,Platform Engineer,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,1,2026-06-27T00:50:27Z
+5000186,EVT-906255,2026-01-09T14:58:07Z,escalation,Infrastructure Engineer,Critical application approaching 120-day threshold with no remediation plan on file.,1,2026-06-27T00:50:27Z
+5000209,EVT-978258,2026-03-05T14:20:34Z,remediation_update,Platform Engineer,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,0,2026-06-27T00:50:27Z
+5000185,EVT-749290,2026-01-12T14:27:49Z,remediation_update,Application Owner,App owner confirmed patch testing will begin during next approved maintenance window.,0,2026-06-27T00:50:27Z
+5000213,EVT-102605,2026-01-03T16:21:33Z,remediation_update,Resiliency Lead,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000127,EVT-608954,2026-01-23T21:33:36Z,remediation_update,Compliance Analyst,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,0,2026-06-27T00:50:27Z
+5000045,EVT-116892,2025-07-14T20:22:57Z,closure_note,Platform Engineer,Upgrade completed during quarterly maintenance window. No issues reported post-deployment.,0,2026-06-27T00:50:27Z
+5000151,EVT-508073,2026-01-09T14:07:39Z,owner_update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000115,EVT-781394,2026-03-01T21:59:06Z,validation_result,Infrastructure Engineer,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000043,EVT-967768,2025-11-01T18:47:51Z,exemption_request,Infrastructure Engineer,Application team requested temporary exception due to regression risk during quarter-end processing window.,0,2026-06-27T00:50:27Z
+5000007,EVT-342351,2025-11-10T20:36:24Z,owner_update,Platform Engineer,Team lead confirmed remediation is blocked pending security review of new version.,0,2026-06-27T00:50:27Z
+5000086,EVT-900510,2025-06-22T15:07:11Z,owner_update,Compliance Analyst,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000107,EVT-537624,2025-09-28T21:36:16Z,owner_update,Platform Engineer,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000170,EVT-963677,2026-02-21T21:40:07Z,escalation,Compliance Analyst,No owner response received after two outreach attempts. Escalating to owner team manager.,1,2026-06-27T00:50:27Z
+5000020,EVT-288503,2025-11-14T14:29:35Z,validation_result,Application Owner,Patch applied successfully in QA environment. Production deployment scheduled for next maintenance window.,0,2026-06-27T00:50:27Z
+5000088,EVT-416321,2025-12-15T14:00:35Z,exemption_request,Application Owner,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,0,2026-06-27T00:50:27Z
+5000003,EVT-802926,2025-10-24T19:42:38Z,escalation,Infrastructure Engineer,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,1,2026-06-27T00:50:27Z
+5000019,EVT-648296,2025-12-23T17:44:28Z,remediation_update,Infrastructure Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000032,EVT-124139,2025-11-04T13:55:29Z,owner_update,Application Owner,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000057,EVT-844888,2025-09-22T14:18:05Z,validation_result,Compliance Analyst,Patch applied successfully in QA environment. Production deployment scheduled for next maintenance window.,0,2026-06-27T00:50:27Z
+5000013,EVT-754758,2025-12-04T13:33:43Z,validation_result,Resiliency Lead,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000083,EVT-900510,2025-06-16T18:20:57Z,escalation,Resiliency Lead,Multiple open drift instances identified for same application owner; bulk remediation discussion recommended.,1,2026-06-27T00:50:27Z
+5000184,EVT-749290,2026-02-13T20:48:05Z,owner_update,Infrastructure Engineer,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000034,EVT-446868,2025-06-26T17:24:59Z,validation_result,Application Owner,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000113,EVT-100137,2026-01-29T19:06:15Z,owner_update,Resiliency Lead,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000009,EVT-853530,2025-04-25T21:40:42Z,remediation_update,Compliance Analyst,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000100,EVT-223586,2025-12-29T18:44:27Z,validation_result,Resiliency Lead,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000159,EVT-898690,2026-01-03T21:32:35Z,owner_update,Platform Engineer,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000104,EVT-628651,2025-08-02T13:21:49Z,validation_result,Infrastructure Engineer,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000129,EVT-782356,2026-01-24T17:07:14Z,remediation_update,Resiliency Lead,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000092,EVT-584210,2025-12-15T19:37:47Z,owner_update,Resiliency Lead,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000126,EVT-608954,2026-01-28T16:24:30Z,remediation_update,Infrastructure Engineer,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,0,2026-06-27T00:50:27Z
+5000030,EVT-333480,2025-09-09T21:16:39Z,escalation,Resiliency Lead,Critical application approaching 120-day threshold with no remediation plan on file.,1,2026-06-27T00:50:27Z
+5000068,EVT-939887,2025-11-19T17:51:25Z,closure_note,Platform Engineer,Upgrade completed during quarterly maintenance window. No issues reported post-deployment.,0,2026-06-27T00:50:27Z
+5000146,EVT-945249,2026-01-15T14:49:24Z,exemption_review,Infrastructure Engineer,Exemption denied; risk accepted without compensating controls is outside policy threshold.,0,2026-06-27T00:50:27Z
+5000203,EVT-512114,2026-01-07T19:30:28Z,remediation_update,Compliance Analyst,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,0,2026-06-27T00:50:27Z
+5000181,EVT-602646,2026-01-08T19:54:39Z,escalation,Infrastructure Engineer,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,1,2026-06-27T00:50:27Z
+5000172,EVT-535632,2026-01-25T20:29:24Z,remediation_update,Platform Engineer,App owner confirmed patch testing will begin during next approved maintenance window.,0,2026-06-27T00:50:27Z
+5000040,EVT-687498,2025-07-25T15:59:08Z,escalation,Compliance Analyst,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,1,2026-06-27T00:50:27Z
+5000084,EVT-900510,2025-09-13T21:21:26Z,owner_update,Infrastructure Engineer,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000046,EVT-958091,2025-11-24T14:10:04Z,exemption_request,Infrastructure Engineer,Upgrade to approved version deferred pending validation of downstream payment gateway compatibility.,0,2026-06-27T00:50:27Z
+5000195,EVT-991592,2026-03-15T18:23:35Z,exemption_request,Resiliency Lead,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,0,2026-06-27T00:50:27Z
+5000123,EVT-413196,2026-04-02T16:07:23Z,remediation_update,Compliance Analyst,App owner confirmed patch testing will begin during next approved maintenance window.,0,2026-06-27T00:50:27Z
+5000119,EVT-117435,2026-01-28T21:49:13Z,exemption_request,Platform Engineer,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,0,2026-06-27T00:50:27Z
+5000010,EVT-823385,2025-12-26T20:37:13Z,validation_result,Infrastructure Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000041,EVT-982134,2025-12-21T21:11:55Z,owner_update,Infrastructure Engineer,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000097,EVT-521272,2025-11-28T17:01:07Z,remediation_update,Application Owner,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000176,EVT-975633,2026-03-14T19:40:53Z,remediation_update,Compliance Analyst,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,0,2026-06-27T00:50:27Z
+5000125,EVT-382272,2026-03-14T16:38:12Z,validation_result,Application Owner,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000169,EVT-963677,2026-03-08T15:42:47Z,escalation,Application Owner,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,1,2026-06-27T00:50:27Z
+5000134,EVT-840073,2026-01-23T16:00:38Z,remediation_update,Infrastructure Engineer,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,0,2026-06-27T00:50:27Z
+5000187,EVT-416321,2026-01-26T15:27:26Z,owner_update,Resiliency Lead,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000042,EVT-982134,2025-12-05T20:49:31Z,remediation_update,Resiliency Lead,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000171,EVT-535632,2026-01-03T15:24:25Z,validation_result,Platform Engineer,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000200,EVT-665790,2026-03-31T20:57:15Z,owner_update,Resiliency Lead,Team lead confirmed remediation is blocked pending security review of new version.,0,2026-06-27T00:50:27Z
+5000205,EVT-120526,2026-02-24T14:50:08Z,escalation,Infrastructure Engineer,No owner response received after two outreach attempts. Escalating to owner team manager.,1,2026-06-27T00:50:27Z
+5000188,EVT-416321,2026-02-10T17:46:38Z,owner_update,Compliance Analyst,Team lead confirmed remediation is blocked pending security review of new version.,0,2026-06-27T00:50:27Z
+5000027,EVT-312332,2025-06-13T14:05:37Z,remediation_update,Application Owner,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000058,EVT-690303,2025-10-19T21:16:17Z,validation_result,Compliance Analyst,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000182,EVT-355989,2026-01-16T19:57:04Z,owner_update,Compliance Analyst,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000185,EVT-749290,2026-01-12T14:27:49Z,remediation_update,Application Owner,App owner confirmed patch testing will begin during next approved maintenance window.,0,2026-06-27T00:50:27Z
+5000166,EVT-979867,2026-03-29T13:55:12Z,escalation,Infrastructure Engineer,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,1,2026-06-27T00:50:27Z
+5000120,EVT-979397,2026-01-04T18:26:00Z,escalation,Application Owner,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,1,2026-06-27T00:50:27Z
+5000106,EVT-537624,2025-11-22T19:38:02Z,owner_update,Compliance Analyst,Team lead confirmed remediation is blocked pending security review of new version.,0,2026-06-27T00:50:27Z
+5000038,EVT-687498,2025-09-10T13:53:41Z,remediation_update,Application Owner,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,0,2026-06-27T00:50:27Z
+5000110,EVT-797609,2026-03-20T18:31:02Z,remediation_update,Infrastructure Engineer,App owner confirmed patch testing will begin during next approved maintenance window.,0,2026-06-27T00:50:27Z
+5000149,EVT-690303,2026-01-04T19:33:41Z,remediation_update,Compliance Analyst,App owner confirmed patch testing will begin during next approved maintenance window.,0,2026-06-27T00:50:27Z
+5000017,EVT-261563,2025-08-20T21:47:12Z,remediation_update,Infrastructure Engineer,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,0,2026-06-27T00:50:27Z
+5000122,EVT-261563,2026-01-27T18:08:02Z,owner_update,Compliance Analyst,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000062,EVT-384421,2025-05-16T20:07:26Z,exemption_request,Platform Engineer,Upgrade postponed due to dependency on shared middleware patch scheduled for next maintenance cycle.,0,2026-06-27T00:50:27Z
+5000090,EVT-435392,2025-12-31T14:28:22Z,escalation,Infrastructure Engineer,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,1,2026-06-27T00:50:27Z
+5000053,EVT-207440,2025-10-06T13:20:01Z,exemption_request,Resiliency Lead,Approved version introduces authentication failures in lower environment; requesting extension until vendor review is complete.,0,2026-06-27T00:50:27Z
+5000194,EVT-991592,2026-02-13T19:13:26Z,escalation,Resiliency Lead,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,1,2026-06-27T00:50:27Z
+5000080,EVT-252310,2025-09-26T13:11:21Z,owner_update,Platform Engineer,Team lead confirmed remediation is blocked pending security review of new version.,0,2026-06-27T00:50:27Z
+5000093,EVT-584210,2025-12-12T15:52:48Z,validation_result,Application Owner,Patch applied successfully in QA environment. Production deployment scheduled for next maintenance window.,0,2026-06-27T00:50:27Z
+5000141,EVT-486611,2026-02-28T16:22:22Z,closure_note,Resiliency Lead,Drift closed after remediation validation confirmed in production.,0,2026-06-27T00:50:27Z
+5000055,EVT-832624,2025-07-22T14:53:01Z,validation_result,Compliance Analyst,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000027,EVT-312332,2025-06-13T14:05:37Z,remediation_update,Application Owner,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000136,EVT-897644,2026-02-01T16:59:43Z,remediation_update,Resiliency Lead,App owner confirmed patch testing will begin during next approved maintenance window.,0,2026-06-27T00:50:27Z
+5000173,EVT-617841,2026-03-31T13:46:27Z,remediation_update,Application Owner,App owner confirmed patch testing will begin during next approved maintenance window.,0,2026-06-27T00:50:27Z
+5000132,EVT-188617,2026-03-05T18:55:19Z,closure_note,Infrastructure Engineer,Record closed after false positive determination from updated discovery scan.,0,2026-06-27T00:50:27Z
+5000135,EVT-897644,2026-02-02T13:20:07Z,owner_update,Resiliency Lead,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000174,EVT-617841,2026-03-26T20:34:23Z,escalation,Application Owner,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,1,2026-06-27T00:50:27Z
+5000002,EVT-210456,2025-12-02T19:32:09Z,owner_update,Platform Engineer,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000031,EVT-333480,2025-10-11T17:11:53Z,exemption_request,Platform Engineer,Vendor patch validated in lower environment but production deployment blocked pending downstream API certification.,0,2026-06-27T00:50:27Z
+5000147,EVT-490985,2026-02-05T18:22:28Z,validation_result,Platform Engineer,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,0,2026-06-27T00:50:27Z
+5000015,EVT-117435,2025-12-18T20:45:13Z,remediation_update,Infrastructure Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000177,EVT-150289,2026-03-11T13:31:05Z,remediation_update,Infrastructure Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000161,EVT-898690,2026-01-24T13:39:36Z,owner_update,Resiliency Lead,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000094,EVT-501754,2025-09-27T19:45:16Z,owner_update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000197,EVT-923516,2026-03-12T17:39:54Z,closure_note,Compliance Analyst,Drift closed after remediation validation confirmed in production.,0,2026-06-27T00:50:27Z
+5000196,EVT-991592,2026-02-18T16:08:12Z,exemption_request,Compliance Analyst,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,0,2026-06-27T00:50:27Z
+5000098,EVT-521272,2025-11-30T16:42:52Z,remediation_update,Platform Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000178,EVT-965595,2026-03-11T20:50:13Z,owner_update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000214,EVT-102605,2026-01-03T19:26:47Z,exemption_request,Resiliency Lead,Approved version introduces authentication failures in lower environment; requesting extension until vendor review is complete.,0,2026-06-27T00:50:27Z
+5000137,EVT-897644,2026-02-01T13:22:53Z,closure_note,Compliance Analyst,Record closed after false positive determination from updated discovery scan.,0,2026-06-27T00:50:27Z
+5000139,EVT-333589,2026-03-24T21:15:56Z,validation_result,Platform Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000004,EVT-525656,2025-11-03T19:40:42Z,owner_update,Application Owner,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000065,EVT-762401,2025-07-05T14:45:09Z,owner_update,Compliance Analyst,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000101,EVT-244272,2025-10-08T21:02:35Z,exemption_request,Application Owner,Approved version introduces authentication failures in lower environment; requesting extension until vendor review is complete.,0,2026-06-27T00:50:27Z
+5000207,EVT-162687,2026-03-09T14:36:33Z,remediation_update,Application Owner,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,0,2026-06-27T00:50:27Z
+5000131,EVT-188617,2026-03-05T15:52:29Z,remediation_update,Application Owner,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,0,2026-06-27T00:50:27Z
+5000108,EVT-540424,2025-06-24T14:13:10Z,remediation_update,Infrastructure Engineer,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,0,2026-06-27T00:50:27Z
+5000066,EVT-887875,2025-05-24T18:23:00Z,exemption_request,Platform Engineer,Application is targeted for retirement in Q4; team requested exemption through decommission milestone.,0,2026-06-27T00:50:27Z
+5000156,EVT-891234,2026-01-29T17:48:21Z,remediation_update,Infrastructure Engineer,Engineering team reported successful QA validation and is preparing production rollout plan.,0,2026-06-27T00:50:27Z
+5000143,EVT-486611,2026-01-19T14:49:08Z,owner_update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000138,EVT-333589,2026-03-30T13:47:56Z,escalation,Compliance Analyst,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,1,2026-06-27T00:50:27Z
+5000056,EVT-844888,2025-09-16T20:51:18Z,escalation,Platform Engineer,No owner response received after two outreach attempts. Escalating to owner team manager.,1,2026-06-27T00:50:27Z
+5000008,EVT-342351,2025-10-11T21:12:52Z,exemption_request,Platform Engineer,Application team requested temporary exception due to regression risk during quarter-end processing window.,0,2026-06-27T00:50:27Z
+5000191,EVT-584210,2026-01-29T18:18:18Z,validation_result,Resiliency Lead,Patch applied successfully in QA environment. Production deployment scheduled for next maintenance window.,0,2026-06-27T00:50:27Z
+5000175,EVT-617841,2026-04-01T18:54:25Z,escalation,Infrastructure Engineer,Critical application approaching 120-day threshold with no remediation plan on file.,1,2026-06-27T00:50:27Z
+5000011,EVT-350414,2025-12-24T16:36:17Z,exemption_request,Platform Engineer,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,0,2026-06-27T00:50:27Z
+5000117,EVT-754758,2026-01-09T19:39:17Z,closure_note,Infrastructure Engineer,Detected version aligned to approved standard during scheduled maintenance activity.,0,2026-06-27T00:50:27Z
+5000012,EVT-754758,2025-11-20T15:42:15Z,exemption_request,Application Owner,Application is targeted for retirement in Q4; team requested exemption through decommission milestone.,0,2026-06-27T00:50:27Z
+5000071,EVT-535632,2025-12-19T14:00:40Z,remediation_update,Compliance Analyst,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,0,2026-06-27T00:50:27Z
+5000193,EVT-521272,2026-01-06T14:32:23Z,owner_update,Infrastructure Engineer,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000051,EVT-515304,2025-08-05T16:09:51Z,validation_result,Platform Engineer,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000079,EVT-602646,2025-12-01T21:33:57Z,closure_note,Compliance Analyst,Drift closed after remediation validation confirmed in production.,0,2026-06-27T00:50:27Z
+5000070,EVT-535632,2025-11-28T15:15:36Z,owner_update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,0,2026-06-27T00:50:27Z
+5000061,EVT-384421,2025-06-20T21:12:08Z,validation_result,Platform Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,0,2026-06-27T00:50:27Z
+5000075,EVT-975633,2025-11-08T20:40:46Z,validation_result,Compliance Analyst,Compatibility testing complete. Approved version confirmed stable with current application stack.,0,2026-06-27T00:50:27Z
+5000022,EVT-943995,2025-12-16T20:53:26Z,remediation_update,Resiliency Lead,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,0,2026-06-27T00:50:27Z
+5000081,EVT-252310,2025-05-19T14:07:36Z,exemption_request,Infrastructure Engineer,Application is targeted for retirement in Q4; team requested exemption through decommission milestone.,0,2026-06-27T00:50:27Z
+5000133,EVT-982134,2026-02-18T14:28:57Z,owner_update,Resiliency Lead,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000208,EVT-932026,2026-01-31T20:16:51Z,owner_update,Compliance Analyst,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,0,2026-06-27T00:50:27Z
+5000130,EVT-854760,2026-01-14T19:28:28Z,closure_note,Application Owner,Detected version aligned to approved standard during scheduled maintenance activity.,0,2026-06-27T00:50:27Z
+5000069,EVT-939887,2025-12-31T18:32:10Z,exemption_request,Infrastructure Engineer,Upgrade postponed due to dependency on shared middleware patch scheduled for next maintenance cycle.,0,2026-06-27T00:50:27Z
+5000152,EVT-508073,2026-02-12T20:45:01Z,owner_update,Application Owner,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000103,EVT-628651,2025-07-29T19:56:39Z,exemption_review,Infrastructure Engineer,Exemption approved pending confirmation of remediation target date from application owner.,0,2026-06-27T00:50:27Z
+5000016,EVT-979397,2025-12-29T17:59:19Z,exemption_request,Application Owner,Application team requested temporary exception due to regression risk during quarter-end processing window.,0,2026-06-27T00:50:27Z
+5000199,EVT-665790,2026-03-27T20:36:31Z,owner_update,Platform Engineer,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,0,2026-06-27T00:50:27Z
+5000112,EVT-237296,2026-03-25T14:53:44Z,closure_note,Compliance Analyst,Upgrade completed during quarterly maintenance window. No issues reported post-deployment.,0,2026-06-27T00:50:27Z

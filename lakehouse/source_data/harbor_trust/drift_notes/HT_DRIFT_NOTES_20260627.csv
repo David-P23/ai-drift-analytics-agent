@@ -1,0 +1,196 @@
+NoteRef,DriftRef,NoteDate,Category,AuthorRole,Body,Escalated,ExtractedAt
+HTN-4100001,HTD-560629,12/09/2025,Exemption Request,Resiliency Lead,Application team requested temporary exception due to regression risk during quarter-end processing window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100002,HTD-106038,10/09/2025,Closure Note,Platform Engineer,Drift closed after remediation validation confirmed in production.,FALSE,2026-06-27T00:50:27Z
+HTN-4100003,HTD-106038,10/09/2025,Exemption Request,Infrastructure Engineer,Upgrade postponed due to dependency on shared middleware patch scheduled for next maintenance cycle.,FALSE,2026-06-27T00:50:27Z
+HTN-4100004,HTD-106038,10/21/2025,Validation Result,Application Owner,Patch applied successfully in QA environment. Production deployment scheduled for next maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100005,HTD-899199,11/05/2025,Exemption Review,Platform Engineer,Exemption approved pending confirmation of remediation target date from application owner.,FALSE,2026-06-27T00:50:27Z
+HTN-4100006,HTD-576586,07/07/2025,Escalation,Resiliency Lead,Multiple open drift instances identified for same application owner; bulk remediation discussion recommended.,TRUE,2026-06-27T00:50:27Z
+HTN-4100007,HTD-857775,10/22/2025,Remediation Update,Resiliency Lead,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,FALSE,2026-06-27T00:50:27Z
+HTN-4100008,HTD-616135,10/13/2025,Escalation,Compliance Analyst,Critical application approaching 120-day threshold with no remediation plan on file.,TRUE,2026-06-27T00:50:27Z
+HTN-4100009,HTD-306685,12/09/2025,Remediation Update,Application Owner,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100010,HTD-306685,10/31/2025,Owner Update,Infrastructure Engineer,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,FALSE,2026-06-27T00:50:27Z
+HTN-4100011,HTD-591527,10/16/2025,Remediation Update,Infrastructure Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100012,HTD-145921,12/30/2025,Escalation,Application Owner,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,TRUE,2026-06-27T00:50:27Z
+HTN-4100013,HTD-684527,12/21/2025,Exemption Request,Resiliency Lead,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,FALSE,2026-06-27T00:50:27Z
+HTN-4100014,HTD-537301,11/04/2025,Owner Update,Resiliency Lead,Owner requested additional time; dependency on third-party certification process not yet complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100015,HTD-537301,10/30/2025,Closure Note,Compliance Analyst,Upgrade completed during quarterly maintenance window. No issues reported post-deployment.,FALSE,2026-06-27T00:50:27Z
+HTN-4100016,HTD-335212,08/19/2025,Escalation,Resiliency Lead,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,TRUE,2026-06-27T00:50:27Z
+HTN-4100017,HTD-335212,05/26/2025,Escalation,Resiliency Lead,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,TRUE,2026-06-27T00:50:27Z
+HTN-4100018,HTD-335212,08/20/2025,Validation Result,Compliance Analyst,Patch applied successfully in QA environment. Production deployment scheduled for next maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100019,HTD-101221,10/12/2025,Remediation Update,Compliance Analyst,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100020,HTD-101221,10/06/2025,Owner Update,Infrastructure Engineer,Owner requested additional time; dependency on third-party certification process not yet complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100021,HTD-101221,10/10/2025,Owner Update,Application Owner,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100022,HTD-101221,10/08/2025,Remediation Update,Infrastructure Engineer,App owner confirmed patch testing will begin during next approved maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100023,HTD-764960,05/08/2025,Remediation Update,Resiliency Lead,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100024,HTD-764960,06/20/2025,Validation Result,Infrastructure Engineer,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,FALSE,2026-06-27T00:50:27Z
+HTN-4100025,HTD-764960,05/09/2025,Remediation Update,Platform Engineer,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100026,HTD-764960,04/20/2025,Escalation,Resiliency Lead,Critical application approaching 120-day threshold with no remediation plan on file.,TRUE,2026-06-27T00:50:27Z
+HTN-4100027,HTD-660688,12/12/2025,Owner Update,Infrastructure Engineer,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,FALSE,2026-06-27T00:50:27Z
+HTN-4100028,HTD-477460,11/30/2025,Validation Result,Infrastructure Engineer,Compatibility testing complete. Approved version confirmed stable with current application stack.,FALSE,2026-06-27T00:50:27Z
+HTN-4100029,HTD-298486,11/25/2025,Owner Update,Application Owner,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,FALSE,2026-06-27T00:50:27Z
+HTN-4100030,HTD-298486,12/02/2025,Remediation Update,Resiliency Lead,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,FALSE,2026-06-27T00:50:27Z
+HTN-4100031,HTD-145858,12/10/2025,Exemption Review,Platform Engineer,Exemption denied; risk accepted without compensating controls is outside policy threshold.,FALSE,2026-06-27T00:50:27Z
+HTN-4100032,HTD-145858,11/05/2025,Owner Update,Infrastructure Engineer,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,FALSE,2026-06-27T00:50:27Z
+HTN-4100033,HTD-388861,11/14/2025,Owner Update,Resiliency Lead,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100034,HTD-514888,12/17/2025,Owner Update,Compliance Analyst,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,FALSE,2026-06-27T00:50:27Z
+HTN-4100035,HTD-582987,04/19/2025,Remediation Update,Platform Engineer,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,FALSE,2026-06-27T00:50:27Z
+HTN-4100036,HTD-890393,08/27/2025,Remediation Update,Platform Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100037,HTD-890393,08/24/2025,Validation Result,Application Owner,Patch applied successfully in QA environment. Production deployment scheduled for next maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100038,HTD-890393,08/27/2025,Owner Update,Application Owner,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,FALSE,2026-06-27T00:50:27Z
+HTN-4100039,HTD-890393,08/23/2025,Owner Update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100040,HTD-932336,12/08/2025,Exemption Review,Application Owner,Review complete. Exemption extended 60 days pending vendor patch availability.,FALSE,2026-06-27T00:50:27Z
+HTN-4100041,HTD-932336,12/26/2025,Validation Result,Infrastructure Engineer,Compatibility testing complete. Approved version confirmed stable with current application stack.,FALSE,2026-06-27T00:50:27Z
+HTN-4100042,HTD-932336,12/24/2025,Remediation Update,Infrastructure Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100043,HTD-191045,08/24/2025,Remediation Update,Application Owner,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,FALSE,2026-06-27T00:50:27Z
+HTN-4100044,HTD-154675,11/19/2025,Remediation Update,Platform Engineer,App owner confirmed patch testing will begin during next approved maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100045,HTD-391032,11/07/2025,Closure Note,Infrastructure Engineer,Record closed after false positive determination from updated discovery scan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100046,HTD-104324,11/06/2025,Remediation Update,Application Owner,App owner confirmed patch testing will begin during next approved maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100047,HTD-898482,10/16/2025,Exemption Request,Application Owner,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,FALSE,2026-06-27T00:50:27Z
+HTN-4100048,HTD-898482,11/14/2025,Owner Update,Compliance Analyst,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100049,HTD-980401,06/17/2025,Exemption Request,Compliance Analyst,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,FALSE,2026-06-27T00:50:27Z
+HTN-4100050,HTD-395361,11/20/2025,Closure Note,Resiliency Lead,Record closed after false positive determination from updated discovery scan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100051,HTD-410363,07/03/2025,Closure Note,Platform Engineer,Detected version aligned to approved standard during scheduled maintenance activity.,FALSE,2026-06-27T00:50:27Z
+HTN-4100052,HTD-410363,08/21/2025,Remediation Update,Compliance Analyst,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100053,HTD-774899,05/28/2025,Validation Result,Application Owner,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,FALSE,2026-06-27T00:50:27Z
+HTN-4100054,HTD-774899,06/02/2025,Closure Note,Platform Engineer,Detected version aligned to approved standard during scheduled maintenance activity.,FALSE,2026-06-27T00:50:27Z
+HTN-4100055,HTD-774899,05/29/2025,Owner Update,Compliance Analyst,Owner requested additional time; dependency on third-party certification process not yet complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100056,HTD-774899,05/23/2025,Validation Result,Application Owner,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,FALSE,2026-06-27T00:50:27Z
+HTN-4100057,HTD-193516,06/25/2025,Owner Update,Compliance Analyst,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,FALSE,2026-06-27T00:50:27Z
+HTN-4100058,HTD-985398,08/02/2025,Validation Result,Resiliency Lead,Compatibility testing complete. Approved version confirmed stable with current application stack.,FALSE,2026-06-27T00:50:27Z
+HTN-4100059,HTD-985398,05/02/2025,Remediation Update,Resiliency Lead,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100060,HTD-174958,12/20/2025,Exemption Request,Platform Engineer,Approved version introduces authentication failures in lower environment; requesting extension until vendor review is complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100061,HTD-174958,12/25/2025,Validation Result,Application Owner,Compatibility testing complete. Approved version confirmed stable with current application stack.,FALSE,2026-06-27T00:50:27Z
+HTN-4100062,HTD-174958,12/25/2025,Closure Note,Resiliency Lead,Detected version aligned to approved standard during scheduled maintenance activity.,FALSE,2026-06-27T00:50:27Z
+HTN-4100063,HTD-174958,12/10/2025,Closure Note,Resiliency Lead,Drift closed after remediation validation confirmed in production.,FALSE,2026-06-27T00:50:27Z
+HTN-4100064,HTD-638725,09/03/2025,Escalation,Application Owner,Critical application approaching 120-day threshold with no remediation plan on file.,TRUE,2026-06-27T00:50:27Z
+HTN-4100065,HTD-638725,08/21/2025,Exemption Request,Infrastructure Engineer,Upgrade to approved version deferred pending validation of downstream payment gateway compatibility.,FALSE,2026-06-27T00:50:27Z
+HTN-4100066,HTD-638725,09/17/2025,Owner Update,Compliance Analyst,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,FALSE,2026-06-27T00:50:27Z
+HTN-4100067,HTD-454070,10/28/2025,Closure Note,Resiliency Lead,Detected version aligned to approved standard during scheduled maintenance activity.,FALSE,2026-06-27T00:50:27Z
+HTN-4100068,HTD-454070,10/26/2025,Owner Update,Compliance Analyst,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100069,HTD-454070,11/28/2025,Remediation Update,Platform Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100070,HTD-454070,09/24/2025,Exemption Request,Infrastructure Engineer,Upgrade postponed due to dependency on shared middleware patch scheduled for next maintenance cycle.,FALSE,2026-06-27T00:50:27Z
+HTN-4100071,HTD-304404,09/17/2025,Remediation Update,Resiliency Lead,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100072,HTD-407524,07/07/2025,Exemption Request,Compliance Analyst,Vendor patch validated in lower environment but production deployment blocked pending downstream API certification.,FALSE,2026-06-27T00:50:27Z
+HTN-4100073,HTD-407524,10/20/2025,Owner Update,Application Owner,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100074,HTD-573160,09/21/2025,Validation Result,Infrastructure Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,FALSE,2026-06-27T00:50:27Z
+HTN-4100075,HTD-553020,12/01/2025,Remediation Update,Compliance Analyst,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100076,HTD-553020,12/02/2025,Escalation,Infrastructure Engineer,No owner response received after two outreach attempts. Escalating to owner team manager.,TRUE,2026-06-27T00:50:27Z
+HTN-4100077,HTD-484280,05/13/2025,Exemption Request,Infrastructure Engineer,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,FALSE,2026-06-27T00:50:27Z
+HTN-4100078,HTD-105628,06/30/2025,Escalation,Compliance Analyst,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,TRUE,2026-06-27T00:50:27Z
+HTN-4100079,HTD-267824,10/21/2025,Validation Result,Compliance Analyst,Compatibility testing complete. Approved version confirmed stable with current application stack.,FALSE,2026-06-27T00:50:27Z
+HTN-4100080,HTD-620661,11/29/2025,Remediation Update,Compliance Analyst,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100081,HTD-620661,11/15/2025,Closure Note,Platform Engineer,Drift closed after remediation validation confirmed in production.,FALSE,2026-06-27T00:50:27Z
+HTN-4100082,HTD-432490,05/07/2025,Validation Result,Compliance Analyst,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,FALSE,2026-06-27T00:50:27Z
+HTN-4100083,HTD-680954,11/15/2025,Escalation,Platform Engineer,No owner response received after two outreach attempts. Escalating to owner team manager.,TRUE,2026-06-27T00:50:27Z
+HTN-4100084,HTD-575019,12/18/2025,Exemption Request,Platform Engineer,Approved version introduces authentication failures in lower environment; requesting extension until vendor review is complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100085,HTD-405497,06/05/2025,Exemption Request,Resiliency Lead,Upgrade postponed due to dependency on shared middleware patch scheduled for next maintenance cycle.,FALSE,2026-06-27T00:50:27Z
+HTN-4100086,HTD-405497,06/05/2025,Remediation Update,Application Owner,App owner confirmed patch testing will begin during next approved maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100087,HTD-405497,05/26/2025,Validation Result,Platform Engineer,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,FALSE,2026-06-27T00:50:27Z
+HTN-4100088,HTD-323784,06/03/2025,Owner Update,Compliance Analyst,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100089,HTD-323784,07/21/2025,Exemption Request,Compliance Analyst,Application is targeted for retirement in Q4; team requested exemption through decommission milestone.,FALSE,2026-06-27T00:50:27Z
+HTN-4100090,HTD-323784,07/13/2025,Remediation Update,Platform Engineer,App owner confirmed patch testing will begin during next approved maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100091,HTD-686429,08/25/2025,Exemption Request,Platform Engineer,Application team requested temporary exception due to regression risk during quarter-end processing window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100092,HTD-686429,08/24/2025,Exemption Review,Resiliency Lead,Compliance team reviewed exemption request. Additional documentation required before approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100093,HTD-229833,11/27/2025,Validation Result,Platform Engineer,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,FALSE,2026-06-27T00:50:27Z
+HTN-4100094,HTD-147544,07/12/2025,Exemption Request,Compliance Analyst,Application is targeted for retirement in Q4; team requested exemption through decommission milestone.,FALSE,2026-06-27T00:50:27Z
+HTN-4100095,HTD-958113,09/25/2025,Closure Note,Infrastructure Engineer,Drift closed after remediation validation confirmed in production.,FALSE,2026-06-27T00:50:27Z
+HTN-4100096,HTD-569710,05/09/2025,Closure Note,Compliance Analyst,Drift closed after remediation validation confirmed in production.,FALSE,2026-06-27T00:50:27Z
+HTN-4100097,HTD-700969,11/13/2025,Validation Result,Resiliency Lead,Version upgrade validated; no adverse impact detected in pre-production testing.,FALSE,2026-06-27T00:50:27Z
+HTN-4100098,HTD-310165,07/17/2025,Escalation,Compliance Analyst,Critical application approaching 120-day threshold with no remediation plan on file.,TRUE,2026-06-27T00:50:27Z
+HTN-4100099,HTD-582343,08/18/2025,Validation Result,Compliance Analyst,Patch applied successfully in QA environment. Production deployment scheduled for next maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100100,HTD-582343,11/02/2025,Owner Update,Compliance Analyst,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100101,HTD-667634,07/25/2025,Owner Update,Application Owner,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,FALSE,2026-06-27T00:50:27Z
+HTN-4100102,HTD-950370,12/17/2025,Remediation Update,Compliance Analyst,App owner confirmed patch testing will begin during next approved maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100103,HTD-485211,12/29/2025,Exemption Request,Infrastructure Engineer,Vendor patch validated in lower environment but production deployment blocked pending downstream API certification.,FALSE,2026-06-27T00:50:27Z
+HTN-4100104,HTD-809255,08/26/2025,Owner Update,Compliance Analyst,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,FALSE,2026-06-27T00:50:27Z
+HTN-4100105,HTD-899039,12/05/2025,Owner Update,Resiliency Lead,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,FALSE,2026-06-27T00:50:27Z
+HTN-4100106,HTD-145227,07/15/2025,Remediation Update,Application Owner,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100107,HTD-560629,01/28/2026,Escalation,Resiliency Lead,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,TRUE,2026-06-27T00:50:27Z
+HTN-4100108,HTD-913440,01/13/2026,Validation Result,Resiliency Lead,Version upgrade validated; no adverse impact detected in pre-production testing.,FALSE,2026-06-27T00:50:27Z
+HTN-4100109,HTD-913440,03/08/2026,Owner Update,Platform Engineer,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100110,HTD-143503,04/01/2026,Escalation,Compliance Analyst,Critical application approaching 120-day threshold with no remediation plan on file.,TRUE,2026-06-27T00:50:27Z
+HTN-4100111,HTD-143503,02/28/2026,Remediation Update,Application Owner,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100112,HTD-143503,03/22/2026,Escalation,Platform Engineer,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,TRUE,2026-06-27T00:50:27Z
+HTN-4100113,HTD-143503,03/11/2026,Remediation Update,Platform Engineer,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100114,HTD-616135,01/17/2026,Owner Update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100115,HTD-616135,02/21/2026,Exemption Request,Infrastructure Engineer,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,FALSE,2026-06-27T00:50:27Z
+HTN-4100116,HTD-306685,02/10/2026,Closure Note,Infrastructure Engineer,Record closed after false positive determination from updated discovery scan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100117,HTD-306685,03/29/2026,Exemption Request,Application Owner,Approved version introduces authentication failures in lower environment; requesting extension until vendor review is complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100118,HTD-350473,03/19/2026,Closure Note,Infrastructure Engineer,Upgrade completed during quarterly maintenance window. No issues reported post-deployment.,FALSE,2026-06-27T00:50:27Z
+HTN-4100119,HTD-350473,01/31/2026,Owner Update,Infrastructure Engineer,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100120,HTD-350473,03/31/2026,Escalation,Application Owner,No owner response received after two outreach attempts. Escalating to owner team manager.,TRUE,2026-06-27T00:50:27Z
+HTN-4100121,HTD-216326,03/13/2026,Escalation,Compliance Analyst,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,TRUE,2026-06-27T00:50:27Z
+HTN-4100122,HTD-216326,03/09/2026,Escalation,Resiliency Lead,Critical application approaching 120-day threshold with no remediation plan on file.,TRUE,2026-06-27T00:50:27Z
+HTN-4100123,HTD-216326,02/21/2026,Exemption Request,Application Owner,Upgrade to approved version deferred pending validation of downstream payment gateway compatibility.,FALSE,2026-06-27T00:50:27Z
+HTN-4100124,HTD-216326,03/20/2026,Owner Update,Platform Engineer,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100125,HTD-660688,02/10/2026,Closure Note,Infrastructure Engineer,Record closed after false positive determination from updated discovery scan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100126,HTD-660688,02/06/2026,Closure Note,Infrastructure Engineer,Detected version aligned to approved standard during scheduled maintenance activity.,FALSE,2026-06-27T00:50:27Z
+HTN-4100127,HTD-813317,01/15/2026,Escalation,Platform Engineer,No owner response received after two outreach attempts. Escalating to owner team manager.,TRUE,2026-06-27T00:50:27Z
+HTN-4100128,HTD-813317,03/06/2026,Owner Update,Infrastructure Engineer,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100129,HTD-813317,02/15/2026,Remediation Update,Infrastructure Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100130,HTD-204858,03/23/2026,Remediation Update,Resiliency Lead,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,FALSE,2026-06-27T00:50:27Z
+HTN-4100131,HTD-646582,03/26/2026,Remediation Update,Compliance Analyst,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,FALSE,2026-06-27T00:50:27Z
+HTN-4100132,HTD-354514,02/11/2026,Closure Note,Compliance Analyst,Record closed after false positive determination from updated discovery scan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100133,HTD-354514,01/25/2026,Remediation Update,Platform Engineer,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100134,HTD-354514,02/25/2026,Validation Result,Application Owner,Version upgrade validated; no adverse impact detected in pre-production testing.,FALSE,2026-06-27T00:50:27Z
+HTN-4100135,HTD-885573,02/23/2026,Remediation Update,Compliance Analyst,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100136,HTD-572059,01/01/2026,Remediation Update,Compliance Analyst,App owner confirmed patch testing will begin during next approved maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100137,HTD-572059,02/17/2026,Exemption Review,Platform Engineer,Exemption denied; risk accepted without compensating controls is outside policy threshold.,FALSE,2026-06-27T00:50:27Z
+HTN-4100138,HTD-145858,03/13/2026,Remediation Update,Resiliency Lead,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100139,HTD-145858,02/27/2026,Exemption Request,Platform Engineer,New version conflicts with internal reporting package used by Treasury operations; exemption requested pending fix.,FALSE,2026-06-27T00:50:27Z
+HTN-4100140,HTD-552073,02/09/2026,Escalation,Compliance Analyst,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,TRUE,2026-06-27T00:50:27Z
+HTN-4100141,HTD-617874,02/01/2026,Validation Result,Infrastructure Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,FALSE,2026-06-27T00:50:27Z
+HTN-4100142,HTD-514888,03/12/2026,Remediation Update,Application Owner,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100143,HTD-382040,01/16/2026,Remediation Update,Platform Engineer,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100144,HTD-311160,01/15/2026,Validation Result,Platform Engineer,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,FALSE,2026-06-27T00:50:27Z
+HTN-4100145,HTD-932336,02/23/2026,Closure Note,Compliance Analyst,Detected version aligned to approved standard during scheduled maintenance activity.,FALSE,2026-06-27T00:50:27Z
+HTN-4100146,HTD-622359,03/08/2026,Validation Result,Resiliency Lead,Version upgrade validated; no adverse impact detected in pre-production testing.,FALSE,2026-06-27T00:50:27Z
+HTN-4100147,HTD-591977,03/18/2026,Validation Result,Compliance Analyst,Version upgrade validated; no adverse impact detected in pre-production testing.,FALSE,2026-06-27T00:50:27Z
+HTN-4100148,HTD-591977,03/14/2026,Escalation,Infrastructure Engineer,No owner response received after two outreach attempts. Escalating to owner team manager.,TRUE,2026-06-27T00:50:27Z
+HTN-4100149,HTD-591977,03/28/2026,Owner Update,Compliance Analyst,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,FALSE,2026-06-27T00:50:27Z
+HTN-4100150,HTD-927593,02/08/2026,Exemption Review,Application Owner,Compliance team reviewed exemption request. Additional documentation required before approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100151,HTD-927593,02/13/2026,Exemption Review,Application Owner,Review complete. Exemption extended 60 days pending vendor patch availability.,FALSE,2026-06-27T00:50:27Z
+HTN-4100152,HTD-104324,01/17/2026,Exemption Review,Platform Engineer,Exemption denied; risk accepted without compensating controls is outside policy threshold.,FALSE,2026-06-27T00:50:27Z
+HTN-4100153,HTD-333022,02/17/2026,Owner Update,Compliance Analyst,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,FALSE,2026-06-27T00:50:27Z
+HTN-4100154,HTD-395361,01/29/2026,Remediation Update,Resiliency Lead,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100155,HTD-395361,02/03/2026,Closure Note,Resiliency Lead,Detected version aligned to approved standard during scheduled maintenance activity.,FALSE,2026-06-27T00:50:27Z
+HTN-4100156,HTD-395361,01/24/2026,Remediation Update,Platform Engineer,App owner confirmed patch testing will begin during next approved maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100157,HTD-193516,03/01/2026,Remediation Update,Infrastructure Engineer,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100158,HTD-405840,03/26/2026,Exemption Request,Compliance Analyst,Upgrade postponed due to dependency on shared middleware patch scheduled for next maintenance cycle.,FALSE,2026-06-27T00:50:27Z
+HTN-4100159,HTD-405840,03/03/2026,Escalation,Compliance Analyst,Critical application approaching 120-day threshold with no remediation plan on file.,TRUE,2026-06-27T00:50:27Z
+HTN-4100160,HTD-405840,03/26/2026,Remediation Update,Platform Engineer,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100161,HTD-405840,02/21/2026,Owner Update,Compliance Analyst,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,FALSE,2026-06-27T00:50:27Z
+HTN-4100162,HTD-927695,01/28/2026,Escalation,Platform Engineer,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,TRUE,2026-06-27T00:50:27Z
+HTN-4100163,HTD-583772,01/23/2026,Remediation Update,Compliance Analyst,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100164,HTD-278111,03/29/2026,Owner Update,Resiliency Lead,Owner requested additional time; dependency on third-party certification process not yet complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100165,HTD-278111,03/23/2026,Owner Update,Application Owner,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,FALSE,2026-06-27T00:50:27Z
+HTN-4100166,HTD-278111,03/20/2026,Exemption Request,Application Owner,Vendor patch validated in lower environment but production deployment blocked pending downstream API certification.,FALSE,2026-06-27T00:50:27Z
+HTN-4100167,HTD-650518,02/13/2026,Validation Result,Application Owner,Validation failed in lower environment due to SSL handshake error with upstream connector. Rollback initiated.,FALSE,2026-06-27T00:50:27Z
+HTN-4100168,HTD-458400,02/08/2026,Remediation Update,Platform Engineer,App owner confirmed patch testing will begin during next approved maintenance window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100169,HTD-553020,02/26/2026,Remediation Update,Compliance Analyst,Owner confirmed coordination with platform engineering team to schedule upgrade during low-traffic window.,FALSE,2026-06-27T00:50:27Z
+HTN-4100170,HTD-553020,03/13/2026,Escalation,Compliance Analyst,No owner response received after two outreach attempts. Escalating to owner team manager.,TRUE,2026-06-27T00:50:27Z
+HTN-4100171,HTD-224223,03/14/2026,Exemption Request,Infrastructure Engineer,Upgrade to approved version deferred pending validation of downstream payment gateway compatibility.,FALSE,2026-06-27T00:50:27Z
+HTN-4100172,HTD-936523,02/27/2026,Remediation Update,Application Owner,Remediation target date revised; infrastructure team identified additional dependency on shared load balancer config.,FALSE,2026-06-27T00:50:27Z
+HTN-4100173,HTD-936523,02/22/2026,Remediation Update,Resiliency Lead,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z
+HTN-4100174,HTD-630111,03/13/2026,Owner Update,Platform Engineer,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,FALSE,2026-06-27T00:50:27Z
+HTN-4100175,HTD-235604,02/07/2026,Escalation,Application Owner,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,TRUE,2026-06-27T00:50:27Z
+HTN-4100176,HTD-235604,03/27/2026,Owner Update,Resiliency Lead,Application owner confirmed awareness of drift and is coordinating with vendor on patch schedule.,FALSE,2026-06-27T00:50:27Z
+HTN-4100177,HTD-235604,02/06/2026,Owner Update,Application Owner,Owner requested additional time; dependency on third-party certification process not yet complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100178,HTD-235604,04/01/2026,Owner Update,Infrastructure Engineer,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100179,HTD-620661,01/22/2026,Owner Update,Compliance Analyst,Owner requested additional time; dependency on third-party certification process not yet complete.,FALSE,2026-06-27T00:50:27Z
+HTN-4100180,HTD-436860,01/26/2026,Validation Result,Platform Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,FALSE,2026-06-27T00:50:27Z
+HTN-4100181,HTD-575019,03/13/2026,Escalation,Compliance Analyst,Critical application approaching 120-day threshold with no remediation plan on file.,TRUE,2026-06-27T00:50:27Z
+HTN-4100182,HTD-575019,02/14/2026,Owner Update,Compliance Analyst,Owner indicated upgrade will be bundled with Q2 platform refresh currently in planning.,FALSE,2026-06-27T00:50:27Z
+HTN-4100183,HTD-202181,02/15/2026,Escalation,Platform Engineer,Drift exceeds 90 days for critical production application. Escalation sent to resiliency lead.,TRUE,2026-06-27T00:50:27Z
+HTN-4100184,HTD-339537,03/10/2026,Remediation Update,Compliance Analyst,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100185,HTD-323784,02/06/2026,Remediation Update,Resiliency Lead,Dependency on Oracle client upgrade remains unresolved; no production remediation date confirmed.,FALSE,2026-06-27T00:50:27Z
+HTN-4100186,HTD-582343,01/30/2026,Escalation,Resiliency Lead,Pending exemption has remained unresolved beyond review SLA. Follow-up requested from compliance.,TRUE,2026-06-27T00:50:27Z
+HTN-4100187,HTD-352276,03/02/2026,Owner Update,Application Owner,Team lead confirmed remediation is blocked pending security review of new version.,FALSE,2026-06-27T00:50:27Z
+HTN-4100188,HTD-950370,01/07/2026,Validation Result,Platform Engineer,Version upgrade validated; no adverse impact detected in pre-production testing.,FALSE,2026-06-27T00:50:27Z
+HTN-4100189,HTD-950370,01/08/2026,Remediation Update,Platform Engineer,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100190,HTD-950370,01/11/2026,Validation Result,Application Owner,Compatibility testing complete. Approved version confirmed stable with current application stack.,FALSE,2026-06-27T00:50:27Z
+HTN-4100191,HTD-485211,03/27/2026,Exemption Request,Resiliency Lead,Upgrade postponed due to dependency on shared middleware patch scheduled for next maintenance cycle.,FALSE,2026-06-27T00:50:27Z
+HTN-4100192,HTD-215413,02/28/2026,Exemption Request,Application Owner,Upgrade postponed due to dependency on shared middleware patch scheduled for next maintenance cycle.,FALSE,2026-06-27T00:50:27Z
+HTN-4100193,HTD-215413,02/25/2026,Closure Note,Resiliency Lead,Drift closed after remediation validation confirmed in production.,FALSE,2026-06-27T00:50:27Z
+HTN-4100194,HTD-921323,03/11/2026,Remediation Update,Resiliency Lead,Infrastructure team completed lower-environment validation; production deployment remains pending CAB approval.,FALSE,2026-06-27T00:50:27Z
+HTN-4100195,HTD-921323,04/02/2026,Remediation Update,Infrastructure Engineer,Engineering team reported successful QA validation and is preparing production rollout plan.,FALSE,2026-06-27T00:50:27Z

@@ -1,0 +1,85 @@
+source_system,source_product,canonical_product,canonical_category
+northstar_core,Apache HTTP Server,Apache HTTP Server,Web Server / API
+harbor_trust,Apache HTTP Server,Apache HTTP Server,Web Server / API
+summit_capital,apache_httpd,Apache HTTP Server,Web Server / API
+northstar_core,Apigee Gateway,Apigee Gateway,Web Server / API
+harbor_trust,Google Apigee,Apigee Gateway,Web Server / API
+summit_capital,apigee,Apigee Gateway,Web Server / API
+northstar_core,AppDynamics Agent,AppDynamics Agent,Monitoring / Agent
+harbor_trust,AppDynamics Java Agent,AppDynamics Agent,Monitoring / Agent
+summit_capital,appdynamics,AppDynamics Agent,Monitoring / Agent
+northstar_core,CyberArk,CyberArk,Security / Identity
+harbor_trust,CyberArk PAM,CyberArk,Security / Identity
+summit_capital,cyberark,CyberArk,Security / Identity
+northstar_core,Dynatrace OneAgent,Dynatrace OneAgent,Monitoring / Agent
+harbor_trust,Dynatrace OneAgent,Dynatrace OneAgent,Monitoring / Agent
+summit_capital,dynatrace,Dynatrace OneAgent,Monitoring / Agent
+northstar_core,IBM MQ,IBM MQ,Messaging / Integration
+harbor_trust,IBM MQ,IBM MQ,Messaging / Integration
+summit_capital,ibm_mq,IBM MQ,Messaging / Integration
+northstar_core,IIS,IIS,Web Server / API
+harbor_trust,Microsoft IIS,IIS,Web Server / API
+summit_capital,iis,IIS,Web Server / API
+northstar_core,JBoss EAP,JBoss EAP,Middleware
+harbor_trust,Red Hat JBoss EAP,JBoss EAP,Middleware
+summit_capital,jboss_eap,JBoss EAP,Middleware
+northstar_core,Kafka,Kafka,Messaging / Integration
+harbor_trust,Confluent Kafka,Kafka,Messaging / Integration
+summit_capital,kafka,Kafka,Messaging / Integration
+northstar_core,MongoDB Enterprise,MongoDB Enterprise,Database
+harbor_trust,MongoDB Enterprise Advanced,MongoDB Enterprise,Database
+summit_capital,mongodb_ent,MongoDB Enterprise,Database
+northstar_core,MuleSoft Runtime,MuleSoft Runtime,Messaging / Integration
+harbor_trust,MuleSoft Mule Runtime,MuleSoft Runtime,Messaging / Integration
+summit_capital,mulesoft,MuleSoft Runtime,Messaging / Integration
+northstar_core,NGINX,NGINX,Web Server / API
+harbor_trust,NGINX Plus,NGINX,Web Server / API
+summit_capital,nginx,NGINX,Web Server / API
+northstar_core,Okta Agent,Okta Agent,Security / Identity
+harbor_trust,Okta AD Agent,Okta Agent,Security / Identity
+summit_capital,okta_agent,Okta Agent,Security / Identity
+northstar_core,Oracle Database,Oracle Database,Database
+harbor_trust,Oracle Database,Oracle Database,Database
+summit_capital,oracle_db,Oracle Database,Database
+northstar_core,PingFederate,PingFederate,Security / Identity
+harbor_trust,Ping Identity PingFederate,PingFederate,Security / Identity
+summit_capital,pingfederate,PingFederate,Security / Identity
+northstar_core,PostgreSQL,PostgreSQL,Database
+harbor_trust,PostgreSQL,PostgreSQL,Database
+summit_capital,postgresql,PostgreSQL,Database
+northstar_core,RHEL,RHEL,Operating System
+harbor_trust,Red Hat Enterprise Linux,RHEL,Operating System
+summit_capital,rhel,RHEL,Operating System
+northstar_core,SQL Server,SQL Server,Database
+harbor_trust,Microsoft SQL Server,SQL Server,Database
+summit_capital,mssql,SQL Server,Database
+northstar_core,SUSE Linux,SUSE Linux,Operating System
+harbor_trust,SUSE Linux Enterprise Server,SUSE Linux,Operating System
+summit_capital,sles,SUSE Linux,Operating System
+northstar_core,SailPoint IQService,SailPoint IQService,Security / Identity
+harbor_trust,SailPoint IdentityIQ IQService,SailPoint IQService,Security / Identity
+summit_capital,sailpoint_iqservice,SailPoint IQService,Security / Identity
+northstar_core,Splunk UF,Splunk UF,Monitoring / Agent
+harbor_trust,Splunk Universal Forwarder,Splunk UF,Monitoring / Agent
+summit_capital,splunk_uf,Splunk UF,Monitoring / Agent
+northstar_core,TIBCO EMS,TIBCO EMS,Messaging / Integration
+harbor_trust,TIBCO Enterprise Message Service,TIBCO EMS,Messaging / Integration
+summit_capital,tibco_ems,TIBCO EMS,Messaging / Integration
+northstar_core,Tanium Client,Tanium Client,Monitoring / Agent
+harbor_trust,Tanium Client,Tanium Client,Monitoring / Agent
+summit_capital,tanium,Tanium Client,Monitoring / Agent
+northstar_core,Tomcat,Tomcat,Middleware
+harbor_trust,Apache Tomcat,Tomcat,Middleware
+summit_capital,tomcat,Tomcat,Middleware
+northstar_core,Ubuntu Server,Ubuntu Server,Operating System
+harbor_trust,Canonical Ubuntu Server,Ubuntu Server,Operating System
+summit_capital,ubuntu_server,Ubuntu Server,Operating System
+northstar_core,WebLogic,WebLogic,Middleware
+harbor_trust,Oracle WebLogic Server,WebLogic,Middleware
+summit_capital,weblogic,WebLogic,Middleware
+northstar_core,WebSphere,WebSphere,Middleware
+harbor_trust,IBM WebSphere Application Server,WebSphere,Middleware
+summit_capital,websphere,WebSphere,Middleware
+northstar_core,Windows Server,Windows Server,Operating System
+harbor_trust,Microsoft Windows Server,Windows Server,Operating System
+summit_capital,windows_server,Windows Server,Operating System

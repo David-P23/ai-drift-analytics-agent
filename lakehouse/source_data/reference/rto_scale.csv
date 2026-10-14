@@ -1,0 +1,11 @@
+rto_score,rto_hours,criticality
+1,0.5,Mission Critical
+2,1,Mission Critical
+3,2,High
+4,4,High
+5,8,Medium
+6,12,Medium
+7,24,Low
+8,48,Low
+9,72,Very Low
+10,120,Very Low
