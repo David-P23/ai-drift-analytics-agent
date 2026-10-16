@@ -70,6 +70,7 @@ tagging. See [`lakehouse/README.md`](lakehouse/README.md).
 - `rto_score` 5-6 is Medium.
 - `rto_score` 7-10 is Low.
 - Aging thresholds are 60, 90, and 120 days.
+- Aging is point-in-time: days open are counted from `drift_detected_on` to the finding's `last_scanned_at` date, not to today, so the KPIs describe the portfolio as of its latest scan (the bundled demo is as of April 3, 2026).
 - Drift cluster detection defaults to `product + approved_version`, the original "same product update" definition.
 
 ## Project Structure

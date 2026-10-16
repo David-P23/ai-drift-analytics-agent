@@ -8,7 +8,7 @@
 # MAGIC | Source | Owns | Looks like |
 # MAGIC |---|---|---|
 # MAGIC | `northstar_core` | Customer Platforms, Payments | The original snake_case schema, ISO dates, `Y`/`N` |
-# MAGIC | `harbor_trust` | Risk & Compliance, Treasury & Finance | PascalCase, `HT-#####` IDs, `MM/DD/YYYY`, site codes like `DAL`, RTO in hours, vendor product names; sends drift twice (June 1 and June 27 snapshots) |
+# MAGIC | `harbor_trust` | Risk & Compliance, Treasury & Finance | PascalCase, `HT-#####` IDs, `MM/DD/YYYY`, site codes like `DAL`, RTO in hours, vendor product names; sends drift twice (March 6 and April 3 exports) |
 # MAGIC | `summit_capital` | Technology Resiliency, Internal Services | Ticketing export: numeric asset keys, UTC timestamps, `true`/`false`, RTO in minutes, product codes like `rhel`, one combined exemption field |
 # MAGIC
 # MAGIC Bronze keeps every column as `STRING`, exactly as delivered, and adds three columns:

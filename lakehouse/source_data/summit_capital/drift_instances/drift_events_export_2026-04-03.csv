@@ -1,0 +1,125 @@
+event_id,asset_key,product_category,product,host,baseline_version,observed_version,is_open,opened_at,closed_at,exemption,root_cause,env,exported_at
+EVT-758332,71568,web_api,nginx,INTNGXPRD01,1.24.0,1.20.2,true,2025-05-16T18:19:09Z,,APPROVED,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-364881,76277,web_api,iis,RESIISPRD01,10.0.20348,10.0.17763,true,2025-11-15T17:41:27Z,,NONE,Patch not tested,Production,2026-04-03T12:00:00Z
+EVT-900510,75299,messaging,tibco_ems,INTTIBPPD01,8.7.1,8.6.0,false,2025-06-14T15:34:10Z,2025-10-12T13:08:56Z,NONE,Upgrade window unavailable,Pre-Production,2026-04-03T12:00:00Z
+EVT-342351,71614,database,mongodb_ent,INTMDBPRD01,6.0.9,5.0.18,false,2025-10-07T21:51:14Z,2026-03-07T19:41:04Z,PENDING,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-540424,76704,middleware,weblogic,RESWLPRD03,12.2.1.4,12.2.1.3,false,2025-05-03T15:42:07Z,2025-09-07T20:48:29Z,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-116892,70254,database,mongodb_ent,RESMDBDEV01,6.0.9,5.0.18,true,2025-06-07T17:06:18Z,,NONE,Application dependency blocker,Dev,2026-04-03T12:00:00Z
+EVT-382272,76224,os,rhel,RESRHELPRD01,9.1,8.6,true,2025-07-17T18:31:11Z,,DENIED,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-244272,77495,messaging,kafka,RESKFKPRD02,3.5.1,2.8.2,false,2025-08-06T16:44:34Z,2026-02-06T16:52:19Z,PENDING,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-350414,79126,database,oracle_db,INTORAPRD01,19.20.0,19.18.0,false,2025-06-25T21:22:04Z,2026-03-22T21:28:26Z,NONE,Patch not tested,Production,2026-04-03T12:00:00Z
+EVT-525656,76183,web_api,apigee,INTAPGPRD01,4.53.01,4.52.00,false,2025-08-10T16:01:24Z,2025-11-22T16:03:33Z,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-886200,73063,os,ubuntu_server,INTUBUPRD01,22.04.3,20.04.6,false,2025-05-13T18:18:49Z,2026-02-11T16:49:34Z,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-900001,77708,middleware,weblogic,RESWLPRD02,12.2.1.4,,true,2026-03-30T15:04:11Z,,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-476381,74405,security_identity,okta_agent,RESOKTDEV01,3.8.1,3.6.0,true,2025-06-26T18:06:53Z,,APPROVED,Upgrade window unavailable,Dev,2026-04-03T12:00:00Z
+EVT-608954,78744,web_api,nginx,INTNGXPRD03,1.24.0,1.20.2,true,2025-08-06T17:39:21Z,,APPROVED,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-237296,75266,messaging,tibco_ems,INTTIBPRD01,8.7.1,8.6.0,false,2026-03-22T19:42:43Z,2026-03-27T18:40:58Z,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-230123,70081,messaging,ibm_mq,RESMQQAT02,9.3.2,9.2.0,false,2025-11-09T17:42:02Z,2025-12-22T20:09:30Z,NONE,Vendor compatibility issue,QA,2026-04-03T12:00:00Z
+EVT-978258,76449,os,windows_server,RESWINPRD04,2022 build 20348,2019 build 17763,true,2025-11-19T19:29:18Z,,APPROVED,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-413196,74230,database,postgresql,INTPGPRD01,15.4,13.11,true,2026-01-27T19:53:40Z,,NONE,Patch not tested,Production,2026-04-03T12:00:00Z
+EVT-754758,76248,web_api,nginx,RESNGXDEV01,1.24.0,1.20.2,false,2025-10-18T14:35:07Z,2026-03-15T19:09:51Z,NONE,Patch not tested,Dev,2026-04-03T12:00:00Z
+EVT-512114,70969,web_api,apache_httpd,INTAPADEV02,2.4.57,2.4.52,false,2025-12-30T20:26:16Z,2026-02-03T21:39:55Z,NONE,Infrastructure constraint,Dev,2026-04-03T12:00:00Z
+EVT-920316,75114,web_api,apache_httpd,INTAPAPRD01,2.4.57,2.4.52,false,2025-11-28T14:11:22Z,2026-03-15T21:08:29Z,NONE,Upgrade window unavailable,Production,2026-04-03T12:00:00Z
+EVT-630372,75322,middleware,websphere,RESWSDEV01,9.0.5.14,9.0.5.7,false,2025-10-23T14:05:34Z,2026-01-07T14:10:40Z,APPROVED,Application dependency blocker,Dev,2026-04-03T12:00:00Z
+EVT-963677,71844,database,postgresql,INTPGQAT01,15.4,13.11,true,2026-02-19T21:00:13Z,,NONE,Planned decommission,QA,2026-04-03T12:00:00Z
+EVT-261563,73355,middleware,tomcat,INTTCPRD02,10.1.18,9.0.82,true,2025-06-10T16:31:53Z,,NONE,Patch not tested,Production,2026-04-03T12:00:00Z
+EVT-317915,71758,security_identity,cyberark,INTCYAPRD02,13.0.2,12.2.4,false,2026-01-05T21:36:10Z,2026-01-19T14:18:59Z,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-628651,75322,os,rhel,RESRHELDEV01,9.1,8.8,false,2025-07-10T19:38:11Z,2025-11-24T13:21:02Z,NONE,Upgrade window unavailable,Dev,2026-04-03T12:00:00Z
+EVT-534115,71962,os,rhel,RESRHELPRD03,9.1,7.9,false,2025-04-11T15:06:41Z,2025-07-19T18:24:12Z,NONE,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-462566,78655,monitoring,dynatrace,RESDYNPRD01,1.281,1.265,false,2025-07-15T18:55:14Z,2025-09-29T14:01:04Z,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-749290,73140,web_api,iis,INTIISPRD02,10.0.20348,10.0.17763,false,2025-12-09T16:34:40Z,2026-03-10T20:55:44Z,DENIED,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-853530,71614,web_api,apigee,INTAPGPRD02,4.53.01,4.52.00,false,2025-04-18T15:50:23Z,2025-12-07T13:22:34Z,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-923516,77495,monitoring,dynatrace,RESDYNPRD02,1.281,1.265,false,2026-03-11T14:00:05Z,2026-03-16T18:00:00Z,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-762401,71758,monitoring,dynatrace,INTDYNPRD01,1.281,1.265,true,2025-06-02T21:40:38Z,,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-924819,76449,os,sles,RESSUSPRD03,15 SP4,12 SP5,true,2025-08-09T15:04:05Z,,PENDING,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-631894,74246,security_identity,sailpoint_iqservice,INTSPTDEV01,8.4,8.2,false,2025-12-07T17:02:18Z,2026-03-09T18:41:11Z,NONE,Infrastructure constraint,Dev,2026-04-03T12:00:00Z
+EVT-840073,79529,security_identity,pingfederate,INTPNGQAT01,12.0.1,11.2.0,false,2025-07-12T18:33:31Z,2026-01-27T16:25:56Z,NONE,Application dependency blocker,QA,2026-04-03T12:00:00Z
+EVT-384421,71959,database,postgresql,RESPGPRD01,15.4,14.6,false,2025-04-26T16:27:24Z,2025-06-23T19:23:33Z,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-333480,73063,web_api,iis,INTIISPRD01,10.0.20348,10.0.17763,true,2025-08-19T20:13:49Z,,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-893079,73542,middleware,tomcat,RESTCPRD01,10.1.18,9.0.82,true,2025-11-25T19:25:54Z,,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-966604,75322,monitoring,splunk_uf,RESSPLPRD04,9.1.1,9.0.4,false,2025-11-19T18:56:41Z,2025-12-29T14:35:52Z,NONE,Patch not tested,Production,2026-04-03T12:00:00Z
+EVT-515304,76167,monitoring,splunk_uf,RESSPLPRD02,9.1.1,9.0.4,false,2025-06-02T18:27:02Z,2025-09-06T19:19:06Z,PENDING,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-844888,71145,security_identity,sailpoint_iqservice,RESSPTPRD01,8.4,8.2,false,2025-09-12T20:32:43Z,2025-09-23T13:48:03Z,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-789228,76248,web_api,apache_httpd,RESAPAQAT01,2.4.57,2.4.52,false,2025-05-22T17:21:11Z,2025-06-17T15:19:20Z,NONE,Infrastructure constraint,QA,2026-04-03T12:00:00Z
+EVT-967768,74850,monitoring,appdynamics,RESAPDQAT01,23.6.0,22.11.0,false,2025-09-26T18:42:30Z,2026-01-18T13:25:28Z,APPROVED,Vendor compatibility issue,QA,2026-04-03T12:00:00Z
+EVT-965595,74246,middleware,tomcat,INTTCPRD03,10.1.18,9.0.82,false,2025-04-11T13:59:07Z,2026-03-12T19:39:00Z,DENIED,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-687498,76951,database,oracle_db,INTORAQAT01,19.20.0,19.18.0,false,2025-05-27T15:30:07Z,2025-09-23T19:14:43Z,APPROVED,False positive detection,QA,2026-04-03T12:00:00Z
+EVT-100137,73304,os,ubuntu_server,RESUBUQAT01,22.04.3,20.04.6,true,2025-12-23T19:54:15Z,,PENDING,Infrastructure constraint,QA,2026-04-03T12:00:00Z
+EVT-782356,76951,web_api,apache_httpd,INTAPAPPD01,2.4.57,2.4.52,false,2026-01-24T21:50:34Z,2026-01-25T15:15:49Z,NONE,Application dependency blocker,Pre-Production,2026-04-03T12:00:00Z
+EVT-991592,74302,middleware,tomcat,RESTCPPD01,10.1.18,9.0.82,false,2026-02-09T19:04:25Z,2026-03-24T21:50:33Z,APPROVED,Infrastructure constraint,Pre-Production,2026-04-03T12:00:00Z
+EVT-988287,77376,web_api,apache_httpd,INTAPADEV01,2.4.57,2.4.52,true,2026-03-03T20:25:39Z,,NONE,False positive detection,Dev,2026-04-03T12:00:00Z
+EVT-245565,76016,web_api,nginx,RESNGXPRD02,1.24.0,1.20.2,false,2025-10-19T20:27:32Z,2026-02-17T16:30:03Z,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-162687,75322,os,rhel,RESRHELQAT01,9.1,8.4,true,2026-02-06T18:24:35Z,,NONE,Patch not tested,QA,2026-04-03T12:00:00Z
+EVT-446868,77230,os,windows_server,RESWINDEV01,2022 build 20348,2016 build 14393,false,2025-06-13T19:15:03Z,2025-12-17T19:33:06Z,NONE,False positive detection,Dev,2026-04-03T12:00:00Z
+EVT-252310,71868,monitoring,dynatrace,RESDYNDEV01,1.281,1.265,false,2025-05-14T17:37:31Z,2025-10-07T13:12:12Z,NONE,Vendor compatibility issue,Dev,2026-04-03T12:00:00Z
+EVT-979867,75114,database,mssql,INTSQLPRD01,2022 CU8,2017 CU31,true,2025-10-15T15:32:01Z,,NONE,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-979397,74192,database,postgresql,RESPGPPD01,15.4,13.11,false,2025-12-28T18:45:09Z,2026-03-22T15:03:35Z,NONE,Vendor compatibility issue,Pre-Production,2026-04-03T12:00:00Z
+EVT-898690,76016,security_identity,pingfederate,RESPNGPRD01,12.0.1,11.2.0,false,2025-12-13T21:00:48Z,2026-02-25T21:07:51Z,NONE,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-120526,79373,messaging,mulesoft,RESMULPRD01,4.6.3,4.4.0,false,2026-02-14T16:07:35Z,2026-03-29T13:19:54Z,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-887875,71758,security_identity,pingfederate,INTPNGPPD01,12.0.1,11.2.0,false,2025-04-12T21:37:10Z,2025-10-07T15:58:55Z,NONE,Vendor compatibility issue,Pre-Production,2026-04-03T12:00:00Z
+EVT-117435,75144,security_identity,sailpoint_iqservice,RESSPTPPD01,8.4,8.2,false,2025-10-03T20:35:40Z,2026-01-31T20:18:50Z,APPROVED,Vendor compatibility issue,Pre-Production,2026-04-03T12:00:00Z
+EVT-703661,73063,security_identity,okta_agent,INTOKTPRD01,3.8.1,3.6.0,false,2025-10-23T16:04:29Z,2025-12-14T15:46:19Z,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-854760,76951,monitoring,splunk_uf,INTSPLPRD01,9.1.1,9.0.4,false,2025-12-13T21:39:15Z,2026-01-21T19:54:35Z,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-521272,77082,security_identity,sailpoint_iqservice,RESSPTQAT01,8.4,8.2,true,2025-11-03T13:33:49Z,,NONE,Upgrade window unavailable,QA,2026-04-03T12:00:00Z
+EVT-802926,75266,middleware,tomcat,INTTCPRD01,10.1.18,9.0.73,true,2025-10-06T21:39:07Z,,NONE,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-312332,74109,web_api,iis,RESIISPPD01,10.0.20348,10.0.17763,false,2025-05-01T13:10:06Z,2025-10-29T19:58:25Z,NONE,Planned decommission,Pre-Production,2026-04-03T12:00:00Z
+EVT-959346,77244,middleware,weblogic,RESWLQAT01,12.2.1.4,12.2.1.3,false,2025-07-14T19:32:16Z,2025-10-24T14:41:31Z,NONE,Vendor compatibility issue,QA,2026-04-03T12:00:00Z
+EVT-893361,78841,web_api,apache_httpd,RESAPAPPD01,2.4.57,2.4.52,true,2026-03-20T18:49:58Z,,NONE,Application dependency blocker,Pre-Production,2026-04-03T12:00:00Z
+EVT-535632,78509,database,mongodb_ent,RESMDBPRD02,6.0.9,5.0.18,false,2025-11-23T18:08:22Z,2026-02-13T18:14:55Z,PENDING,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-333589,79106,monitoring,splunk_uf,RESSPLPRD01,9.1.1,9.0.4,true,2026-03-20T19:48:41Z,,NONE,Patch not tested,Production,2026-04-03T12:00:00Z
+EVT-747510,72854,security_identity,cyberark,INTCYAPRD01,13.0.2,12.2.4,true,2026-01-09T14:29:51Z,,PENDING,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-205269,77082,messaging,tibco_ems,RESTIBQAT02,8.7.1,8.6.0,false,2025-05-05T18:10:53Z,2026-03-08T21:21:10Z,PENDING,False positive detection,QA,2026-04-03T12:00:00Z
+EVT-975633,71928,security_identity,cyberark,RESCYAPRD01,13.0.2,12.2.4,false,2025-09-02T17:39:23Z,2026-03-19T14:46:48Z,PENDING,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-490985,71156,web_api,iis,RESIISPRD02,10.0.20348,10.0.17763,true,2025-10-28T13:28:12Z,,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-648296,73355,messaging,kafka,INTKFKPPD01,3.5.1,2.8.2,true,2025-12-02T13:23:08Z,,NONE,Application dependency blocker,Pre-Production,2026-04-03T12:00:00Z
+EVT-823385,73542,os,sles,RESSUSPRD01,15 SP4,12 SP5,false,2025-04-17T14:41:46Z,2026-03-22T19:04:58Z,NONE,Upgrade window unavailable,Production,2026-04-03T12:00:00Z
+EVT-159239,76040,middleware,websphere,INTWSPRD01,9.0.5.14,9.0.5.7,false,2025-12-08T14:50:44Z,2025-12-23T19:06:22Z,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-891234,71959,web_api,iis,RESIISPRD03,10.0.20348,10.0.17763,false,2025-12-24T13:19:32Z,2026-02-23T19:04:05Z,PENDING,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-537624,76704,security_identity,okta_agent,RESOKTPRD02,3.8.1,3.6.0,false,2025-09-10T13:31:28Z,2025-12-20T15:46:39Z,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-207440,76167,messaging,tibco_ems,RESTIBPRD01,8.7.1,8.6.0,true,2025-05-22T13:20:48Z,,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-982134,76040,database,mssql,INTSQLDEV01,2022 CU8,2019 CU22,true,2025-11-14T15:31:17Z,,NONE,Planned decommission,Dev,2026-04-03T12:00:00Z
+EVT-718876,77385,web_api,nginx,RESNGXPRD04,1.24.0,1.20.2,false,2026-01-10T14:30:34Z,2026-02-15T17:44:05Z,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-613281,74368,middleware,tomcat,RESTCPRD02,10.1.18,9.0.82,true,2026-01-03T14:19:55Z,,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-501754,77082,os,windows_server,RESWINPRD03,2022 build 20348,2016 build 14393,false,2025-06-23T19:58:06Z,2026-03-20T16:46:31Z,NONE,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-562775,76156,messaging,tibco_ems,INTTIBPRD02,8.7.1,8.6.0,false,2025-11-07T17:19:42Z,2025-12-26T17:42:34Z,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-435392,79750,middleware,tomcat,INTTCQAT01,10.1.18,9.0.73,false,2025-12-20T15:36:29Z,2026-03-10T15:08:07Z,NONE,Application dependency blocker,QA,2026-04-03T12:00:00Z
+EVT-832624,72854,messaging,kafka,INTKFKPRD01,3.5.1,2.8.2,false,2025-04-07T19:32:13Z,2025-08-14T19:22:30Z,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-932026,77708,middleware,weblogic,RESWLPRD02,12.2.1.4,12.2.1.3,false,2026-01-25T17:21:14Z,2026-02-06T18:02:53Z,NONE,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-401757,71758,messaging,mulesoft,INTMULPRD01,4.6.3,4.4.0,false,2026-01-28T14:19:39Z,2026-03-01T19:52:11Z,PENDING,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-124139,75064,os,windows_server,RESWINPRD01,2022 build 20348,2016 build 14393,true,2025-05-21T18:48:22Z,,NONE,Patch not tested,Production,2026-04-03T12:00:00Z
+EVT-288503,79828,security_identity,cyberark,RESCYADEV01,13.0.2,12.2.4,false,2025-11-13T14:44:49Z,2026-03-31T17:56:53Z,NONE,Infrastructure constraint,Dev,2026-04-03T12:00:00Z
+EVT-508073,78545,web_api,apigee,RESAPGPPD01,4.53.01,4.52.00,false,2025-12-07T14:03:22Z,2026-03-09T20:42:48Z,NONE,False positive detection,Pre-Production,2026-04-03T12:00:00Z
+EVT-636860,71959,database,mongodb_ent,RESMDBPRD01,6.0.9,5.0.18,true,2025-05-21T15:29:04Z,,APPROVED,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-429524,78509,monitoring,tanium,RESTANQAT01,7.6.1,7.4.9,false,2025-08-25T20:02:30Z,2025-12-08T20:13:32Z,NONE,Patch not tested,QA,2026-04-03T12:00:00Z
+EVT-210456,79093,web_api,nginx,RESNGXPRD01,1.24.0,1.20.2,false,2025-09-22T15:12:42Z,2026-02-22T16:20:41Z,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-360860,71044,web_api,apigee,INTAPGPRD03,4.53.01,4.52.00,false,2026-02-09T16:42:59Z,2026-03-03T19:11:50Z,NONE,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-486611,70254,monitoring,tanium,RESTANPRD02,7.6.1,7.4.9,false,2026-01-10T17:28:33Z,2026-03-03T17:13:16Z,NONE,Upgrade window unavailable,Production,2026-04-03T12:00:00Z
+EVT-160850,74246,security_identity,pingfederate,INTPNGPRD01,12.0.1,11.2.0,false,2025-12-24T18:52:55Z,2026-02-02T20:18:25Z,APPROVED,Upgrade window unavailable,Production,2026-04-03T12:00:00Z
+EVT-690303,74217,os,rhel,RESRHELPRD02,9.1,8.6,false,2025-09-29T18:07:26Z,2026-03-15T17:11:42Z,DENIED,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-188617,76951,middleware,weblogic,INTWLQAT01,12.2.1.4,12.2.1.3,false,2026-03-05T19:18:20Z,2026-03-05T16:08:26Z,NONE,Upgrade window unavailable,QA,2026-04-03T12:00:00Z
+EVT-897644,79106,messaging,ibm_mq,RESMQQAT01,9.3.2,9.2.0,false,2026-02-01T18:42:21Z,2026-02-03T17:37:32Z,NONE,Application dependency blocker,QA,2026-04-03T12:00:00Z
+EVT-343760,76248,security_identity,okta_agent,RESOKTPRD01,3.8.1,3.6.0,false,2026-02-24T18:49:07Z,2026-03-23T14:00:57Z,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-469322,72854,database,mongodb_ent,INTMDBPRD02,6.0.9,5.0.18,false,2025-10-16T19:57:33Z,2025-10-27T19:05:55Z,NONE,Infrastructure constraint,Production,2026-04-03T12:00:00Z
+EVT-143010,75611,os,rhel,INTRHELPRD01,9.1,7.9,true,2025-07-22T16:19:23Z,,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-939887,74523,messaging,kafka,RESKFKPRD01,3.5.1,2.8.2,false,2025-11-17T21:30:23Z,2026-03-19T21:38:27Z,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-150289,78974,monitoring,splunk_uf,RESSPLPRD03,9.1.1,9.0.4,false,2026-01-26T17:34:51Z,2026-03-26T20:32:05Z,NONE,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-602646,71044,middleware,tomcat,INTTCPPD01,10.1.18,9.0.73,true,2025-07-25T16:50:23Z,,PENDING,Infrastructure constraint,Pre-Production,2026-04-03T12:00:00Z
+EVT-617841,75377,web_api,iis,INTIISPPD01,10.0.20348,10.0.17763,true,2026-03-23T19:08:52Z,,NONE,Application dependency blocker,Pre-Production,2026-04-03T12:00:00Z
+EVT-355989,71868,middleware,weblogic,RESWLQAT02,12.2.1.4,12.2.1.3,false,2025-11-24T19:25:26Z,2026-02-07T21:36:18Z,NONE,Infrastructure constraint,QA,2026-04-03T12:00:00Z
+EVT-223586,73029,monitoring,dynatrace,INTDYNPRD02,1.281,1.265,true,2025-04-11T13:03:08Z,,APPROVED,Upgrade window unavailable,Production,2026-04-03T12:00:00Z
+EVT-862988,77244,os,sles,RESSUSPRD02,15 SP4,12 SP5,true,2025-12-11T13:12:24Z,,APPROVED,Upgrade window unavailable,Production,2026-04-03T12:00:00Z
+EVT-958091,70297,security_identity,sailpoint_iqservice,INTSPTPPD01,8.4,8.2,true,2025-10-17T18:38:47Z,,APPROVED,Infrastructure constraint,Pre-Production,2026-04-03T12:00:00Z
+EVT-584210,77082,web_api,iis,RESIISQAT01,10.0.20348,10.0.17763,false,2025-11-27T16:57:36Z,2026-02-27T13:29:11Z,NONE,Upgrade window unavailable,QA,2026-04-03T12:00:00Z
+EVT-781394,75788,monitoring,tanium,RESTANPRD01,7.6.1,7.4.9,false,2026-01-11T20:09:26Z,2026-04-01T16:20:19Z,NONE,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-945249,75507,monitoring,appdynamics,INTAPDPRD01,23.6.0,22.11.0,false,2025-10-19T14:14:45Z,2026-01-30T19:42:38Z,NONE,False positive detection,Production,2026-04-03T12:00:00Z
+EVT-797609,75266,web_api,nginx,INTNGXPRD02,1.24.0,1.20.2,true,2026-03-07T14:39:26Z,,APPROVED,Upgrade window unavailable,Production,2026-04-03T12:00:00Z
+EVT-346957,76156,os,ubuntu_server,INTUBUPRD02,22.04.3,20.04.6,false,2025-07-17T18:52:55Z,2026-01-10T14:18:32Z,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-364123,74161,security_identity,okta_agent,INTOKTPRD02,3.8.1,3.6.0,true,2025-09-22T17:32:05Z,,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-383384,74302,web_api,nginx,RESNGXPRD03,1.24.0,1.20.2,false,2026-03-15T18:01:30Z,2026-03-20T19:58:40Z,NONE,Vendor compatibility issue,Production,2026-04-03T12:00:00Z
+EVT-906255,75299,monitoring,tanium,INTTANPRD01,7.6.1,7.4.9,false,2025-12-27T20:09:00Z,2026-02-15T16:05:29Z,NONE,Application dependency blocker,Production,2026-04-03T12:00:00Z
+EVT-102605,76704,monitoring,dynatrace,RESDYNQAT01,1.281,1.265,true,2025-10-08T13:56:10Z,,APPROVED,Vendor compatibility issue,QA,2026-04-03T12:00:00Z
+EVT-665790,77495,middleware,weblogic,RESWLPRD01,12.2.1.4,12.2.1.3,true,2025-12-03T14:58:07Z,,NONE,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-943995,75311,messaging,tibco_ems,RESTIBQAT01,8.7.1,8.6.0,false,2025-12-06T15:40:03Z,2025-12-29T18:25:58Z,NONE,Vendor compatibility issue,QA,2026-04-03T12:00:00Z
+EVT-416321,75299,monitoring,appdynamics,INTAPDPRD02,23.6.0,22.11.0,false,2025-12-09T20:02:45Z,2026-03-05T16:05:58Z,DENIED,Planned decommission,Production,2026-04-03T12:00:00Z
+EVT-478363,72068,monitoring,tanium,RESTANPPD01,7.6.1,7.4.9,false,2026-01-26T18:03:45Z,2026-02-10T13:07:00Z,NONE,Planned decommission,Pre-Production,2026-04-03T12:00:00Z
+EVT-755730,77230,os,windows_server,RESWINPRD02,2022 build 20348,2016 build 14393,false,2026-03-20T15:22:25Z,2026-03-20T21:10:09Z,APPROVED,Infrastructure constraint,Production,2026-04-03T12:00:00Z

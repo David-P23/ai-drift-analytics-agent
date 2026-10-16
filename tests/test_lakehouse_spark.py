@@ -113,11 +113,14 @@ def test_gold_view_matches_the_bundled_sqlite_demo(gold: SparkSession) -> None:
     assert list(gold.columns) == contracts.AGENT_COLUMNS
     assert len(gold) == contracts.EXPECTED_ROWS["gold.drift_findings"]
 
-    compare = [c for c in contracts.AGENT_COLUMNS if c != "last_scanned_at"]
+    compare = contracts.AGENT_COLUMNS
     got = gold[compare].copy()
     for column in ("drift_detected_on", "latest_note_date"):
         got[column] = got[column].map(lambda v: v.isoformat() if v is not None and not pd.isna(v) else None)
-    want = _demo_frame()[compare]
+    # Aging is measured to the scan date, so compare it as a calendar date.
+    got["last_scanned_at"] = got["last_scanned_at"].map(lambda v: v.date().isoformat())
+    want = _demo_frame()[compare].copy()
+    want["last_scanned_at"] = want["last_scanned_at"].str[:10]
 
     def normalized(frame: pd.DataFrame) -> pd.DataFrame:
         frame = frame.astype(object)
@@ -139,6 +142,33 @@ def test_gold_kpis_are_consistent(gold: SparkSession) -> None:
         " AND detected_version <> approved_version"
     ).collect()[0][0]
     assert aging.open_findings.sum() == open_in_scope
+
+
+def test_gold_aging_is_as_of_the_extract_date(gold: SparkSession) -> None:
+    """Point-in-time aging: same answer whatever day the pipeline runs."""
+
+    spark = gold
+    aging = spark.table("gold.kpi_aging_buckets").toPandas()
+    assert dict(zip(aging.aging_bucket, aging.open_findings)) == contracts.EXPECTED_AGING
+    assert {d.isoformat() for d in aging.as_of_date} == {contracts.AS_OF_DATE}
+
+
+def test_gold_durations_reproduce_the_v1_dataset(gold: SparkSession) -> None:
+    """drift_duration_days (closed: open->close; open: open->as-of) matches the original tables."""
+
+    import sqlite3
+
+    from tests.lakehouse_reference import SEED_DB
+
+    spark = gold
+
+    conn = sqlite3.connect(str(SEED_DB))
+    try:
+        seed = dict(conn.execute("SELECT drift_id, drift_duration_days FROM drift_instances").fetchall())
+    finally:
+        conn.close()
+    got = {row.drift_id: row.drift_duration_days for row in spark.table("gold.drift_findings").collect()}
+    assert got == seed
 
 
 @pytest.fixture(scope="module")
@@ -169,6 +199,29 @@ def parity_table(spark: SparkSession, tmp_path_factory) -> Path:
     spark.sql("CREATE DATABASE IF NOT EXISTS parity")
     typed.write.mode("overwrite").saveAsTable("parity.applications")
     return db_path
+
+
+def _rows_match(left: list[dict], right: list[dict]) -> bool:
+    """Equal row for row, except rounded averages may differ by one step on an exact tie.
+
+    ROUND(AVG(...), 1) of 232.85 gives 232.8 in SQLite (it rounds the binary double,
+    232.8499999...) and 232.9 in Spark/Databricks (HALF_UP on the decimal value).
+    Every other value must match exactly.
+    """
+
+    if len(left) != len(right):
+        return False
+    for a, b in zip(left, right):
+        if a.keys() != b.keys():
+            return False
+        for key in a:
+            x, y = a[key], b[key]
+            if isinstance(x, float) and isinstance(y, float):
+                if abs(x - y) > 0.1 + 1e-9:
+                    return False
+            elif x != y:
+                return False
+    return True
 
 
 def _plans() -> list:
@@ -204,7 +257,7 @@ def test_every_agent_query_returns_the_same_rows_on_spark(spark: SparkSession, p
             return out
 
         assert list(spark_rows[0].keys()) == columns, plan.intent
-        assert portable(spark_rows) == portable(sqlite_rows), plan.intent
+        assert _rows_match(portable(spark_rows), portable(sqlite_rows)), plan.intent
 
 
 class _SparkCursor:
@@ -261,4 +314,4 @@ def test_agent_answers_are_identical_on_both_backends(spark: SparkSession, parit
         remote = answer_question(warehouse_db, question)
         assert remote.error is None, question
         assert remote.answer == local.answer, question
-        assert remote.rows == local.rows, question
+        assert _rows_match(remote.rows, local.rows), question

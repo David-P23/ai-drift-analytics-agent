@@ -41,8 +41,16 @@ SOURCE_LOBS: dict[str, tuple[str, ...]] = {
     "summit_capital": ("Technology Resiliency", "Internal Services"),
 }
 
-CURRENT_EXTRACT_TS = "2026-06-27T00:50:27Z"
-HARBOR_PRIOR_EXTRACT_TS = "2026-06-01T05:00:00Z"
+# The v1 portfolio was built as of April 3, 2026 (its open-drift durations are
+# measured to that date), so every source's current extract is stamped then. Gold
+# and the agent measure aging as of the scan date, which keeps the 60/90/120-day
+# KPIs meaningful no matter when the demo is opened. Midday UTC keeps the calendar
+# date the same in any US time zone.
+CURRENT_EXTRACT_DATE = "2026-04-03"
+CURRENT_EXTRACT_TS = f"{CURRENT_EXTRACT_DATE}T12:00:00Z"
+# Harbor Trust also sent the export from four weeks earlier.
+HARBOR_PRIOR_EXTRACT_DATE = "2026-03-06"
+HARBOR_PRIOR_EXTRACT_TS = f"{HARBOR_PRIOR_EXTRACT_DATE}T12:00:00Z"
 
 # Shared RTO scale (score -> maximum recovery hours), from DATASET.md.
 RTO_SCALE: dict[int, tuple[float, str]] = {
@@ -288,14 +296,14 @@ def build(seed_db: Path = DEFAULT_SEED_DB, output: Path = DEFAULT_OUTPUT) -> dic
             "extract_ts": CURRENT_EXTRACT_TS,
         }
     )
-    _write_csv(out / "northstar_core" / "applications" / "applications_20260627.csv", ns_app_rows, ns_app_cols)
+    _write_csv(out / "northstar_core" / "applications" / "applications_20260403.csv", ns_app_rows, ns_app_cols)
     _write_csv(
-        out / "northstar_core" / "drift_instances" / "drift_instances_20260627.csv",
+        out / "northstar_core" / "drift_instances" / "drift_instances_20260403.csv",
         [{**d, "rto_hours": _hours(d["rto_hours"]), "extract_ts": CURRENT_EXTRACT_TS} for d in ns_drift],
         ns_drift_cols,
     )
     _write_csv(
-        out / "northstar_core" / "drift_notes" / "drift_notes_20260627.csv",
+        out / "northstar_core" / "drift_notes" / "drift_notes_20260403.csv",
         [{**n, "extract_ts": CURRENT_EXTRACT_TS} for n in ns_notes],
         ns_note_cols,
     )
@@ -335,7 +343,7 @@ def build(seed_db: Path = DEFAULT_SEED_DB, output: Path = DEFAULT_OUTPUT) -> dic
             }
         )
     rng.shuffle(ht_apps)
-    _write_csv(out / "harbor_trust" / "applications" / "HT_APPLICATIONS_20260627.csv", ht_apps, ht_app_cols)
+    _write_csv(out / "harbor_trust" / "applications" / "HT_APPLICATIONS_20260403.csv", ht_apps, ht_app_cols)
 
     ht_drift_cols = [
         "DriftRef", "AppNumber", "ProductCategory", "ProductName", "HostName", "ApprovedVersion",
@@ -379,23 +387,31 @@ def build(seed_db: Path = DEFAULT_SEED_DB, output: Path = DEFAULT_OUTPUT) -> dic
         )
     rng.shuffle(ht_current)
 
-    # An earlier snapshot of the same records. Some items that are closed today
-    # were still open on June 1, and some exemption decisions were still pending.
+    # The March 6 export of the same system, as it stood four weeks earlier: drift
+    # opened after March 6 is not in it yet, items closed since then were still open,
+    # and some exemption decisions made since then were still pending.
+    prior_date = date.fromisoformat(HARBOR_PRIOR_EXTRACT_DATE)
     ht_prior = []
     changed = 0
+    pending_flips = 0
     for drift_id in harbor_drift:
         d = dict(drift_by_id[drift_id])
-        if d["status"] == "Closed" and d["drift_close_date"] and d["drift_close_date"] >= "2026-01-01" and changed < 18:
+        if d["drift_open_date"] > HARBOR_PRIOR_EXTRACT_DATE:
+            continue
+        if d["status"] == "Closed" and d["drift_close_date"] > HARBOR_PRIOR_EXTRACT_DATE:
             d["status"] = "Open"
             d["drift_close_date"] = None
             changed += 1
-        elif d["exemption_result"] in ("Approved", "Denied") and changed < 30:
+        elif d["exemption_result"] in ("Approved", "Denied") and pending_flips < 12:
             d["exemption_result"] = "Pending"
+            pending_flips += 1
             changed += 1
+        if d["status"] == "Open":
+            d["drift_duration_days"] = (prior_date - date.fromisoformat(d["drift_open_date"])).days
         ht_prior.append(harbor_drift_row(d, HARBOR_PRIOR_EXTRACT_TS))
     rng.shuffle(ht_prior)
-    _write_csv(out / "harbor_trust" / "drift_instances" / "HT_DRIFT_20260601.csv", ht_prior, ht_drift_cols)
-    _write_csv(out / "harbor_trust" / "drift_instances" / "HT_DRIFT_20260627.csv", ht_current, ht_drift_cols)
+    _write_csv(out / "harbor_trust" / "drift_instances" / "HT_DRIFT_20260306.csv", ht_prior, ht_drift_cols)
+    _write_csv(out / "harbor_trust" / "drift_instances" / "HT_DRIFT_20260403.csv", ht_current, ht_drift_cols)
 
     ht_note_cols = ["NoteRef", "DriftRef", "NoteDate", "Category", "AuthorRole", "Body", "Escalated", "ExtractedAt"]
     ht_notes = [
@@ -412,7 +428,7 @@ def build(seed_db: Path = DEFAULT_SEED_DB, output: Path = DEFAULT_OUTPUT) -> dic
         for n in canon.drift_notes
         if app_source[n["app_id"]] == "harbor_trust"
     ]
-    _write_csv(out / "harbor_trust" / "drift_notes" / "HT_DRIFT_NOTES_20260627.csv", ht_notes, ht_note_cols)
+    _write_csv(out / "harbor_trust" / "drift_notes" / "HT_DRIFT_NOTES_20260403.csv", ht_notes, ht_note_cols)
 
     # ------------------------------------------------------------ summit_capital
     sc_app_cols = [
@@ -448,7 +464,7 @@ def build(seed_db: Path = DEFAULT_SEED_DB, output: Path = DEFAULT_OUTPUT) -> dic
             }
         )
     rng.shuffle(sc_apps)
-    _write_csv(out / "summit_capital" / "applications" / "assets_export_2026-06-27.csv", sc_apps, sc_app_cols)
+    _write_csv(out / "summit_capital" / "applications" / "assets_export_2026-04-03.csv", sc_apps, sc_app_cols)
 
     sc_drift_cols = [
         "event_id", "asset_key", "product_category", "product", "host", "baseline_version",
@@ -487,7 +503,7 @@ def build(seed_db: Path = DEFAULT_SEED_DB, output: Path = DEFAULT_OUTPUT) -> dic
             "baseline_version": template["approved_version"],
             "observed_version": "",
             "is_open": "true",
-            "opened_at": "2026-06-20T15:04:11Z",
+            "opened_at": "2026-03-30T15:04:11Z",
             "closed_at": "",
             "exemption": "NONE",
             "root_cause": "Infrastructure constraint",
@@ -499,7 +515,7 @@ def build(seed_db: Path = DEFAULT_SEED_DB, output: Path = DEFAULT_OUTPUT) -> dic
         {"source_system": "summit_capital", "source_drift_id": "EVT-900001", "canonical_drift_id": "DR-2026-900001"}
     )
     rng.shuffle(sc_drift)
-    _write_csv(out / "summit_capital" / "drift_instances" / "drift_events_export_2026-06-27.csv", sc_drift, sc_drift_cols)
+    _write_csv(out / "summit_capital" / "drift_instances" / "drift_events_export_2026-04-03.csv", sc_drift, sc_drift_cols)
 
     sc_note_cols = ["comment_id", "event_id", "created_at", "kind", "author_role", "comment", "escalated", "exported_at"]
     sc_notes = [
@@ -520,7 +536,7 @@ def build(seed_db: Path = DEFAULT_SEED_DB, output: Path = DEFAULT_OUTPUT) -> dic
     duplicates = rng.sample(sc_notes, SUMMIT_DUPLICATE_COMMENTS)
     sc_notes.extend(dict(row) for row in duplicates)
     rng.shuffle(sc_notes)
-    _write_csv(out / "summit_capital" / "drift_notes" / "event_comments_export_2026-06-27.csv", sc_notes, sc_note_cols)
+    _write_csv(out / "summit_capital" / "drift_notes" / "event_comments_export_2026-04-03.csv", sc_notes, sc_note_cols)
 
     # ------------------------------------------------------- reference / master data
     ref = out / "reference"
@@ -601,6 +617,7 @@ def build(seed_db: Path = DEFAULT_SEED_DB, output: Path = DEFAULT_OUTPUT) -> dic
         "summit_capital.applications": len(sc_apps),
         "summit_capital.drift_instances": len(sc_drift),
         "summit_capital.drift_notes": len(sc_notes),
+        "harbor_trust.prior_snapshot_rows": len(ht_prior),
         "harbor_trust.prior_snapshot_changed_rows": changed,
     }
     return counts

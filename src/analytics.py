@@ -5,7 +5,10 @@ from __future__ import annotations
 from src.models import ChartSpec, QueryPlan
 
 
-AGE_DAYS = "CAST(julianday('now') - julianday(a.drift_detected_on) AS INTEGER)"
+# Days open are measured as of each finding's last scan, not today's date, so the
+# 60/90/120-day KPIs are point-in-time (like a weekly resiliency report) and the
+# demo portfolio does not slide into "120+" as the calendar moves on.
+AGE_DAYS = "CAST(julianday(date(a.last_scanned_at)) - julianday(a.drift_detected_on) AS INTEGER)"
 DRIFT_CONDITION = "a.detected_version <> a.approved_version"
 OPEN_SCOPE_DRIFT = f"{DRIFT_CONDITION} AND a.status = 'Open' AND a.in_scope = 'Y'"
 

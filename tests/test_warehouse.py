@@ -18,7 +18,7 @@ def test_days_open_translates_to_datediff() -> None:
     sql = analytics.top_drifting_apps().sql
     translated = to_databricks(sql)
     assert "julianday" not in translated.lower()
-    assert "DATEDIFF(CURRENT_DATE(), a.drift_detected_on) AS days_open" in translated
+    assert "DATEDIFF(CAST(a.last_scanned_at AS DATE), a.drift_detected_on) AS days_open" in translated
 
 
 def test_every_template_translates_cleanly() -> None:

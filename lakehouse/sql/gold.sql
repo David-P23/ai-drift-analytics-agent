@@ -1,6 +1,8 @@
 -- Gold layer. Placeholders: ${silver}, ${ref}, ${gold}.
 -- Rebuilt in full on every run (small data; a full rebuild is simpler to reason about
 -- than incremental gold logic). Deterministic: no LLM touches anything in this file.
+-- Aging is point-in-time: days are counted to each record's extract (scan) date,
+-- never to the day the pipeline happens to run.
 
 -- 1. One row per drift finding: the drift instance, its application, and its notes.
 --    This replaces the v1 drift_full view and the merged SQLite table in v2.
@@ -55,6 +57,13 @@ SELECT
         ELSE 'N'
     END AS escalation_flag,
     -- Enrichment beyond the agent's contract
+    TO_DATE(d.extracted_at) AS as_of_date,
+    d.drift_close_date,
+    -- Closed: open -> close. Open: open -> as-of date. Same definition as the v1 dataset.
+    CASE
+        WHEN d.status = 'Closed' THEN DATEDIFF(d.drift_close_date, d.drift_open_date)
+        ELSE DATEDIFF(TO_DATE(d.extracted_at), d.drift_open_date)
+    END AS drift_duration_days,
     a.lob,
     d.product_category,
     d.root_cause,
@@ -131,22 +140,22 @@ FROM per_app
 WHERE in_scope = 'Y'
 GROUP BY lob;
 
--- 4. Aging buckets for open in-scope drift (60 / 90 / 120-day thresholds).
---    Days open depend on today's date, so the table records the date it was built.
+-- 4. Aging buckets for open in-scope drift (60 / 90 / 120-day thresholds),
+--    as of the extract date.
 CREATE OR REPLACE TABLE ${gold}.kpi_aging_buckets
-COMMENT 'Open in-scope drift by aging threshold, as of the build date.'
+COMMENT 'Open in-scope drift by aging threshold, as of the extract (scan) date.'
 AS
 WITH open_drift AS (
     SELECT
         f.*,
-        DATEDIFF(CURRENT_DATE(), f.drift_detected_on) AS days_open
+        f.drift_duration_days AS days_open
     FROM ${gold}.drift_findings AS f
     WHERE f.status = 'Open'
       AND f.in_scope = 'Y'
       AND f.detected_version <> f.approved_version
 )
 SELECT
-    CURRENT_DATE() AS as_of_date,
+    MAX(as_of_date) AS as_of_date,
     CASE
         WHEN days_open >= 120 THEN '120+ Executive escalation'
         WHEN days_open >= 90 THEN '90-119 Senior escalation'
@@ -157,7 +166,7 @@ SELECT
     SUM(CASE WHEN rto_score <= 4 THEN 1 ELSE 0 END) AS critical_high_findings,
     MAX(days_open) AS oldest_days_open
 FROM open_drift
-GROUP BY 1, 2;
+GROUP BY 2;
 
 -- 5. The same KPIs split by source system: how each acquired company compares
 --    once everything is on shared definitions.
@@ -171,7 +180,7 @@ SELECT
     SUM(CASE WHEN f.status = 'Open' AND f.in_scope = 'Y' AND f.rto_score <= 2 THEN 1 ELSE 0 END) AS mission_critical_open,
     SUM(CASE WHEN f.exemption_result = 'Pending' THEN 1 ELSE 0 END) AS pending_exemptions,
     SUM(CASE WHEN f.escalation_flag = 'Y' THEN 1 ELSE 0 END) AS escalated_findings,
-    ROUND(AVG(CASE WHEN f.status = 'Open' THEN DATEDIFF(CURRENT_DATE(), f.drift_detected_on) END), 1)
-        AS avg_days_open
+    ROUND(AVG(CASE WHEN f.status = 'Open' THEN f.drift_duration_days END), 1) AS avg_days_open,
+    MAX(f.as_of_date) AS as_of_date
 FROM ${gold}.drift_findings AS f
 GROUP BY f.source_system;

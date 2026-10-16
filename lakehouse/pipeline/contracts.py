@@ -122,5 +122,11 @@ EXPECTED_ROWS = {
 EXPECTED_QUARANTINE_BY_ENTITY = {"applications": 1, "drift_instances": 3}
 
 # Bronze rows that correctly do not reach silver because a newer or identical copy
-# exists: Harbor's June 1 drift snapshot (130 rows) and Summit's 6 duplicate comments.
-EXPECTED_SUPERSEDED = {"applications": 0, "drift_instances": 130, "drift_notes": 6}
+# exists: Harbor's March 6 drift snapshot (124 rows, all re-sent on April 3) and
+# Summit's 6 duplicate comments.
+EXPECTED_SUPERSEDED = {"applications": 0, "drift_instances": 124, "drift_notes": 6}
+
+# Gold measures aging as of the extract (scan) date, not the day the pipeline runs.
+AS_OF_DATE = "2026-04-03"
+# Open in-scope findings per aging bucket as of AS_OF_DATE.
+EXPECTED_AGING = {"<60 Current": 17, "60-89 Warning": 10, "90-119 Senior escalation": 12, "120+ Executive escalation": 86}

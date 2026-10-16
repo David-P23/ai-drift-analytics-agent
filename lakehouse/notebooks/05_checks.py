@@ -115,10 +115,18 @@ if table_exists(agent_view):
 
     with open(os.path.join(REPO_ROOT, "data", "northstar_demo_rows.json"), encoding="utf-8") as handle:
         demo = pd.DataFrame(json.load(handle))  # plain JSON load: no date guessing
-    compare = [c for c in contracts.AGENT_COLUMNS if c != "last_scanned_at"]  # load time, differs by design
+    # last_scanned_at is compared as a calendar date: aging is measured to it, but the
+    # timestamp's text format differs between SQLite and Spark.
+    demo["last_scanned_at"] = demo["last_scanned_at"].str[:10]
+    compare = contracts.AGENT_COLUMNS
     rows = [[None if pd.isna(v) else str(v) for v in row] for row in demo[compare].itertuples(index=False)]
     expected = spark.createDataFrame(rows, ", ".join(f"{c} STRING" for c in compare))
-    actual = gold.select(*[F.col(c).cast("string").alias(c) for c in compare])
+    actual = gold.select(
+        *[
+            F.to_date(c).cast("string").alias(c) if c == "last_scanned_at" else F.col(c).cast("string").alias(c)
+            for c in compare
+        ]
+    )
     missing = expected.exceptAll(actual)
     unexpected = actual.exceptAll(expected)
     n_missing, n_unexpected = missing.count(), unexpected.count()
@@ -132,6 +140,14 @@ if table_exists(agent_view):
         display(missing.limit(10))  # noqa: F821
         print("Rows in gold but not in the demo (first 10):")
         display(unexpected.limit(10))  # noqa: F821
+    aging_table = f"{SCHEMAS.gold}.kpi_aging_buckets"
+    aging = {r.aging_bucket: r.open_findings for r in spark.table(aging_table).collect()}
+    as_of = {str(r.as_of_date) for r in spark.table(aging_table).select("as_of_date").distinct().collect()}
+    check(
+        f"aging buckets as of {contracts.AS_OF_DATE}",
+        aging == contracts.EXPECTED_AGING and as_of == {contracts.AS_OF_DATE},
+        f"as of {sorted(as_of)}: {aging} (expected {contracts.EXPECTED_AGING})",
+    )
 else:
     check(f"{agent_view} exists", False, "missing: run 03_gold")
 

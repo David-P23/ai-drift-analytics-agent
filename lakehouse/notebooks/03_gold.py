@@ -11,7 +11,7 @@
 # MAGIC | `gold.drift_findings` | One row per drift finding with its application and latest note (the old `drift_full`) |
 # MAGIC | `gold.applications` | View with the 23 columns the agent was built against, so the agent code did not change |
 # MAGIC | `gold.kpi_drift_by_lob` | Share of in-scope applications with open drift, by line of business |
-# MAGIC | `gold.kpi_aging_buckets` | Open drift by 60 / 90 / 120-day threshold, stamped with the build date |
+# MAGIC | `gold.kpi_aging_buckets` | Open drift by 60 / 90 / 120-day threshold, as of the extract (scan) date |
 # MAGIC | `gold.kpi_by_source_system` | The same KPIs per acquired company |
 
 # COMMAND ----------

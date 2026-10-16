@@ -31,7 +31,7 @@
 # MAGIC 4. **Dates:** Harbor uses `MM/dd/yyyy`; Summit uses `yyyyMMdd` and UTC timestamps
 # MAGIC    (`2025-08-12T14:03:11Z`, keep the UTC date). Output `DATE` / `TIMESTAMP` types.
 # MAGIC 5. **Quality:** a drift row with an empty `detected_version` is quarantined.
-# MAGIC 6. **Duplicates:** Harbor sent drift twice (June 1 and June 27). Keep the row with the
+# MAGIC 6. **Duplicates:** Harbor sent drift twice (March 6 and April 3). Keep the row with the
 # MAGIC    latest `extracted_at`. Summit double-wrote 6 comments; keep one copy.
 # MAGIC 7. **Idempotent:** running this notebook twice must not change the row counts.
 # MAGIC    Use `MERGE INTO`, not append.
@@ -265,7 +265,7 @@ build_applications()
 # MAGIC `exemption_requested` and `exemption_result`; Summit timestamps → `F.to_date(F.to_timestamp(col))`).
 # MAGIC Then: crosswalk the drift ID **and** the app ID, quarantine `unknown application` and
 # MAGIC `missing detected_version`, and `merge_into(..., "drift_instances", ["drift_id"])`.
-# MAGIC Harbor's June 1 rows must lose to its June 27 rows.
+# MAGIC Harbor's March 6 rows must lose to its April 3 rows.
 
 # COMMAND ----------
 

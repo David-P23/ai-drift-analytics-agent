@@ -1,0 +1,125 @@
+DriftRef,AppNumber,ProductCategory,ProductName,HostName,ApprovedVersion,DetectedVersion,DriftState,OpenedDate,ClosedDate,DaysOpen,ExemptionRequested,ExemptionDecision,RootCause,Environment,ExtractedAt
+HTD-311160,HT-37902,Middleware,Apache Tomcat,TRSTCQAT01,10.1.18,9.0.73,CLOSED,12/31/2025,01/17/2026,17,No,,Planned decommission,QA,2026-03-06T12:00:00Z
+HTD-616135,HT-17513,Messaging / Integration,MuleSoft Mule Runtime,RSKMULPRD01,4.6.3,4.4.0,OPEN,10/01/2025,,156,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-147544,HT-16519,Operating System,Microsoft Windows Server,TRSWINPPD01,2022 build 20348,2016 build 14393,CLOSED,07/01/2025,07/18/2025,17,Yes,Pending,False positive detection,Pre-Production,2026-03-06T12:00:00Z
+HTD-569710,HT-92112,Security / Identity,Ping Identity PingFederate,TRSPNGPRD03,12.0.1,11.2.0,CLOSED,04/09/2025,06/19/2025,71,No,,Patch not tested,Production,2026-03-06T12:00:00Z
+HTD-764960,HT-29679,Operating System,Canonical Ubuntu Server,TRSUBUDEV01,22.04.3,20.04.6,CLOSED,04/13/2025,10/01/2025,171,Yes,Pending,Application dependency blocker,Dev,2026-03-06T12:00:00Z
+HTD-813317,HT-10060,Database,PostgreSQL,RSKPGPRD01,15.4,13.11,OPEN,09/06/2025,,181,No,,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-335212,HT-46299,Messaging / Integration,MuleSoft Mule Runtime,RSKMULDEV01,4.6.3,4.4.0,CLOSED,04/15/2025,02/04/2026,295,Yes,Pending,Infrastructure constraint,Dev,2026-03-06T12:00:00Z
+HTD-329296,HT-92112,Messaging / Integration,Confluent Kafka,TRSKFKPPD02,3.5.1,2.8.2,CLOSED,06/16/2025,07/25/2025,39,No,,Application dependency blocker,Pre-Production,2026-03-06T12:00:00Z
+HTD-290891,HT-57509,Database,Microsoft SQL Server,TRSSQLDEV01,2022 CU8,2017 CU31,OPEN,03/05/2026,,1,Yes,Denied,Application dependency blocker,Dev,2026-03-06T12:00:00Z
+HTD-388861,HT-82390,Monitoring / Agent,Dynatrace OneAgent,RSKDYNPRD02,1.281,1.265,CLOSED,11/03/2025,01/05/2026,63,No,,Vendor compatibility issue,Production,2026-03-06T12:00:00Z
+HTD-774899,HT-40998,Database,PostgreSQL,RSKPGPRD02,15.4,14.6,CLOSED,05/19/2025,06/06/2025,18,No,,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-630111,HT-95745,Monitoring / Agent,Dynatrace OneAgent,RSKDYNPRD03,1.281,1.265,OPEN,02/24/2026,,10,No,,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-932336,HT-13019,Operating System,Microsoft Windows Server,TRSWINDEV01,2022 build 20348,2019 build 17763,OPEN,12/07/2025,,89,No,,Planned decommission,Dev,2026-03-06T12:00:00Z
+HTD-146950,HT-29449,Operating System,Microsoft Windows Server,TRSWINPPD02,2022 build 20348,2016 build 14393,CLOSED,10/20/2025,12/20/2025,61,No,,Vendor compatibility issue,Pre-Production,2026-03-06T12:00:00Z
+HTD-197587,HT-79642,Database,MongoDB Enterprise Advanced,RSKMDBPRD03,6.0.9,5.0.18,CLOSED,09/29/2025,12/21/2025,83,Yes,Pending,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-347288,HT-12929,Monitoring / Agent,AppDynamics Java Agent,RSKAPDPPD01,23.6.0,22.11.0,OPEN,09/14/2025,,173,No,,False positive detection,Pre-Production,2026-03-06T12:00:00Z
+HTD-617874,HT-70797,Operating System,Canonical Ubuntu Server,TRSUBUPRD02,22.04.3,20.04.6,CLOSED,01/07/2026,02/09/2026,33,Yes,Approved,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-382040,HT-52249,Security / Identity,CyberArk PAM,TRSCYAPRD02,13.0.2,12.2.4,OPEN,12/11/2025,,85,Yes,Pending,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-306685,HT-17513,Middleware,IBM WebSphere Application Server,RSKWSPPD01,9.0.5.14,9.0.5.7,OPEN,09/06/2025,,181,Yes,Pending,Application dependency blocker,Pre-Production,2026-03-06T12:00:00Z
+HTD-458400,HT-93284,Web Server / API,Microsoft IIS,TRSIISPRD01,10.0.20348,10.0.17763,CLOSED,02/06/2026,03/01/2026,23,No,,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-410363,HT-40998,Database,PostgreSQL,RSKPGDEV01,15.4,14.6,CLOSED,04/19/2025,01/26/2026,282,No,,Planned decommission,Dev,2026-03-06T12:00:00Z
+HTD-750950,HT-45432,Messaging / Integration,IBM MQ,TRSMQPPD02,9.3.2,9.2.0,CLOSED,12/12/2025,12/14/2025,2,Yes,Pending,Planned decommission,Pre-Production,2026-03-06T12:00:00Z
+HTD-262136,HT-41550,Middleware,IBM WebSphere Application Server,RSKWSPRD01,9.0.5.14,9.0.5.7,CLOSED,08/05/2025,08/07/2025,2,No,,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-309867,HT-29666,Database,MongoDB Enterprise Advanced,TRSMDBPRD01,6.0.9,5.0.18,OPEN,08/05/2025,,213,Yes,Pending,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-680954,HT-68663,Monitoring / Agent,AppDynamics Java Agent,TRSAPDPRD02,23.6.0,22.11.0,CLOSED,11/11/2025,12/21/2025,40,No,,Infrastructure constraint,Production,2026-03-06T12:00:00Z
+HTD-638725,HT-47427,Web Server / API,Microsoft IIS,RSKIISDEV01,10.0.20348,10.0.17763,OPEN,05/13/2025,,297,No,,Infrastructure constraint,Dev,2026-03-06T12:00:00Z
+HTD-215413,HT-33888,Database,Microsoft SQL Server,RSKSQLPPD01,2022 CU8,2019 CU22,CLOSED,02/25/2026,03/02/2026,5,No,,Upgrade window unavailable,Pre-Production,2026-03-06T12:00:00Z
+HTD-432490,HT-86496,Monitoring / Agent,Dynatrace OneAgent,TRSDYNPRD02,1.281,1.265,CLOSED,04/09/2025,06/05/2025,57,No,,Patch not tested,Production,2026-03-06T12:00:00Z
+HTD-352276,HT-98802,Middleware,Apache Tomcat,RSKTCQAT01,10.1.18,9.0.82,OPEN,02/23/2026,,11,No,,Planned decommission,QA,2026-03-06T12:00:00Z
+HTD-936523,HT-70277,Operating System,Microsoft Windows Server,TRSWINPRD02,2022 build 20348,2016 build 14393,OPEN,02/19/2026,,15,No,,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-857775,HT-12929,Middleware,Apache Tomcat,RSKTCPRD01,10.1.18,9.0.82,OPEN,04/27/2025,,313,No,,Vendor compatibility issue,Production,2026-03-06T12:00:00Z
+HTD-405840,HT-80721,Database,MongoDB Enterprise Advanced,RSKMDBPRD02,6.0.9,5.0.18,OPEN,11/18/2025,,108,No,,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-407524,HT-30821,Operating System,Red Hat Enterprise Linux,TRSRHELPRD01,9.1,8.4,CLOSED,06/28/2025,03/01/2026,246,No,,Patch not tested,Production,2026-03-06T12:00:00Z
+HTD-395361,HT-62022,Database,MongoDB Enterprise Advanced,TRSMDBPPD01,6.0.9,5.0.18,CLOSED,11/18/2025,02/17/2026,91,No,,Vendor compatibility issue,Pre-Production,2026-03-06T12:00:00Z
+HTD-485211,HT-20011,Web Server / API,Apache HTTP Server,TRSAPAPPD01,2.4.57,2.4.52,OPEN,10/13/2025,,144,No,,Infrastructure constraint,Pre-Production,2026-03-06T12:00:00Z
+HTD-392378,HT-60751,Operating System,Red Hat Enterprise Linux,RSKRHELPRD01,9.1,8.8,OPEN,04/13/2025,,327,Yes,Approved,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-899199,HT-29666,Middleware,IBM WebSphere Application Server,TRSWSPRD01,9.0.5.14,9.0.5.7,OPEN,07/25/2025,,224,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-304404,HT-44079,Middleware,Apache Tomcat,TRSTCQAT02,10.1.18,9.0.73,CLOSED,08/01/2025,10/22/2025,82,No,,Planned decommission,QA,2026-03-06T12:00:00Z
+HTD-229833,HT-82815,Messaging / Integration,Confluent Kafka,RSKKFKQAT01,3.5.1,2.8.2,CLOSED,04/09/2025,12/11/2025,246,No,,Upgrade window unavailable,QA,2026-03-06T12:00:00Z
+HTD-898482,HT-87583,Web Server / API,NGINX Plus,RSKNGXDEV01,1.24.0,1.20.2,OPEN,09/29/2025,,158,Yes,Approved,False positive detection,Dev,2026-03-06T12:00:00Z
+HTD-666488,HT-37902,Monitoring / Agent,Splunk Universal Forwarder,TRSSPLPPD01,9.1.1,9.0.4,OPEN,11/07/2025,,119,Yes,Pending,Application dependency blocker,Pre-Production,2026-03-06T12:00:00Z
+HTD-267824,HT-86496,Monitoring / Agent,Dynatrace OneAgent,TRSDYNPRD01,1.281,1.265,CLOSED,10/21/2025,02/22/2026,124,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-845996,HT-60072,Monitoring / Agent,Tanium Client,TRSTANPRD01,7.6.1,7.4.9,CLOSED,06/02/2025,08/14/2025,73,No,,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-514888,HT-70797,Messaging / Integration,TIBCO Enterprise Message Service,TRSTIBPRD01,8.7.1,8.6.0,OPEN,08/30/2025,,188,No,,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-298486,HT-58429,Middleware,IBM WebSphere Application Server,RSKWSDEV01,9.0.5.14,9.0.5.7,CLOSED,11/24/2025,12/04/2025,10,Yes,Pending,Upgrade window unavailable,Dev,2026-03-06T12:00:00Z
+HTD-622359,HT-20992,Security / Identity,SailPoint IdentityIQ IQService,RSKSPTPRD01,8.4,8.2,OPEN,02/10/2026,,24,Yes,Approved,Infrastructure constraint,Production,2026-03-06T12:00:00Z
+HTD-575019,HT-97233,Monitoring / Agent,AppDynamics Java Agent,TRSAPDPRD03,23.6.0,22.11.0,OPEN,12/15/2025,,81,No,,Patch not tested,Production,2026-03-06T12:00:00Z
+HTD-686429,HT-87826,Monitoring / Agent,Tanium Client,TRSTANPRD03,7.6.1,7.4.9,CLOSED,08/19/2025,08/29/2025,10,Yes,Approved,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-890393,HT-37902,Middleware,Oracle WebLogic Server,TRSWLPRD01,12.2.1.4,12.2.1.3,CLOSED,08/21/2025,08/29/2025,8,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-660688,HT-10060,Messaging / Integration,IBM MQ,RSKMQPRD01,9.3.2,9.2.0,CLOSED,11/11/2025,03/01/2026,110,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-333022,HT-98511,Database,MongoDB Enterprise Advanced,TRSMDBPRD02,6.0.9,5.0.18,OPEN,12/12/2025,,84,No,,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-913440,HT-15479,Operating System,Red Hat Enterprise Linux,TRSRHELQAT01,9.1,7.9,OPEN,05/16/2025,,294,No,,Infrastructure constraint,QA,2026-03-06T12:00:00Z
+HTD-143503,HT-58797,Web Server / API,Microsoft IIS,RSKIISPRD01,10.0.20348,10.0.17763,OPEN,02/20/2026,,14,No,,Vendor compatibility issue,Production,2026-03-06T12:00:00Z
+HTD-768580,HT-10060,Monitoring / Agent,Tanium Client,RSKTANPPD01,7.6.1,7.4.9,CLOSED,11/14/2025,01/01/2026,48,Yes,Pending,Planned decommission,Pre-Production,2026-03-06T12:00:00Z
+HTD-440003,HT-96293,Security / Identity,Ping Identity PingFederate,TRSPNGPRD02,12.0.1,11.2.0,CLOSED,07/24/2025,12/31/2025,160,Yes,Pending,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-145858,HT-82390,Operating System,Microsoft Windows Server,RSKWINPPD01,2022 build 20348,2019 build 17763,OPEN,10/29/2025,,128,Yes,Pending,Planned decommission,Pre-Production,2026-03-06T12:00:00Z
+HTD-391032,HT-18284,Monitoring / Agent,AppDynamics Java Agent,RSKAPDPRD01,23.6.0,22.11.0,CLOSED,11/03/2025,01/16/2026,74,No,,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-350473,HT-41954,Messaging / Integration,IBM MQ,TRSMQPRD01,9.3.2,9.2.0,OPEN,12/28/2025,,68,No,,Vendor compatibility issue,Production,2026-03-06T12:00:00Z
+HTD-106038,HT-55129,Messaging / Integration,TIBCO Enterprise Message Service,TRSTIBQAT01,8.7.1,8.6.0,CLOSED,10/07/2025,10/25/2025,18,No,,Patch not tested,QA,2026-03-06T12:00:00Z
+HTD-145227,HT-41848,Web Server / API,Google Apigee,RSKAPGQAT01,4.53.01,4.52.00,CLOSED,05/10/2025,11/23/2025,197,No,,Upgrade window unavailable,QA,2026-03-06T12:00:00Z
+HTD-885573,HT-58429,Messaging / Integration,MuleSoft Mule Runtime,RSKMULPPD01,4.6.3,4.4.0,OPEN,08/26/2025,,192,No,,Patch not tested,Pre-Production,2026-03-06T12:00:00Z
+HTD-323784,HT-87826,Messaging / Integration,MuleSoft Mule Runtime,TRSMULPRD01,4.6.3,4.4.0,OPEN,04/27/2025,,313,Yes,Approved,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-154675,HT-70500,Messaging / Integration,Confluent Kafka,TRSKFKPPD01,3.5.1,2.8.2,CLOSED,11/16/2025,11/23/2025,7,No,,Planned decommission,Pre-Production,2026-03-06T12:00:00Z
+HTD-216326,HT-22296,Security / Identity,Ping Identity PingFederate,TRSPNGPRD01,12.0.1,11.2.0,OPEN,02/15/2026,,19,No,,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-105628,HT-70277,Operating System,SUSE Linux Enterprise Server,TRSSUSPRD02,15 SP4,12 SP5,CLOSED,06/03/2025,10/04/2025,123,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-927593,HT-76354,Monitoring / Agent,AppDynamics Java Agent,TRSAPDPRD01,23.6.0,22.11.0,OPEN,07/29/2025,,220,No,,Infrastructure constraint,Production,2026-03-06T12:00:00Z
+HTD-674857,HT-70277,Messaging / Integration,MuleSoft Mule Runtime,TRSMULDEV01,4.6.3,4.4.0,OPEN,02/09/2026,,25,No,,False positive detection,Dev,2026-03-06T12:00:00Z
+HTD-101221,HT-46299,Messaging / Integration,IBM MQ,RSKMQQAT01,9.3.2,9.2.0,CLOSED,10/05/2025,10/13/2025,8,No,,Upgrade window unavailable,QA,2026-03-06T12:00:00Z
+HTD-582987,HT-37902,Monitoring / Agent,Splunk Universal Forwarder,TRSSPLDEV01,9.1.1,9.0.4,CLOSED,04/18/2025,04/20/2025,2,No,,False positive detection,Dev,2026-03-06T12:00:00Z
+HTD-484280,HT-58489,Operating System,SUSE Linux Enterprise Server,TRSSUSPRD01,15 SP4,12 SP5,CLOSED,05/10/2025,10/13/2025,156,No,,Patch not tested,Production,2026-03-06T12:00:00Z
+HTD-572059,HT-58429,Operating System,Canonical Ubuntu Server,RSKUBUQAT01,22.04.3,20.04.6,OPEN,11/06/2025,,120,No,,Infrastructure constraint,QA,2026-03-06T12:00:00Z
+HTD-583772,HT-16999,Operating System,Canonical Ubuntu Server,TRSUBUPRD03,22.04.3,20.04.6,OPEN,11/18/2025,,108,No,,Infrastructure constraint,Production,2026-03-06T12:00:00Z
+HTD-193516,HT-40998,Database,PostgreSQL,RSKPGPRD03,15.4,13.11,OPEN,05/29/2025,,281,Yes,Pending,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-221726,HT-82390,Security / Identity,SailPoint IdentityIQ IQService,RSKSPTQAT01,8.4,8.2,OPEN,02/16/2026,,18,No,,Planned decommission,QA,2026-03-06T12:00:00Z
+HTD-557118,HT-51407,Database,Microsoft SQL Server,RSKSQLPRD02,2022 CU8,2017 CU31,CLOSED,07/14/2025,10/30/2025,108,Yes,Pending,Vendor compatibility issue,Production,2026-03-06T12:00:00Z
+HTD-354514,HT-86837,Web Server / API,Apache HTTP Server,RSKAPAPPD01,2.4.57,2.4.52,OPEN,12/18/2025,,78,No,,Vendor compatibility issue,Pre-Production,2026-03-06T12:00:00Z
+HTD-477460,HT-99156,Middleware,Red Hat JBoss EAP,RSKJBPRD01,7.4.10,7.3.0,CLOSED,08/28/2025,01/07/2026,132,No,,Patch not tested,Production,2026-03-06T12:00:00Z
+HTD-235604,HT-45236,Messaging / Integration,MuleSoft Mule Runtime,RSKMULDEV02,4.6.3,4.4.0,OPEN,02/05/2026,,29,No,,Application dependency blocker,Dev,2026-03-06T12:00:00Z
+HTD-108158,HT-38104,Web Server / API,Google Apigee,TRSAPGPRD01,4.53.01,4.52.00,OPEN,08/19/2025,,199,No,,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-585638,HT-99156,Security / Identity,Ping Identity PingFederate,RSKPNGPRD01,12.0.1,11.2.0,OPEN,07/21/2025,,228,No,,Infrastructure constraint,Production,2026-03-06T12:00:00Z
+HTD-191045,HT-62033,Monitoring / Agent,Tanium Client,RSKTANPRD01,7.6.1,7.4.9,CLOSED,05/04/2025,11/22/2025,202,Yes,Pending,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-552073,HT-22581,Middleware,Red Hat JBoss EAP,RSKJBPRD02,7.4.10,7.3.0,OPEN,06/24/2025,,255,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-620661,HT-86496,Database,PostgreSQL,TRSPGQAT01,15.4,13.11,CLOSED,10/30/2025,02/02/2026,95,No,,False positive detection,QA,2026-03-06T12:00:00Z
+HTD-684527,HT-41954,Messaging / Integration,IBM MQ,TRSMQPPD01,9.3.2,9.2.0,CLOSED,10/22/2025,01/10/2026,80,Yes,Pending,Application dependency blocker,Pre-Production,2026-03-06T12:00:00Z
+HTD-224223,HT-70277,Security / Identity,CyberArk PAM,TRSCYAPRD04,13.0.2,12.2.4,OPEN,02/28/2026,,6,Yes,Denied,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-537301,HT-41954,Security / Identity,CyberArk PAM,TRSCYAPRD01,13.0.2,12.2.4,CLOSED,09/16/2025,01/17/2026,123,No,,Infrastructure constraint,Production,2026-03-06T12:00:00Z
+HTD-174958,HT-11301,Web Server / API,Microsoft IIS,RSKIISPRD02,10.0.20348,10.0.17763,CLOSED,12/06/2025,01/11/2026,36,No,,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-108446,HT-87041,Database,PostgreSQL,RSKPGPRD04,15.4,13.11,CLOSED,06/12/2025,08/01/2025,50,No,,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-339537,HT-87041,Monitoring / Agent,Splunk Universal Forwarder,RSKSPLPRD01,9.1.1,9.0.4,OPEN,02/16/2026,,18,Yes,Denied,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-436860,HT-56466,Security / Identity,Okta AD Agent,TRSOKTQAT01,3.8.1,3.6.0,OPEN,01/17/2026,,48,Yes,Approved,Patch not tested,QA,2026-03-06T12:00:00Z
+HTD-700969,HT-92112,Security / Identity,Okta AD Agent,TRSOKTPRD01,3.8.1,3.6.0,CLOSED,09/02/2025,11/23/2025,82,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-950370,HT-11048,Security / Identity,Ping Identity PingFederate,TRSPNGPRD04,12.0.1,11.2.0,CLOSED,11/27/2025,01/20/2026,54,No,,Patch not tested,Production,2026-03-06T12:00:00Z
+HTD-633929,HT-45432,Web Server / API,Microsoft IIS,TRSIISPPD01,10.0.20348,10.0.17763,OPEN,09/19/2025,,168,No,,Application dependency blocker,Pre-Production,2026-03-06T12:00:00Z
+HTD-528928,HT-96293,Middleware,Red Hat JBoss EAP,TRSJBPPD01,7.4.10,7.3.0,CLOSED,01/23/2026,02/11/2026,19,Yes,Denied,Upgrade window unavailable,Pre-Production,2026-03-06T12:00:00Z
+HTD-591793,HT-87041,Database,MongoDB Enterprise Advanced,RSKMDBPPD01,6.0.9,5.0.18,OPEN,05/16/2025,,294,No,,Planned decommission,Pre-Production,2026-03-06T12:00:00Z
+HTD-202181,HT-87041,Middleware,Oracle WebLogic Server,RSKWLPRD02,12.2.1.4,12.2.1.3,OPEN,09/01/2025,,186,Yes,Approved,Vendor compatibility issue,Production,2026-03-06T12:00:00Z
+HTD-405497,HT-66323,Monitoring / Agent,AppDynamics Java Agent,RSKAPDPRD02,23.6.0,22.11.0,CLOSED,05/24/2025,06/07/2025,14,Yes,Denied,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-706115,HT-68602,Messaging / Integration,TIBCO Enterprise Message Service,RSKTIBPPD01,8.7.1,8.6.0,CLOSED,01/01/2026,02/20/2026,50,No,,False positive detection,Pre-Production,2026-03-06T12:00:00Z
+HTD-104324,HT-76354,Monitoring / Agent,Tanium Client,TRSTANPRD02,7.6.1,7.4.9,OPEN,10/17/2025,,140,Yes,Pending,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-576586,HT-36573,Database,Microsoft SQL Server,TRSSQLQAT01,2022 CU8,2017 CU31,CLOSED,06/30/2025,07/17/2025,17,No,,Application dependency blocker,QA,2026-03-06T12:00:00Z
+HTD-582343,HT-10511,Messaging / Integration,Confluent Kafka,TRSKFKPRD01,3.5.1,2.8.2,OPEN,08/12/2025,,206,No,,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-305494,HT-40998,Database,MongoDB Enterprise Advanced,RSKMDBPRD01,6.0.9,5.0.18,CLOSED,08/20/2025,09/22/2025,33,No,,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-400865,HT-36452,Monitoring / Agent,Splunk Universal Forwarder,RSKSPLQAT01,9.1.1,9.0.4,OPEN,09/26/2025,,161,No,,Infrastructure constraint,QA,2026-03-06T12:00:00Z
+HTD-667634,HT-98802,Operating System,Red Hat Enterprise Linux,RSKRHELPPD01,9.1,7.9,OPEN,06/16/2025,,263,Yes,Approved,Upgrade window unavailable,Pre-Production,2026-03-06T12:00:00Z
+HTD-310165,HT-29449,Web Server / API,NGINX Plus,TRSNGXQAT01,1.24.0,1.20.2,CLOSED,07/14/2025,08/02/2025,19,No,,False positive detection,QA,2026-03-06T12:00:00Z
+HTD-385187,HT-98802,Monitoring / Agent,Splunk Universal Forwarder,RSKSPLPRD02,9.1.1,9.0.4,OPEN,08/02/2025,,216,No,,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-927695,HT-16999,Middleware,Apache Tomcat,TRSTCPRD01,10.1.18,9.0.73,OPEN,07/27/2025,,222,No,,Vendor compatibility issue,Production,2026-03-06T12:00:00Z
+HTD-125288,HT-22831,Operating System,Red Hat Enterprise Linux,TRSRHELDEV01,9.1,8.6,CLOSED,09/24/2025,11/08/2025,45,Yes,Pending,Patch not tested,Dev,2026-03-06T12:00:00Z
+HTD-899039,HT-20011,Middleware,Red Hat JBoss EAP,TRSJBPPD02,7.4.10,7.3.0,CLOSED,11/27/2025,12/16/2025,19,No,,Planned decommission,Pre-Production,2026-03-06T12:00:00Z
+HTD-145921,HT-17513,Monitoring / Agent,Dynatrace OneAgent,RSKDYNPRD01,1.281,1.265,CLOSED,12/08/2025,01/13/2026,36,Yes,Pending,Vendor compatibility issue,Production,2026-03-06T12:00:00Z
+HTD-560629,HT-15479,Operating System,Microsoft Windows Server,TRSWINPRD01,2022 build 20348,2016 build 14393,CLOSED,11/01/2025,02/03/2026,94,Yes,Pending,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-958113,HT-74373,Security / Identity,Ping Identity PingFederate,RSKPNGPRD02,12.0.1,11.2.0,CLOSED,08/17/2025,12/05/2025,110,No,,Patch not tested,Production,2026-03-06T12:00:00Z
+HTD-573160,HT-32736,Middleware,Red Hat JBoss EAP,RSKJBPPD01,7.4.10,7.3.0,CLOSED,09/18/2025,11/07/2025,50,No,,Upgrade window unavailable,Pre-Production,2026-03-06T12:00:00Z
+HTD-985398,HT-80721,Messaging / Integration,TIBCO Enterprise Message Service,RSKTIBPRD01,8.7.1,8.6.0,CLOSED,04/17/2025,08/14/2025,119,No,,Application dependency blocker,Production,2026-03-06T12:00:00Z
+HTD-553020,HT-58489,Messaging / Integration,TIBCO Enterprise Message Service,TRSTIBDEV01,8.7.1,8.6.0,OPEN,11/10/2025,,116,No,,False positive detection,Dev,2026-03-06T12:00:00Z
+HTD-650518,HT-96620,Messaging / Integration,TIBCO Enterprise Message Service,RSKTIBPRD02,8.7.1,8.6.0,CLOSED,11/18/2025,03/02/2026,104,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-279547,HT-99063,Security / Identity,CyberArk PAM,TRSCYAPRD03,13.0.2,12.2.4,CLOSED,08/27/2025,02/24/2026,181,No,,False positive detection,Production,2026-03-06T12:00:00Z
+HTD-454070,HT-76500,Database,Oracle Database,RSKORAPRD01,19.20.0,19.13.0,CLOSED,09/24/2025,12/06/2025,73,Yes,Approved,Patch not tested,Production,2026-03-06T12:00:00Z
+HTD-591527,HT-17513,Operating System,SUSE Linux Enterprise Server,RSKSUSPPD01,15 SP4,12 SP5,CLOSED,09/25/2025,11/27/2025,63,No,,False positive detection,Pre-Production,2026-03-06T12:00:00Z
+HTD-809255,HT-20011,Security / Identity,CyberArk PAM,TRSCYAPRD05,13.0.2,12.2.4,CLOSED,05/18/2025,11/12/2025,178,No,,Upgrade window unavailable,Production,2026-03-06T12:00:00Z
+HTD-612174,HT-80721,Security / Identity,CyberArk PAM,RSKCYADEV01,13.0.2,12.2.4,OPEN,05/27/2025,,283,No,,Upgrade window unavailable,Dev,2026-03-06T12:00:00Z
+HTD-921323,HT-41848,Middleware,IBM WebSphere Application Server,RSKWSPRD02,9.0.5.14,9.0.5.7,OPEN,01/05/2026,,60,No,,Planned decommission,Production,2026-03-06T12:00:00Z
+HTD-980401,HT-87583,Middleware,Apache Tomcat,RSKTCPPD01,10.1.18,9.0.73,CLOSED,04/20/2025,11/12/2025,206,Yes,Pending,Infrastructure constraint,Pre-Production,2026-03-06T12:00:00Z
+HTD-154890,HT-53449,Middleware,IBM WebSphere Application Server,TRSWSPRD02,9.0.5.14,9.0.5.7,CLOSED,12/23/2025,12/28/2025,5,No,,Patch not tested,Production,2026-03-06T12:00:00Z

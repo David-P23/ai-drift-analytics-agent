@@ -46,8 +46,8 @@ def test_generator_is_deterministic_and_matches_committed_files(tmp_path: Path) 
 
 
 def test_each_source_uses_its_own_ids_and_formats() -> None:
-    harbor = pd.read_csv(SOURCE_DATA / "harbor_trust/drift_instances/HT_DRIFT_20260627.csv", dtype=str)
-    summit = pd.read_csv(SOURCE_DATA / "summit_capital/applications/assets_export_2026-06-27.csv", dtype=str)
+    harbor = pd.read_csv(SOURCE_DATA / "harbor_trust/drift_instances/HT_DRIFT_20260403.csv", dtype=str)
+    summit = pd.read_csv(SOURCE_DATA / "summit_capital/applications/assets_export_2026-04-03.csv", dtype=str)
     assert harbor.DriftRef.str.startswith("HTD-").all()
     assert harbor.OpenedDate.str.match(r"^\d{2}/\d{2}/\d{4}$").all()
     assert summit.asset_key.str.match(r"^\d{5}$").all()

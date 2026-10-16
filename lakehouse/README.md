@@ -55,7 +55,7 @@ The agent side lives in `src/warehouse.py` (Databricks backend) and `src/sql_dia
 | RTO | score 1-10 | hours | minutes |
 | Data center | `Dallas` | `DAL` | `dallas-tx` |
 | Product | `RHEL` | `Red Hat Enterprise Linux` | `rhel` |
-| Quirks | one test app with RTO score 11 | sent drift twice (June 1 and June 27); two orphan drift rows | exemption request and decision in one field; 6 duplicate comments; one drift row with no detected version |
+| Quirks | one test app with RTO score 11 | sent drift twice (March 6 and April 3); two orphan drift rows | exemption request and decision in one field; 6 duplicate comments; one drift row with no detected version |
 
 Every transformation is reversible, so a correct pipeline must reproduce the bundled SQLite
 demo (`data/northstar_demo_rows.json`) exactly. `05_checks` tests that.
@@ -75,7 +75,7 @@ the `drift_demo` catalog. If your workspace does not allow creating catalogs, se
 | | applications | drift_instances | drift_notes |
 |---|---|---|---|
 | northstar_core | 401 | 222 | 395 |
-| harbor_trust | 310 | 262 | 195 |
+| harbor_trust | 310 | 256 | 195 |
 | summit_capital | 290 | 124 | 220 |
 
 Run it a second time: `COPY INTO` loads 0 new rows.
@@ -148,8 +148,11 @@ Databricks (Delta jars were not available offline). `05_checks` covers those on 
   fourth acquired company means adding rows to `ref`, plus one reader in silver.
 - **Quarantine, don't drop.** Rows that fail a rule go to `silver.quarantine` as JSON with the
   reason, and `05_checks` proves bronze = silver + quarantined + superseded.
-- **Latest extract wins.** Harbor's June 1 and June 27 snapshots overlap; silver keeps the newest
+- **Latest extract wins.** Harbor's March 6 and April 3 exports overlap; silver keeps the newest
   per key before `MERGE` (MERGE refuses a batch with two rows for one key).
+- **Aging is point-in-time.** Days open are counted to the extract (scan) date, never to the day
+  the pipeline runs, so rerunning next month gives the same KPIs and `drift_duration_days` in gold
+  matches the original v1 tables exactly. The agent measures to `last_scanned_at` the same way.
 - **A view is the agent's contract.** `gold.applications` exposes exactly the 23 columns the
   agent was built on, so the agent's query templates did not change; `gold.drift_findings`
   can grow without breaking it.

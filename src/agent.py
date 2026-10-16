@@ -188,8 +188,10 @@ WHERE {analytics.OPEN_SCOPE_DRIFT}
         "Resolve pending exemptions before 90-day and 120-day aging thresholds become governance escalations.",
     ]
 
+    latest_scan = db.scalar("SELECT MAX(a.last_scanned_at) AS latest_scan FROM applications AS a")
+    as_of = f"As of the {str(latest_scan)[:10]} scan, there" if latest_scan else "There"
     narrative = (
-        f"There are {open_drift} open in-scope drift findings. "
+        f"{as_of} are {open_drift} open in-scope drift findings. "
         f"{mission_critical} are Mission Critical, and {executive_candidates} have aged into executive escalation."
     )
 
@@ -199,7 +201,7 @@ WHERE {analytics.OPEN_SCOPE_DRIFT}
         metrics=[
             Metric(label="Open Drift", value=open_drift),
             Metric(label="Mission Critical", value=mission_critical, help_text="rto_score 1-2"),
-            Metric(label="Executive Escalations", value=executive_candidates, help_text="120+ days open"),
+            Metric(label="Executive Escalations", value=executive_candidates, help_text="120+ days open at last scan"),
             Metric(label="Pending Exemptions", value=pending_exemptions),
         ],
         focus_areas=focus_areas,
