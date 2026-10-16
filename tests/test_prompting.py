@@ -181,3 +181,19 @@ def test_policy_guidance_format_is_brief_and_does_not_repeat_analytics() -> None
     assert rendered.count("One Ashburn exemption is pending review.") == 1
     assert rendered.count("Recommended next actions:") == 1
     assert rendered.count("- ") == 2
+
+
+def test_every_demo_data_center_and_product_is_filterable() -> None:
+    import json
+    from pathlib import Path
+
+    from src.prompting import KNOWN_DATA_CENTERS, KNOWN_PRODUCTS
+
+    rows = json.loads((Path(__file__).resolve().parents[1] / "data" / "northstar_demo_rows.json").read_text())
+    assert {row["data_center"] for row in rows} <= set(KNOWN_DATA_CENTERS)
+    assert {row["product"] for row in rows} <= set(KNOWN_PRODUCTS)
+
+
+def test_phoenix_questions_are_scoped_to_phoenix() -> None:
+    plan = generate_query_plan("Which applications have the oldest open drift in Phoenix?")
+    assert plan.filters.data_center == "Phoenix"

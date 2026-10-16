@@ -99,7 +99,12 @@ sequential chain fits.
 
 1. **Warehouse details.** SQL Warehouses → your warehouse (Free Edition has one 2X-Small
    serverless warehouse) → **Connection details**: copy *Server hostname* and *HTTP path*.
-2. **Token.** Settings → Developer → Access tokens → Generate new token, with an expiry date.
+2. **Sign-in.** Either:
+   - **Token:** your username (top right) → Settings → Developer → Access tokens → Manage →
+     Generate new token. Give it an expiry, and if it asks for a scope, pick one that includes
+     SQL. Databricks labels these tokens "legacy" and an admin can disable them.
+   - **Browser sign-in (no token):** set `DATABRICKS_AUTH_TYPE=databricks-oauth`; the first
+     connection opens a browser window to log in.
 3. **Local `.env`** (gitignored, never commit it):
 
    ```text
@@ -110,9 +115,19 @@ sequential chain fits.
    DATABRICKS_CATALOG=drift_demo
    ```
 
-4. `pip install -r requirements-databricks.txt` and `streamlit run app.py`. The header shows
-   `Data source: Databricks drift_demo.gold: 475 findings`, and *SQL Evidence* shows the
-   Databricks SQL that actually ran.
+4. **Check the connection before opening the app:**
+
+   ```bash
+   pip install -r requirements-databricks.txt
+   python scripts/check_databricks.py
+   ```
+
+   It connects with the same settings, checks the 23-column contract, the 475 findings and the
+   Apr 3 as-of date, confirms unsafe SQL never reaches the warehouse, and asks every suggested
+   question on Databricks and on the bundled SQLite demo. All 16 checks should pass; each
+   failure prints the fix.
+5. `streamlit run app.py`. The header shows `Data source: Databricks drift_demo.gold: 475 findings`,
+   and *SQL Evidence* shows the Databricks SQL that actually ran.
 
 **Keep the public Render demo on SQLite.** Free Edition is for non-commercial use, has no SLA,
 and shuts compute down for the day if you exceed the quota. A recruiter clicking a link that

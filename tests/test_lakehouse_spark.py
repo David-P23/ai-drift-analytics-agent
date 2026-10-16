@@ -29,6 +29,7 @@ from pyspark.sql import functions as F  # noqa: E402
 from lakehouse.pipeline import contracts, sql_runner  # noqa: E402
 from src import analytics  # noqa: E402
 from src.database import DriftDatabase  # noqa: E402
+from src.parity import rows_match as _rows_match  # noqa: E402
 from src.sql_dialect import to_databricks  # noqa: E402
 from tests.lakehouse_reference import reconstruct  # noqa: E402
 
@@ -201,29 +202,6 @@ def parity_table(spark: SparkSession, tmp_path_factory) -> Path:
     return db_path
 
 
-def _rows_match(left: list[dict], right: list[dict]) -> bool:
-    """Equal row for row, except rounded averages may differ by one step on an exact tie.
-
-    ROUND(AVG(...), 1) of 232.85 gives 232.8 in SQLite (it rounds the binary double,
-    232.8499999...) and 232.9 in Spark/Databricks (HALF_UP on the decimal value).
-    Every other value must match exactly.
-    """
-
-    if len(left) != len(right):
-        return False
-    for a, b in zip(left, right):
-        if a.keys() != b.keys():
-            return False
-        for key in a:
-            x, y = a[key], b[key]
-            if isinstance(x, float) and isinstance(y, float):
-                if abs(x - y) > 0.1 + 1e-9:
-                    return False
-            elif x != y:
-                return False
-    return True
-
-
 def _plans() -> list:
     plans = list(analytics.all_dashboard_plans())
     plans += [
@@ -315,3 +293,28 @@ def test_agent_answers_are_identical_on_both_backends(spark: SparkSession, parit
         assert remote.error is None, question
         assert remote.answer == local.answer, question
         assert _rows_match(remote.rows, local.rows), question
+
+
+def test_connection_check_passes_on_gold_built_by_the_pipeline(gold: SparkSession, tmp_path: Path) -> None:
+    """scripts/check_databricks.py, run against gold built from the three source systems."""
+
+    import shutil
+
+    from scripts.check_databricks import print_report, run_checks
+    from src.warehouse import DatabricksDriftDatabase, DatabricksSettings
+
+    spark = gold
+    spark.sql("USE gold")
+    warehouse = DatabricksDriftDatabase(
+        DatabricksSettings("local", "/local", "unused"),
+        max_rows=1000,
+        connect=lambda _settings: _SparkConnection(spark),
+    )
+    reference_path = tmp_path / "northstar_demo.sqlite"
+    shutil.copy(ROOT / "data" / "northstar_demo.sqlite", reference_path)
+    results = run_checks(warehouse, DriftDatabase(reference_path, max_rows=1000))
+    lines: list[str] = []
+    assert print_report(results, lines.append), "\n".join(lines)
+    from src.prompting import SUGGESTED_QUESTIONS
+
+    assert len(results) == 7 + len(SUGGESTED_QUESTIONS)

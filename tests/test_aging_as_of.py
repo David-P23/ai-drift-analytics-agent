@@ -30,3 +30,19 @@ def test_summary_states_the_as_of_date(tmp_path: Path) -> None:
     summary = build_executive_summary(_demo_db(tmp_path))
     assert summary.narrative.startswith("As of the 2026-04-03 scan, there are 125 open in-scope drift findings.")
     assert {m.label: m.value for m in summary.metrics}["Executive Escalations"] == EXPECTED["120+ Executive escalation"]
+
+
+def test_list_answers_report_true_totals_not_the_list_limit(tmp_path: Path) -> None:
+    """The answer text must agree with the KPI cards even when the table is capped by LIMIT."""
+
+    from src.agent import answer_question
+
+    db = _demo_db(tmp_path)
+    escalation = answer_question(db, "Which apps need executive escalation?")
+    assert escalation.answer.startswith("86 open drift findings are at or beyond the 120-day")
+    assert len(escalation.rows) == 25 and "Showing the 25 most critical." in escalation.answer
+
+    critical_high = answer_question(db, "Show critical and high priority open drift.")
+    assert critical_high.answer.startswith(
+        "46 critical/high open drift findings match the request: 20 Mission Critical and 26 High."
+    )

@@ -32,21 +32,27 @@ from src.models import SafeQuery
 from src.sql_dialect import to_databricks
 from src.sql_safety import SQLSafetyError, SQLSafetyValidator
 
-REQUIRED_ENV = ("DATABRICKS_SERVER_HOSTNAME", "DATABRICKS_HTTP_PATH", "DATABRICKS_TOKEN")
+REQUIRED_ENV = ("DATABRICKS_SERVER_HOSTNAME", "DATABRICKS_HTTP_PATH")
+OAUTH = "databricks-oauth"
 
 
 @dataclass(frozen=True)
 class DatabricksSettings:
     server_hostname: str
     http_path: str
-    access_token: str
+    access_token: str | None
     catalog: str = "drift_demo"
     schema: str = "gold"
+    auth_type: str = "pat"  # "pat" (personal access token) or "databricks-oauth" (browser sign-in)
 
     @classmethod
     def from_env(cls, env: Mapping[str, str] | None = None) -> DatabricksSettings:
         env = os.environ if env is None else env
-        missing = [name for name in REQUIRED_ENV if not env.get(name, "").strip()]
+        auth_type = env.get("DATABRICKS_AUTH_TYPE", "pat").strip().lower() or "pat"
+        if auth_type not in {"pat", OAUTH}:
+            raise ValueError(f"DATABRICKS_AUTH_TYPE must be 'pat' or '{OAUTH}', not '{auth_type}'.")
+        required = REQUIRED_ENV + (("DATABRICKS_TOKEN",) if auth_type == "pat" else ())
+        missing = [name for name in required if not env.get(name, "").strip()]
         if missing:
             raise ValueError(f"DRIFT_BACKEND=databricks needs these environment variables: {', '.join(missing)}.")
         hostname = env["DATABRICKS_SERVER_HOSTNAME"].strip()
@@ -54,9 +60,10 @@ class DatabricksSettings:
         return cls(
             server_hostname=hostname,
             http_path=env["DATABRICKS_HTTP_PATH"].strip(),
-            access_token=env["DATABRICKS_TOKEN"].strip(),
+            access_token=env.get("DATABRICKS_TOKEN", "").strip() or None,
             catalog=env.get("DATABRICKS_CATALOG", "drift_demo").strip() or "drift_demo",
             schema=env.get("DATABRICKS_SCHEMA", "gold").strip() or "gold",
+            auth_type=auth_type,
         )
 
     @property
@@ -77,13 +84,16 @@ def connect_with_databricks_sql(settings: DatabricksSettings) -> Any:
             "DRIFT_BACKEND=databricks requires the connector: pip install -r requirements-databricks.txt"
         ) from exc
 
+    credentials: dict[str, Any] = (
+        {"auth_type": OAUTH} if settings.auth_type == OAUTH else {"access_token": settings.access_token}
+    )
     return databricks_sql.connect(
         server_hostname=settings.server_hostname,
         http_path=settings.http_path,
-        access_token=settings.access_token,
         catalog=settings.catalog,
         schema=settings.schema,
         user_agent_entry="ai-drift-analytics-agent",
+        **credentials,
     )
 
 

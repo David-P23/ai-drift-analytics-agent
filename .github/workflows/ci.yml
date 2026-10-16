@@ -18,7 +18,7 @@ jobs:
       - name: Install
         run: pip install -r requirements-dev.txt databricks-sql-connector ruff
       - name: Lint (new lakehouse and Databricks code)
-        run: ruff check --select E,F,W,I --line-length 130 --exclude lakehouse/notebooks lakehouse src/sql_dialect.py src/warehouse.py tests/test_lakehouse_sources.py tests/test_lakehouse_spark.py tests/test_warehouse.py tests/lakehouse_reference.py
+        run: ruff check --select E,F,W,I --line-length 130 --exclude lakehouse/notebooks lakehouse scripts src/sql_dialect.py src/warehouse.py src/parity.py tests/test_aging_as_of.py tests/test_lakehouse_sources.py tests/test_lakehouse_spark.py tests/test_warehouse.py tests/lakehouse_reference.py
       - name: Tests
         run: pytest -q
 

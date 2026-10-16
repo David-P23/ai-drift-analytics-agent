@@ -84,6 +84,8 @@ class QueryPlan(BaseModel):
     sql: str
     intent: AnalyticsIntent
     rationale: str
+    # Totals over the same filter, without the LIMIT, so answers never report a truncated list size.
+    count_sql: str | None = None
     chart: ChartSpec | None = None
     filters: QueryFilters = Field(default_factory=QueryFilters)
     resolved_question: str | None = None

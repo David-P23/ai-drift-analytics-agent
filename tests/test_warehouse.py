@@ -172,3 +172,24 @@ def test_agent_and_dashboard_run_unchanged_on_the_databricks_backend() -> None:
     assert summary.metrics[0].value == 0
     assert response.error is None
     assert all("julianday" not in sql.lower() for sql in conn.executed)
+
+
+def test_oauth_sign_in_needs_no_token() -> None:
+    env = {"DATABRICKS_SERVER_HOSTNAME": "h", "DATABRICKS_HTTP_PATH": "/p", "DATABRICKS_AUTH_TYPE": "databricks-oauth"}
+    settings = DatabricksSettings.from_env(env)
+    assert settings.auth_type == "databricks-oauth" and settings.access_token is None
+    with pytest.raises(ValueError, match="DATABRICKS_AUTH_TYPE"):
+        DatabricksSettings.from_env({**env, "DATABRICKS_AUTH_TYPE": "password"})
+
+
+def test_connection_check_reports_an_unreachable_warehouse(tmp_path) -> None:
+    from scripts.check_databricks import run_checks
+    from src.database import DriftDatabase
+
+    def refuse(_settings):
+        raise RuntimeError("401 Unauthorized")
+
+    warehouse = DatabricksDriftDatabase(DatabricksSettings("h", "/p", "t"), connect=refuse)
+    results = run_checks(warehouse, DriftDatabase(tmp_path / "unused.sqlite"))
+    assert len(results) == 1 and not results[0].passed
+    assert "401 Unauthorized" in results[0].detail and results[0].fix
