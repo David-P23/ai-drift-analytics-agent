@@ -6,6 +6,7 @@ from typing import Any
 
 from src import analytics
 from src.database import DriftDatabase
+from src.glossary import Term, match_definition, term_by_key
 from src.models import ConversationContext, ExecutiveSummary, Metric, QueryPlan, QueryResponse
 from src.policy_rag import compose_policy_guidance, is_policy_only_question, retrieve_policy_context, should_retrieve_policy
 from src.prompting import generate_query_plan
@@ -60,8 +61,16 @@ def answer_question(
             retrieval_mode=policy_retrieval.mode,
         )
 
+    definition = match_definition(question)
+    if definition:
+        return define_term(db, question, definition, planner="deterministic")
+
     plan = generate_query_plan(question, context=context)
     plan.question = question
+    if plan.question_type == "definition" and term_by_key(plan.term):
+        return define_term(db, question, term_by_key(plan.term), planner=plan.planner)
+    if plan.question_type == "out_of_scope":
+        return out_of_scope(question, planner=plan.planner)
     response = run_query_plan(db, plan)
     if not response.error:
         response.conversation_context = ConversationContext(
@@ -78,6 +87,56 @@ def answer_question(
             response.policy_sources = list(policy_retrieval.sources)
             response.retrieval_mode = policy_retrieval.mode
     return response
+
+
+OUT_OF_SCOPE_ANSWER = (
+    "That question is outside what this agent covers. It answers questions about application drift in the "
+    "NorthStar portfolio: which findings are open and how old they are, where drift is concentrated, "
+    "exemptions, and escalations. It can also explain terms such as Mission Critical, RTO, drift and exemption."
+)
+
+
+def define_term(db: DriftDatabase, question: str, term: Term, *, planner: str) -> QueryResponse:
+    """Answer "what does X mean" from the glossary, plus the term's current figure when it has one."""
+
+    answer = term.definition
+    sql = None
+    rows: list[dict[str, Any]] = []
+    if term.figure_sql:
+        try:
+            safe_query, figure_rows, figure_columns = db.execute_select(term.figure_sql)
+        except SQLSafetyError:
+            figure_rows = []
+        if figure_rows and figure_rows[0][figure_columns[0]] is not None:
+            figure = figure_rows[0][figure_columns[0]]
+            if term.key == "scan_date":
+                figure = str(figure)[:10]
+            answer = f"{answer} {term.figure_text.format(figure=figure)}"
+            sql = safe_query.sql
+            rows = [{"term": term.name, "current_value": figure}]
+    return QueryResponse(
+        question=question,
+        answer=answer,
+        sql=sql,
+        columns=["term", "current_value"] if rows else [],
+        rows=rows,
+        intent="definition",
+        resolved_question=f"Define {term.name}",
+        planner=planner,
+        suggestions=[term.try_next] if term.try_next else [],
+    )
+
+
+def out_of_scope(question: str, *, planner: str) -> QueryResponse:
+    from src.prompting import SUGGESTED_QUESTIONS
+
+    return QueryResponse(
+        question=question,
+        answer=OUT_OF_SCOPE_ANSWER,
+        intent="out_of_scope",
+        planner=planner,
+        suggestions=list(SUGGESTED_QUESTIONS[:3]),
+    )
 
 
 def summarize_result(

@@ -58,6 +58,7 @@ tagging. See [`lakehouse/README.md`](lakehouse/README.md).
 - Detects drift waves when a configurable number of findings emerge within a configurable rolling window for the same product update.
 - Supports alternate cluster definitions with plain-English explanations.
 - Uses an optional structured LLM planner to interpret natural-language follow-ups into approved analytics intents and filters.
+- Answers "what does X mean" questions from a glossary of business definitions (built from the same rules as the SQL), with the term's current figure, and politely declines questions outside the drift portfolio.
 - Runs analytics through validated read-only SQLite `SELECT` queries; the LLM never generates executable SQL.
 - Retrieves relevant passages from a labeled synthetic NorthStar policy corpus with embeddings, then grounds policy guidance in the retrieved sources.
 - Supports optional workbook/CSV refresh from normalized or flat drift exports.
