@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import re
+
 from src import analytics
 from src.domain import DOMAIN_RULES, format_schema_for_prompt
+from src.glossary import term_by_key
 from src.llm_planner import resolve_query_decision
 from src.models import AnalyticsIntent, ConversationContext, PromptBundle, QueryFilters, QueryPlan
 
@@ -116,7 +119,13 @@ def generate_query_plan(question: str, *, context: ConversationContext | None = 
         data_centers=KNOWN_DATA_CENTERS,
         products=KNOWN_PRODUCTS,
     )
+    question_type = "data"
+    term = None
     if decision:
+        question_type = decision.question_type
+        term = decision.term if term_by_key(decision.term) else None
+        if question_type == "definition" and term is None:
+            question_type = "data"
         intent = decision.intent
         filters = QueryFilters(
             data_center=_canonical_known_value(decision.data_center, KNOWN_DATA_CENTERS)
@@ -131,12 +140,41 @@ def generate_query_plan(question: str, *, context: ConversationContext | None = 
         intent = fallback_intent
         filters = fallback_filters
         planner = "deterministic"
+        if looks_out_of_scope(question, context):
+            question_type = "out_of_scope"
 
     plan = _build_analytics_plan(intent, filters)
     plan.filters = filters
     plan.resolved_question = _resolved_question(intent, filters)
     plan.planner = planner
+    plan.question_type = question_type
+    plan.term = term
     return plan
+
+
+_SCOPE_WORDS = {
+    "app", "apps", "application", "applications", "finding", "findings", "drift", "drifting", "product",
+    "products", "datacenter", "rto", "critical", "high", "priority", "exemption", "exemptions", "aging",
+    "oldest", "longest", "open", "closed", "risk", "version", "versions", "patch", "portfolio", "owner",
+    "owners", "tier", "tiers", "cluster", "clusters", "scan", "kpi", "kpis", "summary", "overview",
+}
+_SCOPE_PREFIXES = ("escalat", "remediat", "exempt", "complian", "governan", "resilien")
+
+
+def looks_out_of_scope(question: str, context: ConversationContext | None = None) -> bool:
+    """Keyword check used when no LLM planner is available: nothing in the question ties it to drift data."""
+
+    normalized = " ".join(question.lower().replace("-", " ").split())
+    words = set(re.findall(r"[a-z0-9]+", normalized))
+    if words & _SCOPE_WORDS or any(word.startswith(_SCOPE_PREFIXES) for word in words):
+        return False
+    if "data center" in normalized or "in scope" in normalized:
+        return False
+    if _find_known_value(normalized, KNOWN_DATA_CENTERS) or _find_known_value(normalized, KNOWN_PRODUCTS):
+        return False
+    if context and any(marker in normalized for marker in FOLLOW_UP_MARKERS):
+        return False
+    return True
 
 
 def _is_suggested_question(question: str) -> bool:
@@ -152,7 +190,7 @@ def _deterministic_route(
 ) -> tuple[AnalyticsIntent, QueryFilters]:
     """Return the existing keyword-and-context route as the safe planner fallback."""
 
-    normalized = " ".join(question.lower().split())
+    normalized = " ".join(question.lower().replace("-", " ").split())
     explicit_data_center = _find_known_value(normalized, KNOWN_DATA_CENTERS)
     explicit_product = _find_known_value(normalized, KNOWN_PRODUCTS)
     explicit_intent = _detect_intent(normalized)

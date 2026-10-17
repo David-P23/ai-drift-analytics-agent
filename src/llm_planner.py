@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import os
 
+from src.glossary import TERM_KEYS
 from src.models import ConversationContext, LLMPlannerDecision
 
 
@@ -60,6 +61,13 @@ def _planner_instructions(data_centers: list[str], products: list[str]) -> str:
 You route enterprise application-drift analytics questions into a constrained plan.
 Return only the supplied schema. Never write SQL, explain reasoning, invent filters,
 or answer the business question.
+
+Question types:
+- data: the question asks about the drift data (the default).
+- definition: the question asks what a term means or how it is calculated. Set term to one of:
+  {", ".join(TERM_KEYS)}.
+- out_of_scope: the question is not about application drift in this portfolio.
+Always return an intent; it is used only when the question type is data.
 
 Allowed intents:
 {chr(10).join(f"- {name}: {meaning}" for name, meaning in INTENT_GUIDE.items())}

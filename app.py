@@ -1125,9 +1125,21 @@ def render_response(st: Any, response: QueryResponse) -> None:
                 st.markdown(f"**{source.document} - {source.section}**")
                 st.write(source.excerpt)
 
+    if response.suggestions:
+        st.caption("Try next: " + " · ".join(response.suggestions))
+
     if response.warnings:
         for warning in response.warnings:
             st.info(warning)
+
+    if not response.sql:
+        if response.intent == "definition":
+            st.caption("Answered from the agent's glossary of business definitions; no query was needed.")
+        elif response.intent == "out_of_scope":
+            st.caption("No query was run.")
+        elif response.policy_sources:
+            st.caption("Answered from the policy documents; no query was needed.")
+        return
 
     table_tab, chart_tab, sql_tab = st.tabs(["Result Table", "Chart", "SQL Evidence"])
     with table_tab:

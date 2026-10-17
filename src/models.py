@@ -9,6 +9,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 ChartKind = Literal["bar", "table_only"]
 PlannerKind = Literal["deterministic", "llm"]
+# data: run an approved query. definition: explain a glossary term. out_of_scope: decline politely.
+QuestionType = Literal["data", "definition", "out_of_scope"]
 AnalyticsIntent = Literal[
     "top_drifting_apps",
     "critical_apps_with_open_drift",
@@ -46,6 +48,8 @@ class LLMPlannerDecision(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
+    question_type: QuestionType = "data"
+    term: str | None = None
     intent: AnalyticsIntent
     data_center: str | None = None
     product: str | None = None
@@ -90,6 +94,8 @@ class QueryPlan(BaseModel):
     filters: QueryFilters = Field(default_factory=QueryFilters)
     resolved_question: str | None = None
     planner: PlannerKind = "deterministic"
+    question_type: QuestionType = "data"
+    term: str | None = None
 
 
 class SafeQuery(BaseModel):
@@ -119,6 +125,7 @@ class QueryResponse(BaseModel):
     policy_sources: list[PolicySource] = Field(default_factory=list)
     retrieval_mode: Literal["semantic", "lexical"] | None = None
     conversation_context: ConversationContext | None = None
+    suggestions: list[str] = Field(default_factory=list)
 
 
 class Metric(BaseModel):
