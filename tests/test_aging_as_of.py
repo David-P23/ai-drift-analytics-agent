@@ -23,7 +23,7 @@ def _demo_db(tmp_path: Path) -> DriftDatabase:
 
 def test_demo_aging_buckets_do_not_depend_on_todays_date(tmp_path: Path) -> None:
     _, rows, _ = _demo_db(tmp_path).execute_select(analytics.aging_bucket_analysis().sql)
-    assert {row["aging_bucket"]: row["app_count"] for row in rows} == EXPECTED
+    assert {row["aging_bucket"]: row["finding_count"] for row in rows} == EXPECTED
 
 
 def test_summary_states_the_as_of_date(tmp_path: Path) -> None:

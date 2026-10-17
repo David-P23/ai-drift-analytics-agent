@@ -67,3 +67,8 @@ def test_allows_qualified_known_columns(validator: SQLSafetyValidator) -> None:
     )
     assert "applications AS a" in safe.sql
     assert safe.sql.endswith("LIMIT 100")
+
+
+def test_keeps_line_breaks_so_sql_evidence_is_readable(validator: SQLSafetyValidator) -> None:
+    safe = validator.validate("SELECT a.app_id AS app_id\nFROM applications AS a\nWHERE a.status = 'Open' -- open only")
+    assert safe.sql == "SELECT a.app_id AS app_id\nFROM applications AS a\nWHERE a.status = 'Open'\nLIMIT 100"

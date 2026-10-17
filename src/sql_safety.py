@@ -117,7 +117,9 @@ class SQLSafetyValidator:
         self._reject_forbidden_keywords(normalized)
         self._validate_tables_and_columns(normalized)
 
-        limited_sql, limit_warning = self._enforce_limit(normalized)
+        # Checks run on the whitespace-normalized text; the statement that runs (and is shown
+        # as evidence) keeps its original line breaks, minus comments.
+        limited_sql, limit_warning = self._enforce_limit(self._strip_comments(sql).strip())
         if limit_warning:
             warnings.append(limit_warning)
 
@@ -221,7 +223,11 @@ class SQLSafetyValidator:
         stripped = sql.rstrip(";").strip()
         limit = self._find_top_level_limit(stripped)
         if limit is None:
-            return f"{stripped} LIMIT {self.max_rows}", f"Added LIMIT {self.max_rows} to protect the demo database."
+            separator = "\n" if "\n" in stripped else " "
+            return (
+                f"{stripped}{separator}LIMIT {self.max_rows}",
+                f"Added LIMIT {self.max_rows} to protect the demo database.",
+            )
         if limit.value is not None and limit.value > self.max_rows and limit.number_start is not None:
             rewritten = f"{stripped[:limit.number_start]}{self.max_rows}{stripped[limit.number_end:]}"
             return rewritten, f"Reduced LIMIT from {limit.value} to {self.max_rows}."

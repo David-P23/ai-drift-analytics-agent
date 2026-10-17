@@ -126,7 +126,7 @@ def summarize_result(
         leader = rows[0]
         return (
             f"{leader['product']} has the highest open drift concentration "
-            f"with {leader['drift_count']} affected applications."
+            f"with {leader['drift_count']} open drift findings."
         )
     if plan.intent == "drift_by_data_center":
         leader = rows[0]
@@ -139,7 +139,7 @@ def summarize_result(
         return f"Exemption posture is split across {len(rows)} buckets; {pending} open drift items are pending review."
     if plan.intent == "aging_bucket_analysis":
         severe = sum(
-            row["app_count"]
+            row["finding_count"]
             for row in rows
             if str(row["aging_bucket"]).startswith("120+") or str(row["aging_bucket"]).startswith("90-")
         )

@@ -11,16 +11,17 @@ import os
 from src.models import ConversationContext, LLMPlannerDecision
 
 
-ALLOWED_INTENTS = (
-    "top_drifting_apps",
-    "critical_apps_with_open_drift",
-    "drift_by_product",
-    "drift_by_data_center",
-    "exemption_analysis",
-    "aging_bucket_analysis",
-    "executive_escalation_candidates",
-    "rto_risk_distribution",
-)
+INTENT_GUIDE = {
+    "top_drifting_apps": "list of individual open findings, oldest first (which applications, oldest, longest open)",
+    "critical_apps_with_open_drift": "list of Mission Critical findings, plus High when asked",
+    "drift_by_product": "open finding counts by product",
+    "drift_by_data_center": "open finding counts by data center",
+    "exemption_analysis": "open finding counts by exemption request and decision",
+    "aging_bucket_analysis": "open finding counts in the <60, 60-89, 90-119 and 120+ day buckets",
+    "executive_escalation_candidates": "list of findings open 120 days or more",
+    "rto_risk_distribution": "open finding counts by RTO tier",
+}
+ALLOWED_INTENTS = tuple(INTENT_GUIDE)
 
 
 def resolve_query_decision(
@@ -60,12 +61,15 @@ You route enterprise application-drift analytics questions into a constrained pl
 Return only the supplied schema. Never write SQL, explain reasoning, invent filters,
 or answer the business question.
 
-Allowed intents: {", ".join(ALLOWED_INTENTS)}.
+Allowed intents:
+{chr(10).join(f"- {name}: {meaning}" for name, meaning in INTENT_GUIDE.items())}
 Allowed data centers: {", ".join(data_centers)}.
 Allowed products: {", ".join(products)}.
 
 Interpret references such as "that", "those", "do that", "narrow it", and "same"
-against the prior context. Preserve the prior analysis intent for a scope-only follow-up.
+against the prior context. Preserve the prior analysis intent only for a scope-only
+follow-up ("do that for Phoenix", "only Kafka"). A question that asks for a different
+analysis is a new request: choose its intent from the question itself.
 Use null for a filter that the request does not specify or inherit. Set include_high true
 only when the user asks for High/priority findings alongside Mission Critical; set false
 for Mission Critical-only questions; otherwise preserve or return null.

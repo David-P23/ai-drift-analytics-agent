@@ -5,6 +5,18 @@ from __future__ import annotations
 from src.models import ChartSpec, QueryPlan
 
 
+
+def _block(sql: str, indent: str = "    ") -> str:
+    """Indent the continuation lines of a multi-line expression placed inside a SELECT list."""
+
+    return sql.replace("\n", "\n" + indent)
+
+
+def _tidy(sql: str) -> str:
+    """Drop blank lines (left by empty filters) and trailing spaces, so SQL evidence reads cleanly."""
+
+    return "\n".join(line.rstrip() for line in sql.splitlines() if line.strip())
+
 # Days open are measured as of each finding's last scan, not today's date, so the
 # 60/90/120-day KPIs are point-in-time (like a weekly resiliency report) and the
 # demo portfolio does not slide into "120+" as the calendar moves on.
@@ -66,7 +78,7 @@ END
 def _totals_sql(where: str) -> str:
     """Counts behind a limited list: total, by tier, and the oldest age, for the same filter."""
 
-    return f"""
+    return _tidy(f"""
 SELECT
     COUNT(*) AS total_count,
     SUM(CASE WHEN a.rto_score BETWEEN 1 AND 2 THEN 1 ELSE 0 END) AS mission_critical_count,
@@ -74,7 +86,7 @@ SELECT
     MAX({AGE_DAYS}) AS oldest_days_open
 FROM applications AS a
 WHERE {where}
-""".strip()
+""")
 
 
 def top_drifting_apps(
@@ -107,7 +119,7 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question=f"Top drifting applications {scoped_label}".strip(),
-        sql=sql,
+        sql=_tidy(sql),
         count_sql=_totals_sql(f"{OPEN_SCOPE_DRIFT}{scope_clause}"),
         intent="top_drifting_apps",
         rationale="Ranks open in-scope drift by age and then by RTO risk.",
@@ -155,7 +167,7 @@ SELECT
     a.product AS product,
     a.data_center AS data_center,
     a.rto_score AS rto_score,
-    {RTO_TIER_CASE} AS rto_tier,
+    {_block(RTO_TIER_CASE)} AS rto_tier,
     a.approved_version AS approved_version,
     a.detected_version AS detected_version,
     {AGE_DAYS} AS days_open,
@@ -170,7 +182,7 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question=f"Open drift for {label} applications {scoped_label}".strip(),
-        sql=sql,
+        sql=_tidy(sql),
         count_sql=_totals_sql(f"{OPEN_SCOPE_DRIFT}\n  AND {rto_filter}{scope_clause}"),
         intent="critical_apps_with_open_drift",
         rationale="Uses explicit rto_score logic for critical/high priority drift.",
@@ -201,7 +213,7 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question=f"Drift distribution by product {scoped_label}".strip(),
-        sql=sql,
+        sql=_tidy(sql),
         intent="drift_by_product",
         rationale="Aggregates open in-scope drift by product family.",
         chart=ChartSpec(kind="bar", title="Product Drift Distribution", x="product", y="drift_count"),
@@ -231,7 +243,7 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question=f"Drift concentration by data center {scoped_label}".strip(),
-        sql=sql,
+        sql=_tidy(sql),
         intent="drift_by_data_center",
         rationale="Finds hosting concentration for open in-scope drift.",
         chart=ChartSpec(kind="bar", title="Data Center Concentration", x="data_center", y="drift_count"),
@@ -262,7 +274,7 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question=f"Exemption analysis {scoped_label}".strip(),
-        sql=sql,
+        sql=_tidy(sql),
         intent="exemption_analysis",
         rationale="Compares requested exemptions, decisions, risk, and age.",
         chart=ChartSpec(kind="bar", title="Exemption Drift Analysis", x="exemption_result", y="drift_count"),
@@ -279,8 +291,8 @@ def aging_bucket_analysis(
     scoped_label = _scope_label(data_center=data_center, product=product)
     sql = f"""
 SELECT
-    {AGING_BUCKET_CASE} AS aging_bucket,
-    COUNT(*) AS app_count,
+    {_block(AGING_BUCKET_CASE)} AS aging_bucket,
+    COUNT(*) AS finding_count,
     SUM(CASE WHEN a.rto_score BETWEEN 1 AND 4 THEN 1 ELSE 0 END) AS critical_high_count,
     MAX({AGE_DAYS}) AS oldest_days_open
 FROM applications AS a
@@ -292,10 +304,10 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question=f"Aging bucket analysis {scoped_label}".strip(),
-        sql=sql,
+        sql=_tidy(sql),
         intent="aging_bucket_analysis",
         rationale="Buckets open drift into warning, senior escalation, and executive escalation thresholds.",
-        chart=ChartSpec(kind="bar", title="Aging Bucket Chart", x="aging_bucket", y="app_count"),
+        chart=ChartSpec(kind="bar", title="Aging Bucket Chart", x="aging_bucket", y="finding_count"),
     )
 
 
@@ -316,7 +328,7 @@ SELECT
     a.product AS product,
     a.data_center AS data_center,
     a.rto_score AS rto_score,
-    {RTO_TIER_CASE} AS rto_tier,
+    {_block(RTO_TIER_CASE)} AS rto_tier,
     {AGE_DAYS} AS days_open,
     a.exemption_requested AS exemption_requested,
     a.exemption_result AS exemption_result,
@@ -331,7 +343,7 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question=f"Executive escalation candidates {scoped_label}".strip(),
-        sql=sql,
+        sql=_tidy(sql),
         count_sql=_totals_sql(f"{OPEN_SCOPE_DRIFT}\n  AND {AGE_DAYS} >= 120{scope_clause}"),
         intent="executive_escalation_candidates",
         rationale="Finds open in-scope drift at or beyond the 120-day executive escalation threshold.",
@@ -349,7 +361,7 @@ def rto_risk_distribution(
     scoped_label = _scope_label(data_center=data_center, product=product)
     sql = f"""
 SELECT
-    {RTO_TIER_CASE} AS rto_tier,
+    {_block(RTO_TIER_CASE)} AS rto_tier,
     COUNT(*) AS drift_count,
     MAX({AGE_DAYS}) AS oldest_days_open
 FROM applications AS a
@@ -367,7 +379,7 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question=f"RTO risk distribution {scoped_label}".strip(),
-        sql=sql,
+        sql=_tidy(sql),
         intent="rto_risk_distribution",
         rationale="Maps rto_score into Mission Critical, High, Medium, and Low buckets.",
         chart=ChartSpec(kind="bar", title="RTO Risk Distribution", x="rto_tier", y="drift_count"),
@@ -384,13 +396,13 @@ SELECT
     a.product AS product,
     a.data_center AS data_center,
     a.rto_score AS rto_score,
-    {RTO_TIER_CASE} AS rto_tier,
+    {_block(RTO_TIER_CASE)} AS rto_tier,
     {AGE_DAYS} AS days_open,
-    {AGING_BUCKET_CASE} AS aging_bucket,
+    {_block(AGING_BUCKET_CASE)} AS aging_bucket,
     a.exemption_requested AS exemption_requested,
     COALESCE(a.exemption_result, 'None') AS exemption_result,
-    {AI_PRIORITY_SCORE} AS ai_priority_score,
-    {AI_ACTION_CASE} AS ai_recommended_action,
+    {_block(AI_PRIORITY_SCORE)} AS ai_priority_score,
+    {_block(AI_ACTION_CASE)} AS ai_recommended_action,
     a.business_owner AS business_owner,
     a.technology_owner AS technology_owner
 FROM applications AS a
@@ -400,7 +412,7 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question="AI risk intelligence",
-        sql=sql,
+        sql=_tidy(sql),
         intent="ai_risk_intelligence",
         rationale="Scores open drift by RTO criticality, aging threshold, and exemption decision state.",
         chart=ChartSpec(kind="bar", title="AI Priority Score", x="app_name", y="ai_priority_score"),
@@ -433,7 +445,7 @@ LIMIT {limit}
 """.strip()
     return QueryPlan(
         question="Drift cluster source rows",
-        sql=sql,
+        sql=_tidy(sql),
         intent="drift_cluster_source",
         rationale="Returns in-scope drift findings for rolling-window cluster detection.",
         chart=ChartSpec(kind="table_only", title="Drift Cluster Source"),
