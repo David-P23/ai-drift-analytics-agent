@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+import sqlparse
+
 from src.models import SafeQuery
 
 
@@ -117,13 +119,20 @@ class SQLSafetyValidator:
         self._reject_forbidden_keywords(normalized)
         self._validate_tables_and_columns(normalized)
 
-        # Checks run on the whitespace-normalized text; the statement that runs (and is shown
-        # as evidence) keeps its original line breaks, minus comments.
-        limited_sql, limit_warning = self._enforce_limit(self._strip_comments(sql).strip())
+        # Checks run on the whitespace-normalized text. The statement that runs (and is shown as
+        # SQL evidence) keeps its author's line breaks; a statement written on one line is laid
+        # out here, so every query reads well no matter where it came from.
+        limited_sql, limit_warning = self._enforce_limit(self._layout(self._strip_comments(sql).strip()))
         if limit_warning:
             warnings.append(limit_warning)
 
         return SafeQuery(original_sql=original_sql, sql=limited_sql, warnings=warnings)
+
+    @staticmethod
+    def _layout(sql: str) -> str:
+        if "\n" in sql:
+            return sql
+        return sqlparse.format(sql, reindent=True, indent_width=4).strip()
 
     @staticmethod
     def _strip_comments(sql: str) -> str:
