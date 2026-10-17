@@ -100,6 +100,15 @@ def generate_query_plan(question: str, *, context: ConversationContext | None = 
     deterministic router remains the fallback and always constructs the SQL plan.
     """
 
+    if _is_suggested_question(question):
+        # The prompt buttons always mean the same thing, whatever was asked before them.
+        intent, filters = _deterministic_route(question, None)
+        plan = _build_analytics_plan(intent, filters)
+        plan.filters = filters
+        plan.resolved_question = _resolved_question(intent, filters)
+        plan.planner = "deterministic"
+        return plan
+
     fallback_intent, fallback_filters = _deterministic_route(question, context)
     decision = resolve_query_decision(
         question,
@@ -128,6 +137,14 @@ def generate_query_plan(question: str, *, context: ConversationContext | None = 
     plan.resolved_question = _resolved_question(intent, filters)
     plan.planner = planner
     return plan
+
+
+def _is_suggested_question(question: str) -> bool:
+    return _plain(question) in {_plain(suggested) for suggested in SUGGESTED_QUESTIONS}
+
+
+def _plain(text: str) -> str:
+    return " ".join(text.casefold().strip().rstrip("?.!").split())
 
 
 def _deterministic_route(
@@ -198,6 +215,8 @@ def _detect_intent(normalized: str) -> AnalyticsIntent | None:
         return "drift_by_data_center"
     if "product" in normalized or "platform" in normalized:
         return "drift_by_product"
+    if any(term in normalized for term in ["oldest", "longest", "top drifting", "most days"]):
+        return "top_drifting_apps"
     return None
 
 

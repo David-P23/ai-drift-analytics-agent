@@ -1101,6 +1101,7 @@ def render_response(st: Any, response: QueryResponse) -> None:
                 st.code(response.sql, language="sql")
         return
 
+    st.caption(f"Question: {response.question}")
     st.markdown(
         f"""
         <div class="answer-card">
@@ -1114,7 +1115,7 @@ def render_response(st: Any, response: QueryResponse) -> None:
     if response.resolved_question and response.resolved_question.casefold() != response.question.casefold():
         st.caption(f"Resolved request: {response.resolved_question}")
     if response.planner:
-        planner_label = "Structured LLM planner" if response.planner == "llm" else "Deterministic fallback planner"
+        planner_label = "Structured LLM planner" if response.planner == "llm" else "Deterministic keyword router"
         st.caption(f"Planning path: {planner_label}; query execution remains validated and read-only.")
     if response.policy_sources:
         mode_label = "Semantic embedding retrieval" if response.retrieval_mode == "semantic" else "Lexical retrieval fallback"

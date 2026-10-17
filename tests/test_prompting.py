@@ -197,3 +197,42 @@ def test_every_demo_data_center_and_product_is_filterable() -> None:
 def test_phoenix_questions_are_scoped_to_phoenix() -> None:
     plan = generate_query_plan("Which applications have the oldest open drift in Phoenix?")
     assert plan.filters.data_center == "Phoenix"
+
+
+def _context_after(question: str):
+    from src.models import ConversationContext
+
+    plan = generate_query_plan(question)
+    return ConversationContext(intent=plan.intent, resolved_question=plan.resolved_question, filters=plan.filters)
+
+
+def test_suggested_prompts_mean_the_same_thing_whatever_ran_before(monkeypatch) -> None:
+    from src import prompting
+
+    def planner_must_not_run(*args, **kwargs):
+        raise AssertionError("suggested prompts are routed without the LLM planner")
+
+    monkeypatch.setattr(prompting, "resolve_query_decision", planner_must_not_run)
+    for previous in prompting.SUGGESTED_QUESTIONS:
+        context = _context_after(previous)
+        for question in prompting.SUGGESTED_QUESTIONS:
+            alone = generate_query_plan(question)
+            after = generate_query_plan(question, context=context)
+            assert (after.intent, after.filters) == (alone.intent, alone.filters), (previous, question)
+    assert generate_query_plan("which applications have the oldest open drift").intent == "top_drifting_apps"
+
+
+def test_oldest_question_is_a_new_request_not_a_follow_up(monkeypatch) -> None:
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    context = _context_after("Show aging buckets for open drift.")
+    assert generate_query_plan("Which apps have the longest open drift?", context=context).intent == "top_drifting_apps"
+    follow_up = generate_query_plan("do that for Phoenix", context=context)
+    assert follow_up.intent == "aging_bucket_analysis" and follow_up.filters.data_center == "Phoenix"
+
+
+def test_planner_instructions_describe_every_intent() -> None:
+    from src.llm_planner import INTENT_GUIDE, _planner_instructions
+
+    text = _planner_instructions(["Phoenix"], ["Kafka"])
+    for intent, meaning in INTENT_GUIDE.items():
+        assert f"- {intent}: {meaning}" in text
