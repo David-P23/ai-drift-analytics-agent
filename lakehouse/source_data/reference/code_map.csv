@@ -1,0 +1,86 @@
+source_system,domain,source_value,canonical_value
+northstar_core,data_center,Ashburn,Ashburn
+harbor_trust,data_center,IAD,Ashburn
+summit_capital,data_center,ashburn-va,Ashburn
+northstar_core,data_center,Chandler,Chandler
+harbor_trust,data_center,CHD,Chandler
+summit_capital,data_center,chandler-az,Chandler
+northstar_core,data_center,Charlotte,Charlotte
+harbor_trust,data_center,CLT,Charlotte
+summit_capital,data_center,charlotte-nc,Charlotte
+northstar_core,data_center,Columbus,Columbus
+harbor_trust,data_center,CMH,Columbus
+summit_capital,data_center,columbus-oh,Columbus
+northstar_core,data_center,Dallas,Dallas
+harbor_trust,data_center,DAL,Dallas
+summit_capital,data_center,dallas-tx,Dallas
+northstar_core,data_center,Des Moines,Des Moines
+harbor_trust,data_center,DSM,Des Moines
+summit_capital,data_center,des-moines-ia,Des Moines
+northstar_core,data_center,Eagan,Eagan
+harbor_trust,data_center,EGN,Eagan
+summit_capital,data_center,eagan-mn,Eagan
+northstar_core,data_center,Minneapolis,Minneapolis
+harbor_trust,data_center,MSP,Minneapolis
+summit_capital,data_center,minneapolis-mn,Minneapolis
+northstar_core,data_center,Phoenix,Phoenix
+harbor_trust,data_center,PHX,Phoenix
+summit_capital,data_center,phoenix-az,Phoenix
+northstar_core,data_center,St. Louis,St. Louis
+harbor_trust,data_center,STL,St. Louis
+summit_capital,data_center,st-louis-mo,St. Louis
+summit_capital,data_center,none,
+northstar_core,status,Open,Open
+harbor_trust,status,OPEN,Open
+northstar_core,status,Closed,Closed
+harbor_trust,status,CLOSED,Closed
+summit_capital,status,true,Open
+summit_capital,status,false,Closed
+northstar_core,yes_no,Y,Y
+northstar_core,yes_no,N,N
+harbor_trust,yes_no,Yes,Y
+harbor_trust,yes_no,No,N
+summit_capital,yes_no,1,Y
+summit_capital,yes_no,0,N
+northstar_core,escalation,1,true
+northstar_core,escalation,0,false
+harbor_trust,escalation,TRUE,true
+harbor_trust,escalation,FALSE,false
+summit_capital,escalation,1,true
+summit_capital,escalation,0,false
+summit_capital,exemption_requested,NONE,N
+summit_capital,exemption_result,NONE,
+summit_capital,exemption_requested,APPROVED,Y
+summit_capital,exemption_result,APPROVED,Approved
+summit_capital,exemption_requested,PENDING,Y
+summit_capital,exemption_result,PENDING,Pending
+summit_capital,exemption_requested,DENIED,Y
+summit_capital,exemption_result,DENIED,Denied
+summit_capital,product_category,database,Database
+summit_capital,product_category,messaging,Messaging / Integration
+summit_capital,product_category,middleware,Middleware
+summit_capital,product_category,monitoring,Monitoring / Agent
+summit_capital,product_category,os,Operating System
+summit_capital,product_category,security_identity,Security / Identity
+summit_capital,product_category,web_api,Web Server / API
+northstar_core,note_type,Closure Note,Closure Note
+harbor_trust,note_type,Closure Note,Closure Note
+summit_capital,note_type,closure_note,Closure Note
+northstar_core,note_type,Escalation,Escalation
+harbor_trust,note_type,Escalation,Escalation
+summit_capital,note_type,escalation,Escalation
+northstar_core,note_type,Exemption Request,Exemption Request
+harbor_trust,note_type,Exemption Request,Exemption Request
+summit_capital,note_type,exemption_request,Exemption Request
+northstar_core,note_type,Exemption Review,Exemption Review
+harbor_trust,note_type,Exemption Review,Exemption Review
+summit_capital,note_type,exemption_review,Exemption Review
+northstar_core,note_type,Owner Update,Owner Update
+harbor_trust,note_type,Owner Update,Owner Update
+summit_capital,note_type,owner_update,Owner Update
+northstar_core,note_type,Remediation Update,Remediation Update
+harbor_trust,note_type,Remediation Update,Remediation Update
+summit_capital,note_type,remediation_update,Remediation Update
+northstar_core,note_type,Validation Result,Validation Result
+harbor_trust,note_type,Validation Result,Validation Result
+summit_capital,note_type,validation_result,Validation Result

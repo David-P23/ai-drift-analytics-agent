@@ -17,6 +17,10 @@ def run_query_plan(db: DriftDatabase, plan: QueryPlan) -> QueryResponse:
 
     try:
         safe_query, rows, columns = db.execute_select(plan.sql)
+        totals = None
+        if plan.count_sql:
+            _, total_rows, _ = db.execute_select(plan.count_sql)
+            totals = total_rows[0] if total_rows else None
     except SQLSafetyError as exc:
         return QueryResponse(
             question=plan.question,
@@ -28,7 +32,7 @@ def run_query_plan(db: DriftDatabase, plan: QueryPlan) -> QueryResponse:
 
     return QueryResponse(
         question=plan.question,
-        answer=summarize_result(plan, rows),
+        answer=summarize_result(plan, rows, totals),
         sql=safe_query.sql,
         columns=columns,
         rows=rows,
@@ -76,32 +80,48 @@ def answer_question(
     return response
 
 
-def summarize_result(plan: QueryPlan, rows: list[dict[str, Any]]) -> str:
-    """Create a concise business answer from returned rows."""
+def summarize_result(
+    plan: QueryPlan, rows: list[dict[str, Any]], totals: dict[str, Any] | None = None
+) -> str:
+    """Create a concise business answer from returned rows.
+
+    List questions return at most LIMIT rows, so counts come from ``totals`` (the same
+    filter without the LIMIT) when the plan provides it, never from the length of the list.
+    """
 
     if not rows:
         return "No matching open in-scope drift was found for that question."
 
+    total = int(totals["total_count"]) if totals and totals.get("total_count") is not None else len(rows)
+    shown = f" Showing the top {len(rows)}." if total > len(rows) else ""
+
     if plan.intent == "top_drifting_apps":
         oldest = rows[0]
         return (
-            f"{len(rows)} open in-scope drifting applications match the request. "
-            f"The oldest is {oldest['app_name']} at {oldest['days_open']} days open."
+            f"{total} open in-scope drift findings match the request. "
+            f"The oldest is {oldest['app_name']} at {oldest['days_open']} days open.{shown}"
         )
     if plan.intent == "critical_apps_with_open_drift":
-        mission_critical = sum(1 for row in rows if row.get("rto_score", 99) <= 2)
-        high = sum(1 for row in rows if 3 <= row.get("rto_score", 99) <= 4)
-        oldest = max(rows, key=lambda row: row.get("days_open", 0))
+        if totals:
+            mission_critical = int(totals.get("mission_critical_count") or 0)
+            high = int(totals.get("high_count") or 0)
+            oldest_days = int(totals.get("oldest_days_open") or 0)
+        else:
+            mission_critical = sum(1 for row in rows if row.get("rto_score", 99) <= 2)
+            high = sum(1 for row in rows if 3 <= row.get("rto_score", 99) <= 4)
+            oldest_days = max(row.get("days_open", 0) for row in rows)
+        oldest_row = next((row for row in rows if row.get("days_open") == oldest_days), None)
+        oldest = (
+            f"The oldest is {oldest_row['app_name']} at {oldest_days} days open."
+            if oldest_row
+            else f"The oldest has been open {oldest_days} days."
+        )
         if plan.filters.include_high:
             return (
-                f"{len(rows)} critical/high open drift findings match the request: "
-                f"{mission_critical} Mission Critical and {high} High. "
-                f"The oldest is {oldest['app_name']} at {oldest['days_open']} days open."
+                f"{total} critical/high open drift findings match the request: "
+                f"{mission_critical} Mission Critical and {high} High. {oldest}{shown}"
             )
-        return (
-            f"{mission_critical} Mission Critical applications with open drift match the request. "
-            f"The oldest is {oldest['app_name']} at {oldest['days_open']} days open."
-        )
+        return f"{mission_critical} Mission Critical open drift findings match the request. {oldest}{shown}"
     if plan.intent == "drift_by_product":
         leader = rows[0]
         return (
@@ -125,7 +145,10 @@ def summarize_result(plan: QueryPlan, rows: list[dict[str, Any]]) -> str:
         )
         return f"{severe} open drift items are at senior or executive escalation age."
     if plan.intent == "executive_escalation_candidates":
-        return f"{len(rows)} applications are at or beyond the 120-day executive escalation threshold."
+        return (
+            f"{total} open drift findings are at or beyond the 120-day executive escalation threshold."
+            f"{' Showing the ' + str(len(rows)) + ' most critical.' if total > len(rows) else ''}"
+        )
     if plan.intent == "rto_risk_distribution":
         critical = next((row["drift_count"] for row in rows if row["rto_tier"] == "Mission Critical"), 0)
         high = next((row["drift_count"] for row in rows if row["rto_tier"] == "High"), 0)
@@ -188,8 +211,10 @@ WHERE {analytics.OPEN_SCOPE_DRIFT}
         "Resolve pending exemptions before 90-day and 120-day aging thresholds become governance escalations.",
     ]
 
+    latest_scan = db.scalar("SELECT MAX(a.last_scanned_at) AS latest_scan FROM applications AS a")
+    as_of = f"As of the {str(latest_scan)[:10]} scan, there" if latest_scan else "There"
     narrative = (
-        f"There are {open_drift} open in-scope drift findings. "
+        f"{as_of} are {open_drift} open in-scope drift findings. "
         f"{mission_critical} are Mission Critical, and {executive_candidates} have aged into executive escalation."
     )
 
@@ -199,7 +224,7 @@ WHERE {analytics.OPEN_SCOPE_DRIFT}
         metrics=[
             Metric(label="Open Drift", value=open_drift),
             Metric(label="Mission Critical", value=mission_critical, help_text="rto_score 1-2"),
-            Metric(label="Executive Escalations", value=executive_candidates, help_text="120+ days open"),
+            Metric(label="Executive Escalations", value=executive_candidates, help_text="120+ days open at last scan"),
             Metric(label="Pending Exemptions", value=pending_exemptions),
         ],
         focus_areas=focus_areas,

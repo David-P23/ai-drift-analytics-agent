@@ -5,7 +5,10 @@ from __future__ import annotations
 from src.models import ChartSpec, QueryPlan
 
 
-AGE_DAYS = "CAST(julianday('now') - julianday(a.drift_detected_on) AS INTEGER)"
+# Days open are measured as of each finding's last scan, not today's date, so the
+# 60/90/120-day KPIs are point-in-time (like a weekly resiliency report) and the
+# demo portfolio does not slide into "120+" as the calendar moves on.
+AGE_DAYS = "CAST(julianday(date(a.last_scanned_at)) - julianday(a.drift_detected_on) AS INTEGER)"
 DRIFT_CONDITION = "a.detected_version <> a.approved_version"
 OPEN_SCOPE_DRIFT = f"{DRIFT_CONDITION} AND a.status = 'Open' AND a.in_scope = 'Y'"
 
@@ -60,6 +63,20 @@ END
 """.strip()
 
 
+def _totals_sql(where: str) -> str:
+    """Counts behind a limited list: total, by tier, and the oldest age, for the same filter."""
+
+    return f"""
+SELECT
+    COUNT(*) AS total_count,
+    SUM(CASE WHEN a.rto_score BETWEEN 1 AND 2 THEN 1 ELSE 0 END) AS mission_critical_count,
+    SUM(CASE WHEN a.rto_score BETWEEN 3 AND 4 THEN 1 ELSE 0 END) AS high_count,
+    MAX({AGE_DAYS}) AS oldest_days_open
+FROM applications AS a
+WHERE {where}
+""".strip()
+
+
 def top_drifting_apps(
     limit: int = 10,
     *,
@@ -91,6 +108,7 @@ LIMIT {limit}
     return QueryPlan(
         question=f"Top drifting applications {scoped_label}".strip(),
         sql=sql,
+        count_sql=_totals_sql(f"{OPEN_SCOPE_DRIFT}{scope_clause}"),
         intent="top_drifting_apps",
         rationale="Ranks open in-scope drift by age and then by RTO risk.",
         chart=ChartSpec(kind="bar", title="Oldest Open Drift", x="app_name", y="days_open"),
@@ -153,6 +171,7 @@ LIMIT {limit}
     return QueryPlan(
         question=f"Open drift for {label} applications {scoped_label}".strip(),
         sql=sql,
+        count_sql=_totals_sql(f"{OPEN_SCOPE_DRIFT}\n  AND {rto_filter}{scope_clause}"),
         intent="critical_apps_with_open_drift",
         rationale="Uses explicit rto_score logic for critical/high priority drift.",
         chart=ChartSpec(kind="bar", title="Critical Open Drift by Age", x="app_name", y="days_open"),
@@ -313,6 +332,7 @@ LIMIT {limit}
     return QueryPlan(
         question=f"Executive escalation candidates {scoped_label}".strip(),
         sql=sql,
+        count_sql=_totals_sql(f"{OPEN_SCOPE_DRIFT}\n  AND {AGE_DAYS} >= 120{scope_clause}"),
         intent="executive_escalation_candidates",
         rationale="Finds open in-scope drift at or beyond the 120-day executive escalation threshold.",
         chart=ChartSpec(kind="bar", title="Executive Escalation Candidates", x="app_name", y="days_open"),

@@ -29,6 +29,7 @@ KNOWN_DATA_CENTERS = [
     "Des Moines",
     "Eagan",
     "Minneapolis",
+    "Phoenix",
     "St. Louis",
 ]
 
