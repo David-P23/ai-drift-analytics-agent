@@ -6,8 +6,9 @@ This script re-exports it the way three separately acquired companies would hand
 it over: each system owns part of the portfolio and uses its own column names,
 ID formats, codes and date formats. It also writes the master-data reference
 tables (crosswalks and code maps) that map every source back to one shared
-definition, and it injects a small, documented set of dirty records so the
-silver layer has real data-quality work to do.
+definition, and it seeds a small, documented set of data-quality defects (an
+invalid RTO score, orphan rows, a missing version, duplicate records and an
+overlapping re-export) that the silver layer must catch.
 
 Every transformation is reversible, so the gold layer built in Databricks must
 reproduce the bundled SQLite demo (``data/northstar_demo_rows.json``) exactly.
@@ -144,7 +145,7 @@ SUMMIT_NOTE_KINDS = {
     "Validation Result": "validation_result",
 }
 
-# Expected outcome of the injected dirty records; the checks notebook and the
+# Expected outcome of the seeded defects; the checks notebook and the
 # tests read these numbers so the story stays in one place.
 EXPECTED_QUARANTINE = {
     "applications": 1,  # northstar_core test app with rto_score 11

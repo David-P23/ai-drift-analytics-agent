@@ -4,17 +4,17 @@
 # environment_version = "6"
 # ///
 # MAGIC %md
-# MAGIC # 02 · Silver: conform three source systems onto shared definitions  ✍️ *(David writes this one)*
+# MAGIC # 02 · Silver: conform three source systems onto shared definitions
 # MAGIC
-# MAGIC This is the Winnebago problem in miniature: the same things (an application, a drift
-# MAGIC finding, a data center, a status) arrive with different IDs, names, codes and formats
-# MAGIC from three acquired companies. Silver maps all of them onto one definition.
+# MAGIC This is the post-acquisition integration problem in miniature: the same things (an
+# MAGIC application, a drift finding, a data center, a status) arrive with different IDs, names,
+# MAGIC codes and formats from three acquired companies. Silver maps all of them onto one definition.
 # MAGIC
-# MAGIC **You are done when `05_checks` passes.** It compares your silver tables with the
-# MAGIC contract in `lakehouse/pipeline/contracts.py` and checks that gold reproduces the
-# MAGIC bundled SQLite demo row for row.
+# MAGIC **Validation:** `05_checks` compares these tables with the contract in
+# MAGIC `lakehouse/pipeline/contracts.py` and checks that gold reproduces the bundled SQLite demo
+# MAGIC row for row.
 # MAGIC
-# MAGIC ### What silver must produce
+# MAGIC ### Output
 # MAGIC | Table | Rows | Key | Notes |
 # MAGIC |---|---|---|---|
 # MAGIC | `silver.applications` | 1,000 | `app_id` | canonical ID from `ref.app_crosswalk` |
@@ -96,7 +96,7 @@ for table, columns in contracts.SILVER_TABLES.items():
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Plumbing (provided)
+# MAGIC ## Shared helpers
 
 # COMMAND ----------
 
@@ -163,10 +163,10 @@ def send_to_quarantine(rows: DataFrame, source: str, entity: str, id_column: str
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Worked example: northstar_core applications
-# MAGIC The pattern for every source and entity: **rename → map codes → map IDs → apply rules →
-# MAGIC cast to the contract**. Northstar is the easy one (its columns already look canonical),
-# MAGIC but it still goes through the same reference tables, and it contains one bad record.
+# MAGIC ## Applications
+# MAGIC Every source and entity follows the same pattern: **rename → map codes → map IDs → apply
+# MAGIC rules → cast to the contract**. Northstar's columns are already close to the shared names,
+# MAGIC but it goes through the same reference tables, and it contains one invalid record.
 
 # COMMAND ----------
 
@@ -209,10 +209,9 @@ display(northstar_applications().limit(5))  # noqa: F821
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## TODO 1: harbor_trust and summit_capital applications
-# MAGIC Same shape as `northstar_applications()`. For RTO, join `rto_scale` on `rto_hours`
-# MAGIC (Harbor: `RecoveryTimeHours`; Summit: `rto_minutes / 60`).
-# MAGIC Dates: `F.to_date(col, "MM/dd/yyyy")` and `F.to_date(col, "yyyyMMdd")`.
+# MAGIC ### Harbor and Summit readers
+# MAGIC Harbor sends RTO in hours and Summit in minutes; both are converted to hours and matched
+# MAGIC to a score in `ref.rto_scale`. Harbor dates are `MM/dd/yyyy`, Summit's are `yyyyMMdd`.
 
 # COMMAND ----------
 
@@ -288,32 +287,18 @@ def summit_applications() -> DataFrame:
 
 # COMMAND ----------
 
-h = summit_applications()
-print(h.count())
-display(h.select([F.sum(F.col(c).isNull().cast("int")).alias(c)
-                  for c in ["in_scope", "rto_score", "primary_dc", "secondary_dc", "last_test_date"]]))
-
-# COMMAND ----------
-
-display(bronze("harbor_trust", "applications").limit(5))
-display(codes("harbor_trust", "data_center"))
-
-# COMMAND ----------
-
 # MAGIC %md
-# MAGIC ## TODO 2: conform, check, and MERGE applications
-# MAGIC 1. Union the three (`unionByName`).
-# MAGIC 2. Join `ref.app_crosswalk` on (`source_system`, `source_app_id`) to get `app_id`.
-# MAGIC 3. Quarantine rows with no `app_id` or with `rto_score` outside 1-10 (`send_to_quarantine`),
-# MAGIC    and keep the rest.
-# MAGIC 4. Fill `rto_hours` from `rto_scale` for Northstar (it sends the score, not the hours).
-# MAGIC 5. Select the contract columns in order and `MERGE INTO silver.applications` on `app_id`.
-# MAGIC
-# MAGIC Write the MERGE as a reusable function; drift and notes need it too.
+# MAGIC ### Conform, quarantine and MERGE
+# MAGIC Union the three readers, map each source ID to the shared `app_id` through
+# MAGIC `ref.app_crosswalk`, quarantine rows with no shared ID or an RTO score outside 1-10, look up
+# MAGIC `rto_hours` for Northstar (it sends the score, not the hours), and `MERGE` into
+# MAGIC `silver.applications` on `app_id`. `merge_into` is shared by all three entities.
 
 # COMMAND ----------
 
 def merge_into(batch: DataFrame, table_name: str, keys: list[str]) -> None:
+    """Upsert into silver.<table_name>: the newest extract per key wins, and a rerun changes nothing."""
+
     target = ensure_table(table_name)
 
     # One row per key: keep the newest extract
@@ -375,12 +360,12 @@ display(spark.table(f"{SCHEMAS.silver}.quarantine").select("source_system", "sou
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## TODO 3: drift instances
-# MAGIC Three readers like TODO 1 (Summit's `exemption` field feeds two domains:
-# MAGIC `exemption_requested` and `exemption_result`; Summit timestamps → `F.to_date(F.to_timestamp(col))`).
-# MAGIC Then: crosswalk the drift ID **and** the app ID, quarantine `unknown application` and
-# MAGIC `missing detected_version`, and `merge_into(..., "drift_instances", ["drift_id"])`.
-# MAGIC Harbor's March 6 rows must lose to its April 3 rows.
+# MAGIC ## Drift instances
+# MAGIC Three readers in the same pattern. Summit's single `exemption` field feeds two shared
+# MAGIC columns (`exemption_requested` and `exemption_result`), and its UTC timestamps keep their
+# MAGIC UTC date. The drift ID and the app ID both go through their crosswalks; drift on an
+# MAGIC application that is not in silver, or with no `detected_version`, is quarantined.
+# MAGIC `merge_into` keeps Harbor's April 3 rows over its March 6 rows.
 
 # COMMAND ----------
 
@@ -514,10 +499,11 @@ display(spark.table(f"{SCHEMAS.silver}.quarantine").select("source_system", "ent
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## TODO 4: drift notes
-# MAGIC Readers as before; `escalation_flag` is the `escalation` code cast to BOOLEAN.
-# MAGIC Map the note's drift link through `ref.drift_crosswalk`, keep notes whose drift is in
-# MAGIC `silver.drift_instances`, drop exact duplicates, and merge on (`source_system`, `note_id`).
+# MAGIC ## Drift notes
+# MAGIC Escalation codes become a BOOLEAN, Summit's duplicate comments are dropped, and each note
+# MAGIC links to its drift through `ref.drift_crosswalk`. A note on a drift that is not in silver
+# MAGIC is quarantined. Notes merge on (`source_system`, `note_id`), since note IDs are only
+# MAGIC unique within one source.
 
 # COMMAND ----------
 
@@ -581,7 +567,7 @@ def build_drift_notes() -> None:
         .withColumn("escalation_flag", F.col("escalation").cast("boolean"))
     )
 
-    # The note's drift link goes through the same drift crosswalk as TODO 3
+    # The note's drift link goes through the same drift crosswalk as drift instances
     with_ids = combined.join(
         drift_crosswalk.withColumnRenamed("canonical_drift_id", "drift_id"),
         ["source_system", "source_drift_id"],

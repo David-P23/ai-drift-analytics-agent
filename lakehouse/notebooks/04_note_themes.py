@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # 04 · Note themes: tag free-text notes so themes can be counted  ✍️ *(David writes this one)*
+# MAGIC # 04 · Note themes: tag free-text notes so themes can be counted (planned)
 # MAGIC
 # MAGIC Same job as tagging warranty or complaint notes by failure mode: an LLM assigns each
 # MAGIC note one label from a **fixed** list, and gold counts the labels. The LLM classifies;
@@ -12,7 +12,7 @@
 # MAGIC | `gold.note_themes` | `source_system`, `note_id`, `drift_id`, `theme` (one of `THEMES` below), `method` (e.g. `ai_classify`), `tagged_at` |
 # MAGIC | `gold.kpi_note_themes` | `theme`, `notes`, `findings`, `open_findings`, `escalated_notes` |
 # MAGIC
-# MAGIC ### Approach (suggested)
+# MAGIC ### Approach
 # MAGIC 1. **Tag distinct texts, not rows.** 804 notes but only ~34 distinct texts. Classify
 # MAGIC    `SELECT DISTINCT note_text`, then join the label back. Same quality, a fraction of the calls.
 # MAGIC 2. **Classifier, option A (in-platform):** `ai_classify(note_text, <labels JSON>, map('version', '2.1'))`
@@ -22,12 +22,11 @@
 # MAGIC 3. **Classifier, option B (fallback):** call OpenAI from Python (`gpt-5-mini`, the model
 # MAGIC    the agent already uses) with the same labels and descriptions, using a secret scope for
 # MAGIC    the key (`dbutils.secrets.get(...)`), never a literal key in the notebook.
-# MAGIC 4. **Measure before you trust it.** Hand-label 10 to 15 distinct texts in `GOLDEN` below and
-# MAGIC    report agreement. Say the number in the interview.
+# MAGIC 4. **Measure before trusting it.** Hand-label 10 to 15 distinct texts in `GOLDEN` below and
+# MAGIC    report agreement alongside the theme counts.
 # MAGIC 5. Write both tables, overwrite mode (small, rebuilt each run).
 # MAGIC
-# MAGIC The next step after this (talk about it, don't build it yet): embeddings + Vector Search
-# MAGIC to *discover* new themes rather than assign known ones.
+# MAGIC Later: embeddings + Vector Search to *discover* new themes rather than assign known ones.
 
 # COMMAND ----------
 
@@ -58,19 +57,19 @@ print(f"{notes.count()} notes, {distinct_texts.count()} distinct texts")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## TODO 1: classify the distinct texts
-# MAGIC Produce a DataFrame `labeled` with columns `note_text`, `theme`, `method`.
+# MAGIC ## 1. Classify the distinct texts
+# MAGIC Produces a DataFrame `labeled` with columns `note_text`, `theme`, `method`.
 # MAGIC Every `theme` must be a key of `THEMES` (the check below enforces it).
 
 # COMMAND ----------
 
-labeled = None  # TODO 1
+labeled = None  # TODO: classify with ai_classify, or the OpenAI fallback
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## TODO 2: measure agreement on a hand-labeled sample
-# MAGIC Paste 10 to 15 distinct texts from `distinct_texts` and your own label for each.
+# MAGIC ## 2. Measure agreement on a hand-labeled sample
+# MAGIC 10 to 15 distinct texts from `distinct_texts`, each with a hand-assigned label.
 
 # COMMAND ----------
 
@@ -92,12 +91,12 @@ def agreement(labeled_df, golden: dict[str, str]) -> float:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## TODO 3: write gold.note_themes and gold.kpi_note_themes
+# MAGIC ## 3. Write gold.note_themes and gold.kpi_note_themes
 
 # COMMAND ----------
 
-assert labeled is not None, "Finish TODO 1 first."
+assert labeled is not None, "Classification not built yet."
 bad = labeled.where(~F.col("theme").isin(list(THEMES)))
 assert bad.count() == 0, f"Labels outside the fixed list: {[r.theme for r in bad.limit(5).collect()]}"
 
-# TODO 3
+# TODO: write both tables

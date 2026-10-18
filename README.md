@@ -35,20 +35,20 @@ V2 reframes the same concept for a recruiter and executive audience. It opens di
 
 ### v3: Databricks Lakehouse (in progress)
 
-V3 moves the agent's data onto Databricks as a bronze → silver → gold pipeline, and makes the
-data problem harder on purpose: the portfolio arrives from three simulated acquired companies
-with different IDs, column names, codes and date formats, plus a few dirty records. Silver puts
+V3 moves the agent's data onto Databricks as a bronze → silver → gold pipeline and simulates a
+post-acquisition integration: the portfolio arrives from three simulated acquired companies
+with different IDs, column names, codes and date formats, plus seeded data-quality defects. Silver puts
 them on shared definitions through crosswalk and code-map tables; gold rebuilds the agent's
 table as a Delta table behind a view; an LLM tags note themes from a fixed label list. The agent
 runs on either backend (`DRIFT_BACKEND=sqlite` or `databricks`) with the same validated query
 templates, translated to Databricks SQL.
 
-   Built and run on Databricks Free Edition: source generation, bronze (`COPY INTO`), the silver
-   conformance layer (crosswalks, code maps, quarantine with reasons, `MERGE` upserts) and gold.
-   `05_checks` passes all 21 checks, including row accounting from bronze through silver and gold
-   reproducing the SQLite demo row for row. Local Spark tests in CI show every agent query returns
-   identical results on both engines. Next: running the agent against the workspace's SQL warehouse,
-   and note-theme tagging. See [`lakehouse/README.md`](lakehouse/README.md).
+Built and run on Databricks Free Edition: source generation, bronze (`COPY INTO`), the silver
+conformance layer (crosswalks, code maps, quarantine with reasons, `MERGE` upserts) and gold.
+`05_checks` passes all 21 checks, including row accounting from bronze through silver and gold
+reproducing the SQLite demo row for row. Local Spark tests in CI show every agent query returns
+identical results on both engines. Next: running the agent against the workspace's SQL warehouse,
+and note-theme tagging. See [`lakehouse/README.md`](lakehouse/README.md).
 
 ## What It Does
 
