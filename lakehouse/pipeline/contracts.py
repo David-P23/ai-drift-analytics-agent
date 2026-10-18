@@ -1,8 +1,8 @@
 """Table contracts between the layers.
 
-Silver is the layer David writes by hand (notebook 02). Gold (notebook 03) is
-built against the column lists below, and the checks notebook (05) fails if
-silver drifts from them. Change a contract here first, then the code.
+Silver is built in notebook 02. Gold (notebook 03) is built against the
+column lists below, and the checks notebook (05) fails if silver drifts from
+them. Change a contract here first, then the code.
 """
 
 from __future__ import annotations

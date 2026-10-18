@@ -1,7 +1,7 @@
 # Drift lakehouse on Databricks
 
-The agent's data, rebuilt as a medallion pipeline on Databricks. The twist: the portfolio
-arrives from **three simulated acquired companies**, each with its own IDs, column names,
+The agent's data, rebuilt as a medallion pipeline on Databricks. The portfolio arrives from
+**three simulated acquired companies**, each with its own IDs, column names,
 codes and date formats, and silver has to put them on one shared definition before anything
 can be compared. That is the core problem in post-acquisition data consolidation, at a size
 that runs on Databricks Free Edition.
@@ -29,7 +29,7 @@ flowchart LR
 
 | Path | What it is | Status |
 |---|---|---|
-| `generate_sources.py` | Splits the v1 dataset (`seed/`) into the three source exports in `source_data/`, plus master data and a few deliberately dirty records | Done, tested |
+| `generate_sources.py` | Splits the v1 dataset (`seed/`) into the three source exports in `source_data/`, plus master data and a documented set of seeded data-quality defects | Done, tested |
 | `source_data/` | The generated CSVs (committed) | Done |
 | `pipeline/` | Shared config, table contracts, SQL runner (imported by notebooks and tests) | Done |
 | `sql/gold.sql` | Gold tables, the agent-facing view, KPI tables | Done, tested on local Spark |
@@ -37,7 +37,7 @@ flowchart LR
 | `notebooks/01_bronze` | Lands the files, `COPY INTO` one bronze table per source and entity | Done |
 | `notebooks/02_silver` | Conform, quarantine, dedupe, `MERGE` | Done, run on Databricks (`05_checks` passes) |
 | `notebooks/03_gold` | Runs `sql/gold.sql` | Done |
-| `notebooks/04_note_themes` | LLM theme tagging of notes | **Scaffold: David writes this** |
+| `notebooks/04_note_themes` | LLM theme tagging of notes | Planned (design drafted) |
 | `notebooks/05_checks` | Contract, row accounting, keys, and the truth test against the SQLite demo | Done |
 
 The agent side lives in `src/warehouse.py` (Databricks backend) and `src/sql_dialect.py`
@@ -63,8 +63,8 @@ demo (`data/northstar_demo_rows.json`) exactly. `05_checks` tests that.
 ## Run it on Databricks Free Edition
 
 **1. Add the repo as a Git folder.** Workspace → your home folder → **Create → Git folder**.
-URL `https://github.com/David-P23/ai-drift-analytics-agent`, branch `databricks-migration`
-(or `main` once merged). The repo is public, so no GitHub token is needed to clone it.
+URL `https://github.com/David-P23/ai-drift-analytics-agent`, branch `main`. The repo is
+public, so no GitHub token is needed to clone it.
 
 **2. Run `lakehouse/notebooks/00_setup`.** Attach serverless compute and Run all. It creates
 the `drift_demo` catalog. If your workspace does not allow creating catalogs, set the
@@ -80,16 +80,17 @@ the `drift_demo` catalog. If your workspace does not allow creating catalogs, se
 
 Run it a second time: `COPY INTO` loads 0 new rows.
 
-**4. Write `02_silver`.** The notebook has the rules, a column mapping table, the plumbing,
-and one worked example. Run `05_checks` as you go; it tells you what is still wrong.
+**4. Run `02_silver`.** Expected: 1,000 applications, 475 drift instances, 804 notes, and
+4 quarantined records.
 
 **5. Run `03_gold`, then `05_checks`.** All checks green means gold reproduces the demo row
 for row.
 
-**6. Write `04_note_themes`** (after silver works).
+**6. `04_note_themes`** (planned): LLM theme tagging; the notebook holds the design.
 
 **7. Schedule it.** Jobs & Pipelines → Create job. One notebook task per step, each depending
-on the one before: `01_bronze` → `02_silver` → `03_gold` → `04_note_themes` → `05_checks`.
+on the one before: `01_bronze` → `02_silver` → `03_gold` → `05_checks` (add `04_note_themes`
+before `05_checks` once it is built).
 Source: the notebooks in your Git folder. Compute: serverless. Add a job parameter `catalog`
 (`drift_demo`). Add a daily schedule if you want. `00_setup` only needs to run once (or with
 `reset = true` for a clean rebuild). Free Edition allows 5 concurrent job tasks, so a
@@ -130,8 +131,8 @@ sequential chain fits.
    and *SQL Evidence* shows the Databricks SQL that actually ran.
 
 **Keep the public Render demo on SQLite.** Free Edition is for non-commercial use, has no SLA,
-and shuts compute down for the day if you exceed the quota. A recruiter clicking a link that
-depends on it could hit an error. Run Databricks mode locally and for demos.
+and shuts compute down for the day if you exceed the quota. A public link that depends on it
+could hit an error. Run Databricks mode locally and for demos.
 
 **Read-only access.** The app's SQL validator blocks anything but a single `SELECT` on either
 backend. On Databricks, pass `agent_principal` to `00_setup` to grant a user, group or service
@@ -152,10 +153,10 @@ validator is the guard; in a company you would use a service principal.
 - `test_warehouse.py`: unsafe SQL never reaches the warehouse, the translation, type handling,
   and reconnect after a failure.
 
-Not covered locally: `COPY INTO`, volumes, Unity Catalog grants and `MERGE` run only on
-Databricks (Delta jars were not available offline). `05_checks` covers those on the platform.
+Not covered by the local tests: `COPY INTO`, volumes, Unity Catalog grants and `MERGE` need
+Databricks. `05_checks` covers those on the platform.
 
-## Design decisions worth explaining
+## Design decisions
 
 - **Bronze is all STRING.** No parsing on the way in, so a bad date never drops a row before
   anyone sees it, and silver can be rebuilt from bronze at any time.
