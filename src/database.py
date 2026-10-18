@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import sqlite3
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -44,12 +45,22 @@ CREATE TABLE IF NOT EXISTS applications (
 """.strip()
 
 
-def connect(db_path: str | Path) -> sqlite3.Connection:
-    """Open a SQLite connection with row dictionaries enabled."""
+@contextmanager
+def connect(db_path: str | Path) -> Iterator[sqlite3.Connection]:
+    """Open a SQLite connection with row dictionaries enabled, and always close it.
+
+    sqlite3's own `with conn:` commits or rolls back but never closes the connection,
+    which leaves the file open until garbage collection (Windows then refuses to delete
+    it). This keeps the commit/rollback behavior and closes the connection on exit.
+    """
 
     conn = sqlite3.connect(str(db_path))
     conn.row_factory = sqlite3.Row
-    return conn
+    try:
+        with conn:
+            yield conn
+    finally:
+        conn.close()
 
 
 def initialize_demo_database(db_path: str | Path, *, reset: bool = False) -> Path:
