@@ -35,7 +35,7 @@ flowchart LR
 | `sql/gold.sql` | Gold tables, the agent-facing view, KPI tables | Done, tested on local Spark |
 | `notebooks/00_setup` | Catalog, schemas, landing volume, master data, read-only grants | Done |
 | `notebooks/01_bronze` | Lands the files, `COPY INTO` one bronze table per source and entity | Done |
-| `notebooks/02_silver` | Conform, quarantine, dedupe, `MERGE` | **Scaffold: David writes this** |
+| `notebooks/02_silver` | Conform, quarantine, dedupe, `MERGE` | Done, run on Databricks (`05_checks` passes) |
 | `notebooks/03_gold` | Runs `sql/gold.sql` | Done |
 | `notebooks/04_note_themes` | LLM theme tagging of notes | **Scaffold: David writes this** |
 | `notebooks/05_checks` | Contract, row accounting, keys, and the truth test against the SQLite demo | Done |
