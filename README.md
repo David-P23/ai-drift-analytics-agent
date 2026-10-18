@@ -43,10 +43,12 @@ table as a Delta table behind a view; an LLM tags note themes from a fixed label
 runs on either backend (`DRIFT_BACKEND=sqlite` or `databricks`) with the same validated query
 templates, translated to Databricks SQL.
 
-Built and tested: source generation, bronze and gold, the Databricks agent backend, and local
-Spark tests showing gold reproduces the SQLite demo row for row and every agent query returns
-identical results on both engines. In progress: the silver conformance notebook and note-theme
-tagging. See [`lakehouse/README.md`](lakehouse/README.md).
+   Built and run on Databricks Free Edition: source generation, bronze (`COPY INTO`), the silver
+   conformance layer (crosswalks, code maps, quarantine with reasons, `MERGE` upserts) and gold.
+   `05_checks` passes all 21 checks, including row accounting from bronze through silver and gold
+   reproducing the SQLite demo row for row. Local Spark tests in CI show every agent query returns
+   identical results on both engines. Next: running the agent against the workspace's SQL warehouse,
+   and note-theme tagging. See [`lakehouse/README.md`](lakehouse/README.md).
 
 ## What It Does
 
