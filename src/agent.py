@@ -153,11 +153,13 @@ def summarize_result(
 
     total = int(totals["total_count"]) if totals and totals.get("total_count") is not None else len(rows)
     shown = f" Showing the top {len(rows)}." if total > len(rows) else ""
+    # Findings are not applications: one application can carry several findings.
+    across = _across_applications(totals)
 
     if plan.intent == "top_drifting_apps":
         oldest = rows[0]
         return (
-            f"{total} open in-scope drift findings match the request. "
+            f"{total} open in-scope drift findings{across} match the request. "
             f"The oldest is {oldest['app_name']} at {oldest['days_open']} days open.{shown}"
         )
     if plan.intent == "critical_apps_with_open_drift":
@@ -177,10 +179,10 @@ def summarize_result(
         )
         if plan.filters.include_high:
             return (
-                f"{total} critical/high open drift findings match the request: "
+                f"{total} critical/high open drift findings{across} match the request: "
                 f"{mission_critical} Mission Critical and {high} High. {oldest}{shown}"
             )
-        return f"{mission_critical} Mission Critical open drift findings match the request. {oldest}{shown}"
+        return f"{mission_critical} Mission Critical open drift findings{across} match the request. {oldest}{shown}"
     if plan.intent == "drift_by_product":
         leader = rows[0]
         return (
@@ -205,7 +207,7 @@ def summarize_result(
         return f"{severe} open drift items are at senior or executive escalation age."
     if plan.intent == "executive_escalation_candidates":
         return (
-            f"{total} open drift findings are at or beyond the 120-day executive escalation threshold."
+            f"{total} open drift findings{across} are at or beyond the 120-day executive escalation threshold."
             f"{' Showing the ' + str(len(rows)) + ' most critical.' if total > len(rows) else ''}"
         )
     if plan.intent == "rto_risk_distribution":
@@ -221,6 +223,15 @@ def summarize_result(
     return f"{len(rows)} rows returned."
 
 
+def _across_applications(totals: dict[str, Any] | None) -> str:
+    """' across 4 applications' from the totals row, or '' when the plan has no totals query."""
+
+    if not totals or totals.get("app_count") is None:
+        return ""
+    apps = int(totals["app_count"])
+    return f" across {apps} application{'' if apps == 1 else 's'}"
+
+
 def _count_phrase(count: int, singular_verb: str, plural_verb: str) -> str:
     verb = singular_verb if count == 1 else plural_verb
     return f"{count} {verb}"
@@ -231,6 +242,13 @@ def build_executive_summary(db: DriftDatabase) -> ExecutiveSummary:
 
     open_drift = db.scalar(
         f"SELECT COUNT(*) AS count FROM applications AS a WHERE {analytics.OPEN_SCOPE_DRIFT}"
+    ) or 0
+    open_apps = db.scalar(
+        f"""
+SELECT COUNT(DISTINCT a.app_id) AS count
+FROM applications AS a
+WHERE {analytics.OPEN_SCOPE_DRIFT}
+"""
     ) or 0
     mission_critical = db.scalar(
         f"""
@@ -273,7 +291,7 @@ WHERE {analytics.OPEN_SCOPE_DRIFT}
     latest_scan = db.scalar("SELECT MAX(a.last_scanned_at) AS latest_scan FROM applications AS a")
     as_of = f"As of the {str(latest_scan)[:10]} scan, there" if latest_scan else "There"
     narrative = (
-        f"{as_of} are {open_drift} open in-scope drift findings. "
+        f"{as_of} are {open_drift} open in-scope drift findings across {open_apps} applications. "
         f"{mission_critical} are Mission Critical, and {executive_candidates} have aged into executive escalation."
     )
 

@@ -76,11 +76,15 @@ END
 
 
 def _totals_sql(where: str) -> str:
-    """Counts behind a limited list: total, by tier, and the oldest age, for the same filter."""
+    """Counts behind a limited list: findings, applications, by tier, and the oldest age, for the same filter.
+
+    One application can have several findings, so the answer reports both.
+    """
 
     return _tidy(f"""
 SELECT
     COUNT(*) AS total_count,
+    COUNT(DISTINCT a.app_id) AS app_count,
     SUM(CASE WHEN a.rto_score BETWEEN 1 AND 2 THEN 1 ELSE 0 END) AS mission_critical_count,
     SUM(CASE WHEN a.rto_score BETWEEN 3 AND 4 THEN 1 ELSE 0 END) AS high_count,
     MAX({AGE_DAYS}) AS oldest_days_open
