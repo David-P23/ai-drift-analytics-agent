@@ -28,7 +28,9 @@ def test_demo_aging_buckets_do_not_depend_on_todays_date(tmp_path: Path) -> None
 
 def test_summary_states_the_as_of_date(tmp_path: Path) -> None:
     summary = build_executive_summary(_demo_db(tmp_path))
-    assert summary.narrative.startswith("As of the 2026-04-03 scan, there are 125 open in-scope drift findings.")
+    assert summary.narrative.startswith(
+        "As of the 2026-04-03 scan, there are 125 open in-scope drift findings across 101 applications."
+    )
     assert {m.label: m.value for m in summary.metrics}["Executive Escalations"] == EXPECTED["120+ Executive escalation"]
 
 
@@ -39,10 +41,10 @@ def test_list_answers_report_true_totals_not_the_list_limit(tmp_path: Path) -> N
 
     db = _demo_db(tmp_path)
     escalation = answer_question(db, "Which apps need executive escalation?")
-    assert escalation.answer.startswith("86 open drift findings are at or beyond the 120-day")
+    assert escalation.answer.startswith("86 open drift findings across 68 applications are at or beyond the 120-day")
     assert len(escalation.rows) == 25 and "Showing the 25 most critical." in escalation.answer
 
     critical_high = answer_question(db, "Show critical and high priority open drift.")
     assert critical_high.answer.startswith(
-        "46 critical/high open drift findings match the request: 20 Mission Critical and 26 High."
+        "46 critical/high open drift findings across 37 applications match the request: 20 Mission Critical and 26 High."
     )

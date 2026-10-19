@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import os
 import json
+import subprocess
+from functools import lru_cache
 from html import escape
 from pathlib import Path
 from typing import Any
@@ -408,7 +410,29 @@ def render_shell_header(st: Any, summary: ExecutiveSummary) -> None:
         unsafe_allow_html=True,
     )
     if "data_source_label" in st.session_state:
-        st.caption(f"Data source: {st.session_state.data_source_label}")
+        st.caption(f"Data source: {st.session_state.data_source_label} · Build {build_id()}")
+
+
+@lru_cache(maxsize=1)
+def build_id() -> str:
+    """Short commit of the running code, so two deployments can be shown to run the same version.
+
+    Render sets RENDER_GIT_COMMIT for every deploy; a local checkout asks git.
+    """
+
+    commit = os.getenv("RENDER_GIT_COMMIT", "").strip()
+    if not commit:
+        try:
+            commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                capture_output=True,
+                text=True,
+                timeout=3,
+                cwd=Path(__file__).resolve().parent,
+            ).stdout.strip()
+        except (OSError, subprocess.SubprocessError):
+            commit = ""
+    return commit[:7] if commit else "unknown"
 
 
 def render_upload_landing(st: Any) -> None:
