@@ -22,8 +22,8 @@
 # MAGIC 3. **Classifier, option B (fallback):** call OpenAI from Python (`gpt-5-mini`, the model
 # MAGIC    the agent already uses) with the same labels and descriptions, using a secret scope for
 # MAGIC    the key (`dbutils.secrets.get(...)`), never a literal key in the notebook.
-# MAGIC 4. **Measure before trusting it.** Hand-label 10 to 15 distinct texts in `GOLDEN` below and
-# MAGIC    report agreement alongside the theme counts.
+# MAGIC 4. **Measure before trusting it.** Hand-label 10 to 15 distinct texts and report
+# MAGIC    agreement alongside the theme counts.
 # MAGIC 5. Write both tables, overwrite mode (small, rebuilt each run).
 # MAGIC
 # MAGIC Later: embeddings + Vector Search to *discover* new themes rather than assign known ones.
@@ -33,10 +33,6 @@
 # MAGIC %run ./_bootstrap
 
 # COMMAND ----------
-
-import json
-
-from pyspark.sql import functions as F
 
 THEMES = {
     "vendor_dependency": "Waiting on a vendor patch, vendor review, or third-party certification.",
@@ -48,55 +44,18 @@ THEMES = {
     "remediated_closed": "Drift resolved: upgrade completed, version aligned, closed, or false positive.",
     "decommission": "Application is being retired or decommissioned.",
 }
-LABELS_JSON = json.dumps(THEMES)
 
 notes = spark.table(f"{SCHEMAS.silver}.drift_notes")
 distinct_texts = notes.select("note_text").distinct()
-print(f"{notes.count()} notes, {distinct_texts.count()} distinct texts")
+print(f"{notes.count()} notes, {distinct_texts.count()} distinct texts, {len(THEMES)} themes")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 1. Classify the distinct texts
-# MAGIC Produces a DataFrame `labeled` with columns `note_text`, `theme`, `method`.
-# MAGIC Every `theme` must be a key of `THEMES` (the check below enforces it).
-
-# COMMAND ----------
-
-labeled = None  # TODO: classify with ai_classify, or the OpenAI fallback
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 2. Measure agreement on a hand-labeled sample
-# MAGIC 10 to 15 distinct texts from `distinct_texts`, each with a hand-assigned label.
-
-# COMMAND ----------
-
-GOLDEN: dict[str, str] = {
-    # "Exemption denied; risk accepted without compensating controls is outside policy threshold.": "exemption_risk",
-}
-
-
-def agreement(labeled_df, golden: dict[str, str]) -> float:
-    if not golden:
-        raise ValueError("Add hand labels to GOLDEN first.")
-    predicted = {row.note_text: row.theme for row in labeled_df.collect()}
-    hits = sum(predicted.get(text) == label for text, label in golden.items())
-    return hits / len(golden)
-
-
-# print(f"Agreement with hand labels: {agreement(labeled, GOLDEN):.0%}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 3. Write gold.note_themes and gold.kpi_note_themes
-
-# COMMAND ----------
-
-assert labeled is not None, "Classification not built yet."
-bad = labeled.where(~F.col("theme").isin(list(THEMES)))
-assert bad.count() == 0, f"Labels outside the fixed list: {[r.theme for r in bad.limit(5).collect()]}"
-
-# TODO: write both tables
+# MAGIC ## Status
+# MAGIC Not built yet. The cell above profiles the input; the classification is the next piece of work:
+# MAGIC 1. Classify the distinct texts into `THEMES` (option A, or option B if AI Functions are unavailable).
+# MAGIC 2. Compare with 10 to 15 hand-labeled texts and report agreement before trusting the counts.
+# MAGIC 3. Write `gold.note_themes` and `gold.kpi_note_themes`.
+# MAGIC 4. Add this notebook to the job before `05_checks`, which already checks that every note is
+# MAGIC    tagged exactly once whenever `gold.note_themes` exists.

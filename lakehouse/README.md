@@ -19,8 +19,8 @@ flowchart LR
   BR --> S[Silver<br/>conformed, deduped,<br/>MERGE on shared IDs]
   S --> Q[Quarantine<br/>failed rules + reason]
   S --> G[Gold<br/>drift_findings + KPI tables]
-  S --> T[LLM note themes<br/>fixed label set]
-  T --> G
+  S -.-> T[LLM note themes<br/>planned]
+  T -.-> G
   G --> V[gold.applications view<br/>the agent's contract]
   V --> W[SQL warehouse] --> AG[Drift agent<br/>DRIFT_BACKEND=databricks]
 ```

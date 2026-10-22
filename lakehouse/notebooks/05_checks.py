@@ -153,7 +153,7 @@ else:
 
 # COMMAND ----------
 
-# 5. Themes (optional until notebook 04 is written)
+# 5. Themes: checked only once gold.note_themes exists (notebook 04 is planned)
 themes_table = f"{SCHEMAS.gold}.note_themes"
 if table_exists(themes_table):
     themes = spark.table(themes_table)
