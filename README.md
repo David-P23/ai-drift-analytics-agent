@@ -33,13 +33,13 @@ V1 archive:
 
 V2 reframes the same concept for a recruiter and executive audience. It opens directly on seeded demo data, moves the first impression to executive KPIs, board-level narrative, and an agent input, then provides Tableau and cluster detection as supporting pages.
 
-### v3: Databricks Lakehouse (in progress)
+### v3: Databricks Lakehouse
 
 V3 moves the agent's data onto Databricks as a bronze → silver → gold pipeline and simulates a
 post-acquisition integration: the portfolio arrives from three simulated acquired companies
 with different IDs, column names, codes and date formats, plus seeded data-quality defects. Silver puts
 them on shared definitions through crosswalk and code-map tables; gold rebuilds the agent's
-table as a Delta table behind a view; an LLM tags note themes from a fixed label list. The agent
+table as a Delta table behind a view. The agent
 runs on either backend (`DRIFT_BACKEND=sqlite` or `databricks`) with the same validated query
 templates, translated to Databricks SQL.
 
@@ -47,8 +47,10 @@ Built and run on Databricks Free Edition: source generation, bronze (`COPY INTO`
 conformance layer (crosswalks, code maps, quarantine with reasons, `MERGE` upserts) and gold.
 `05_checks` passes all 21 checks, including row accounting from bronze through silver and gold
 reproducing the SQLite demo row for row. Local Spark tests in CI show every agent query returns
-identical results on both engines. Next: running the agent against the workspace's SQL warehouse,
-and note-theme tagging. See [`lakehouse/README.md`](lakehouse/README.md).
+identical results on both engines. The agent also runs against the workspace's SQL warehouse:
+`scripts/check_databricks.py` passes all 16 checks, including the nine suggested questions
+answered identically on both backends. Next: LLM tagging of note themes from a fixed label list,
+and a scheduled job. See [`lakehouse/README.md`](lakehouse/README.md).
 
 ## What It Does
 
