@@ -1,16 +1,59 @@
 # AI Drift Analytics Agent
 
-Executive dashboard and analytics-agent demo for enterprise application drift risk.
+Ask a governance question in plain English and get an answer you can audit. An LLM works out
+**what** is being asked; approved, read-only SQL works out **every number**; and each answer shows
+the SQL behind it. The data is a simulated 1,000-application portfolio with 475 drift findings,
+served from SQLite in the public demo or from a Databricks gold layer.
 
-This v2 version opens directly on a bundled NorthStar Financial demo portfolio, so recruiters and reviewers can see the story immediately without uploading a workbook or waking a sleeping free-tier app. The app keeps the original natural-language analytics agent, but reframes the project as an Executive Command Center with Tableau as a board-ready visual layer and cluster detection as a separate analyst lab.
+**Live demo:** https://ai-drift-analytics-agent.onrender.com
 
-The original v1 Streamlit agent is preserved in the `v1-streamlit-agent` branch/tag. The prior Streamlit Cloud deployment has been retired; v1 is now shown as an archived milestone through source history and screenshots.
+## The two decisions it supports
 
-## Live Demo
+| Control | The question it answers | In the demo data |
+|---|---|---|
+| Drift-risk summary for leadership | How much unremediated drift do we carry, how critical is it, and where is it concentrated? | 125 open findings across 101 applications; 20 Mission Critical |
+| Executive escalation | Which application owners must executives hear about because drift wasn't fixed or exempted within 120 days? | 86 findings across 68 applications, with business and technology owners |
 
-Recruiter-facing app: https://ai-drift-analytics-agent.onrender.com
+## How a question becomes an answer
 
-The live demo runs on Render Starter using the included Docker/Render files. After the Tableau dashboard is published, set `TABLEAU_DASHBOARD_URL` in Render environment variables to embed the live Tableau view inside the Tableau Board View page.
+```mermaid
+flowchart LR
+  Q[Plain-English question] --> P
+  subgraph AI["The AI interprets"]
+    P[LLM planner<br/>picks 1 of 8 approved<br/>query types + filters]
+    K[Keyword router<br/>if the LLM is unavailable]
+  end
+  subgraph Code["Deterministic code computes"]
+    T[SQL template<br/>business rules built in] --> V[Validator<br/>one read-only SELECT,<br/>known columns, row limit]
+  end
+  subgraph Data["Same answer from either backend"]
+    S[(SQLite<br/>public demo)]
+    D[(Databricks gold<br/>SQL warehouse)]
+  end
+  P --> T
+  P -. fallback .-> K
+  K --> T
+  V --> S
+  V --> D
+  S --> A[Answer + counts<br/>+ SQL evidence]
+  D --> A
+```
+
+The model never writes SQL. It returns a typed decision, the app fills a template that holds the
+business rules (RTO tiers, and 60/90/120-day aging measured as of the scan date), and a validator
+blocks anything that isn't a single read-only `SELECT` on known tables and columns.
+
+## Why the numbers can be trusted
+
+- **Checked against independent SQL.** 123 automated tests run on every push, including tests
+  that compare each answer's counts with hand-written queries.
+- **Same answers on two engines.** Every query template runs on SQLite and on Spark in CI. Against
+  the Databricks SQL warehouse, all nine suggested questions return identical answers (16 checks).
+- **A pipeline that accounts for every row.** The Databricks gold layer is built from three
+  simulated acquired companies' messy exports and reproduces the demo data row for row
+  (21 checks). See [`lakehouse/README.md`](lakehouse/README.md).
+- **Graceful fallback.** Without the LLM, a keyword router answers, and each answer says which
+  planner ran.
 
 ![v2 Executive Dashboard](docs/assets/v2-executive-dashboard.png)
 
@@ -19,6 +62,8 @@ The live demo runs on Render Starter using the included Docker/Render files. Aft
 ### v1: Agent Concept
 
 V1 proved the core idea: an analytics agent could answer natural-language governance questions over a synthetic enterprise application-drift portfolio. It introduced the company story, sample data, suggested prompts, and the risk framing around unremediated software drift.
+
+V1 was a LangGraph text-to-SQL agent: the model wrote the SQL. When its arithmetic produced a wrong drift percentage, v2 moved every calculation into validated SQL templates and limited the model to choosing what to run. The v1 Streamlit Cloud deployment has been retired.
 
 V1 archive:
 
@@ -31,7 +76,7 @@ V1 archive:
 
 ### v2: Executive Command Center
 
-V2 reframes the same concept for a recruiter and executive audience. It opens directly on seeded demo data, moves the first impression to executive KPIs, board-level narrative, and an agent input, then provides Tableau and cluster detection as supporting pages.
+V2 reframes the same concept for an executive audience. It opens directly on seeded demo data, moves the first impression to executive KPIs, board-level narrative, and an agent input, then provides Tableau and cluster detection as supporting pages.
 
 ### v3: Databricks Lakehouse
 

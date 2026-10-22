@@ -30,15 +30,15 @@
 # MAGIC 2. **Codes:** statuses, yes/no flags, data centers, note types, escalation flags and Summit's
 # MAGIC    product categories go through `ref.code_map` (`source_system`, `domain`, `source_value`).
 # MAGIC    Products go through `ref.product_alias`.
-# MAGIC 3. **RTO:** Harbor sends hours, Summit sends minutes. Convert to hours and look up the score
-# MAGIC    in `ref.rto_scale`. An application whose score is not 1-10 is quarantined.
+# MAGIC 3. **RTO:** Harbor sends hours and Summit sends minutes; both are converted to hours and
+# MAGIC    matched to a score in `ref.rto_scale`. An application whose score is not 1-10 is quarantined.
 # MAGIC 4. **Dates:** Harbor uses `MM/dd/yyyy`; Summit uses `yyyyMMdd` and UTC timestamps
-# MAGIC    (`2025-08-12T14:03:11Z`, keep the UTC date). Output `DATE` / `TIMESTAMP` types.
+# MAGIC    (`2025-08-12T14:03:11Z`), which keep their UTC date. Output columns are `DATE` / `TIMESTAMP`.
 # MAGIC 5. **Quality:** a drift row with an empty `detected_version` is quarantined.
-# MAGIC 6. **Duplicates:** Harbor sent drift twice (March 6 and April 3). Keep the row with the
-# MAGIC    latest `extracted_at`. Summit double-wrote 6 comments; keep one copy.
-# MAGIC 7. **Idempotent:** running this notebook twice must not change the row counts.
-# MAGIC    Use `MERGE INTO`, not append.
+# MAGIC 6. **Duplicates:** Harbor sent drift twice (March 6 and April 3); the row with the latest
+# MAGIC    `extracted_at` wins. Summit double-wrote 6 comments; one copy is kept.
+# MAGIC 7. **Idempotent:** a rerun changes no row counts, because every table is written with
+# MAGIC    `MERGE INTO`, not appended.
 # MAGIC
 # MAGIC ### Column mapping
 # MAGIC | Contract column | northstar_core | harbor_trust | summit_capital |
